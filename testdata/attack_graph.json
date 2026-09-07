@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "graph_id": "graph_demo_001",
+  "task_id": "task_demo_001",
+  "generated_at": "2026-09-08T10:10:00+08:00",
+  "nodes": [
+    {
+      "id": "attacker01",
+      "type": "host",
+      "label": "Attacker",
+      "attributes": {
+        "ip": "10.10.0.10"
+      }
+    },
+    {
+      "id": "webserver01",
+      "type": "host",
+      "label": "Web Server",
+      "attributes": {
+        "ip": "10.10.1.10"
+      }
+    },
+    {
+      "id": "officepc01",
+      "type": "host",
+      "label": "Office PC",
+      "attributes": {
+        "ip": "10.10.2.10"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_demo_001",
+      "source": "attacker01",
+      "target": "webserver01",
+      "relation": "initial_access",
+      "timestamp": "2026-09-08T10:00:00+08:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_mock_0001"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 0.75,
+      "attributes": {
+        "mock": true
+      }
+    },
+    {
+      "id": "edge_demo_002",
+      "source": "webserver01",
+      "target": "officepc01",
+      "relation": "lateral_movement",
+      "timestamp": "2026-09-08T10:05:00+08:00",
+      "technique_id": "T1021",
+      "evidence_event_ids": [
+        "evt_mock_0002"
+      ],
+      "evidence_alert_ids": [
+        "alert_mock_0001"
+      ],
+      "confidence": 0.8,
+      "attributes": {
+        "mock": true
+      }
+    }
+  ]
+}

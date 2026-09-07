@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / local config
+.env
+*.key
+*.pem
+
+# Logs / runtime data
+*.log
+runtime/
+output/
+tmp/
+
+# PCAP / large raw datasets: do not commit by default
+*.pcap
+*.pcapng
+datasets/raw/
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Archives/binaries
+*.zip
+*.rar
+*.7z
+*.exe
+*.dll
+*.so

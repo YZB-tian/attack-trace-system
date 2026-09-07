@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AttackGraph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "graph_id",
+    "task_id",
+    "generated_at",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "pattern": "^graph_"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^task_"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "type",
+          "label",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "host",
+              "user",
+              "process",
+              "file",
+              "ip",
+              "domain",
+              "session",
+              "c2",
+              "technique",
+              "other"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source",
+          "target",
+          "relation",
+          "evidence_event_ids",
+          "evidence_alert_ids",
+          "confidence",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^edge_"
+          },
+          "source": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "relation": {
+            "enum": [
+              "login",
+              "process_spawn",
+              "file_access",
+              "network_connect",
+              "initial_access",
+              "lateral_movement",
+              "privilege_escalation",
+              "c2_communication",
+              "data_access",
+              "data_exfiltration",
+              "related_to"
+            ]
+          },
+          "timestamp": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "technique_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_alert_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "attributes": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

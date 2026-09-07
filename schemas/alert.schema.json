@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Alert",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "alert_id",
+    "task_id",
+    "timestamp_start",
+    "event_ids",
+    "host_ids",
+    "severity",
+    "rule_id",
+    "rule_name",
+    "description",
+    "confidence",
+    "evidence_summary",
+    "detector",
+    "status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "alert_id": {
+      "type": "string",
+      "pattern": "^alert_"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^task_"
+    },
+    "timestamp_start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "timestamp_end": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "event_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^evt_"
+      }
+    },
+    "host_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "rule_id": {
+      "type": "string"
+    },
+    "rule_name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "mitre": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "tactic",
+        "technique_id",
+        "technique_name"
+      ],
+      "properties": {
+        "tactic": {
+          "type": "string"
+        },
+        "technique_id": {
+          "type": "string"
+        },
+        "technique_name": {
+          "type": "string"
+        },
+        "subtechnique_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence_summary": {
+      "type": "string"
+    },
+    "detector": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "open",
+        "reviewed",
+        "false_positive",
+        "confirmed"
+      ]
+    }
+  }
+}

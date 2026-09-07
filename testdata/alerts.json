@@ -1,0 +1,29 @@
+[
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_mock_0001",
+    "task_id": "task_demo_001",
+    "timestamp_start": "2026-09-08T10:05:00+08:00",
+    "timestamp_end": null,
+    "event_ids": [
+      "evt_mock_0002"
+    ],
+    "host_ids": [
+      "officepc01"
+    ],
+    "severity": "high",
+    "rule_id": "DET-DEMO-001",
+    "rule_name": "Suspicious PowerShell",
+    "description": "Mock detection result for interface integration.",
+    "mitre": {
+      "tactic": "Execution",
+      "technique_id": "T1059.001",
+      "technique_name": "PowerShell",
+      "subtechnique_id": null
+    },
+    "confidence": 0.9,
+    "evidence_summary": "Generated from mock event evt_mock_0002.",
+    "detector": "demo-detector",
+    "status": "open"
+  }
+]

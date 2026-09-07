@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "network_name": "lab01",
+  "assets": [
+    {
+      "host_id": "attacker01",
+      "role": "attacker",
+      "hostname": "attacker01",
+      "ip": "10.10.0.10",
+      "zone": "external",
+      "os": "linux"
+    },
+    {
+      "host_id": "c2server01",
+      "role": "c2_server",
+      "hostname": "c2server01",
+      "ip": "10.10.0.20",
+      "zone": "external",
+      "os": "linux"
+    },
+    {
+      "host_id": "firewall01",
+      "role": "firewall",
+      "hostname": "firewall01",
+      "ip": "10.10.0.1",
+      "zone": "boundary",
+      "os": "appliance"
+    },
+    {
+      "host_id": "webserver01",
+      "role": "web_server",
+      "hostname": "webserver01",
+      "ip": "10.10.1.10",
+      "zone": "dmz",
+      "os": "linux"
+    },
+    {
+      "host_id": "mailserver01",
+      "role": "email_server",
+      "hostname": "mailserver01",
+      "ip": "10.10.1.20",
+      "zone": "dmz",
+      "os": "linux"
+    },
+    {
+      "host_id": "switch01",
+      "role": "internal_switch",
+      "hostname": "switch01",
+      "ip": "10.10.2.1",
+      "zone": "internal",
+      "os": "appliance"
+    },
+    {
+      "host_id": "officepc01",
+      "role": "office_pc",
+      "hostname": "officepc01",
+      "ip": "10.10.2.10",
+      "zone": "office",
+      "os": "windows"
+    },
+    {
+      "host_id": "coreserver01",
+      "role": "core_server",
+      "hostname": "coreserver01",
+      "ip": "10.10.3.10",
+      "zone": "server",
+      "os": "linux"
+    }
+  ],
+  "note": "仅用于授权课程靶场。IP 为示例私网地址；搭建真实靶场时由组长统一修改此文件。"
+}

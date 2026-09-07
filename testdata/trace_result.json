@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace_demo_001",
+  "task_id": "task_demo_001",
+  "generated_at": "2026-09-08T10:15:00+08:00",
+  "status": "completed",
+  "summary": "Mock trace result for end-to-end interface integration.",
+  "initial_access_entity_id": "webserver01",
+  "suspected_c2_entity_ids": [
+    "c2server01"
+  ],
+  "attack_chain": [
+    {
+      "order": 1,
+      "tactic": "Initial Access",
+      "technique_id": null,
+      "technique_name": null,
+      "title": "Initial access candidate",
+      "description": "Boundary event connects the external test node to the web server.",
+      "entity_ids": [
+        "attacker01",
+        "webserver01"
+      ],
+      "evidence_event_ids": [
+        "evt_mock_0001"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 0.75
+    },
+    {
+      "order": 2,
+      "tactic": "Lateral Movement",
+      "technique_id": "T1021",
+      "technique_name": "Remote Services",
+      "title": "Lateral movement candidate",
+      "description": "Mock correlation links the web server to the office PC.",
+      "entity_ids": [
+        "webserver01",
+        "officepc01"
+      ],
+      "evidence_event_ids": [
+        "evt_mock_0002"
+      ],
+      "evidence_alert_ids": [
+        "alert_mock_0001"
+      ],
+      "confidence": 0.8
+    }
+  ],
+  "attribution": {
+    "matched_group": null,
+    "confidence": 0.0,
+    "note": "Mock only; no real attribution claim."
+  },
+  "evidence_event_ids": [
+    "evt_mock_0001",
+    "evt_mock_0002"
+  ],
+  "evidence_alert_ids": [
+    "alert_mock_0001"
+  ]
+}

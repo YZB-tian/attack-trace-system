@@ -1,0 +1,70 @@
+[
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_mock_0001",
+    "task_id": "task_demo_001",
+    "timestamp": "2026-09-08T10:00:00+08:00",
+    "source_type": "boundary_log",
+    "source": "firewall",
+    "host_id": "firewall01",
+    "src_ip": "10.10.0.10",
+    "src_port": 52000,
+    "dst_ip": "10.10.1.10",
+    "dst_port": 443,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "inbound",
+      "bytes_in": 320,
+      "bytes_out": 780,
+      "session_id": "sess_demo_001"
+    },
+    "raw_event": {
+      "mock": true
+    },
+    "labels": [
+      "demo",
+      "initial_access_candidate"
+    ],
+    "metadata": {}
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_mock_0002",
+    "task_id": "task_demo_001",
+    "timestamp": "2026-09-08T10:05:00+08:00",
+    "source_type": "host_behavior",
+    "source": "sysmon",
+    "host_id": "officepc01",
+    "src_ip": null,
+    "src_port": null,
+    "dst_ip": null,
+    "dst_port": null,
+    "user": "LAB\\student",
+    "action": "process_create",
+    "process": {
+      "pid": 4321,
+      "ppid": 1200,
+      "name": "powershell.exe",
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+      "hash_sha256": null
+    },
+    "object": {
+      "type": "process",
+      "name": "powershell.exe",
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+    },
+    "network": null,
+    "raw_event": {
+      "mock": true
+    },
+    "labels": [
+      "demo",
+      "suspicious_process"
+    ],
+    "metadata": {}
+  }
+]
