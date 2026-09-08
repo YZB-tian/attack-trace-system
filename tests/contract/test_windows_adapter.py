@@ -1,6 +1,5 @@
 from collectors.windows.adapter import normalize_windows_records
 
-
 def test_normalize_windows_records_from_sysmon_like_event_dicts():
     records = [
         {
