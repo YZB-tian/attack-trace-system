@@ -32,7 +32,9 @@ def _safe_int(value: Any) -> Optional[int]:
 def _basename(path: Optional[str]) -> Optional[str]:
     if not path:
         return None
-    return Path(path).name or path
+    # Path.name is platform-dependent: on Linux (CI runner) backslashes are not
+    # separators, so normalize "\\" to "/" before splitting.
+    return str(path).replace("\\", "/").rsplit("/", 1)[-1] or path
 
 
 def _resolve_asset_host_id(raw_host: Any) -> Optional[str]:
