@@ -131,7 +131,16 @@ def get_attack_graph(task_id: str):
 
 @app.get("/api/trace/{task_id}")
 def get_trace(task_id: str):
-    return _get(_trace_store, task_id)
+    response = _get(_trace_store, task_id)
+    review_path = os.environ.get('ATS_LLM_REVIEW_FILE')
+    if review_path:
+        from agents.deepseek import load_review
+        with _lock:
+            baseline = _trace_store[task_id]
+            events = [e for e in _event_store if e.task_id == task_id]
+            result = load_review(review_path, events, baseline)
+            response['data'] = result.model_dump(mode='json')
+    return response
 
 
 @app.get("/api/tasks/{task_id}")

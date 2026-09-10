@@ -38,7 +38,7 @@ health/configuration was not independently re-audited here.
 | ATT&CK and cross-host attack path | Entity evidence graph is available | Real-data stage mappings and causal path validation remain incomplete |
 | Collection-to-transfer tracing | Synthetic staging/transfer records exist | Demonstrate linked file/process/session/receiver evidence in UI |
 | Attacker/APT matching | Controlled lab infrastructure only | No justified real identity/APT attribution; evaluate matching separately |
-| LLM multi-agent coordination | Not exercised by deterministic data-import path | Inspect configured agent workflow and validate on real evidence |
+| LLM multi-agent coordination | DeepSeek analyst/reviewer workflow verified on 22 real events on September 11 | Broader cross-source evaluation remains; one model in two roles is not independent consensus |
 | Public enterprise attack dataset | No public-data benchmark verified in this checkpoint | Provenance/licensing, benchmark import and analysis required |
 | Open-source comparison / innovation | Not established by lab construction | Evaluation table and defensible comparison required |
 
