@@ -26,7 +26,7 @@ local import report (including EVTX originals and orchestrator reports).
 Observed subject host IDs: seven. The switch/sensor is capture-observer metadata,
 not an eighth compromised host. No fabricated event is added to make eight.
 
-Current default detector output: **zero alerts and zero candidate attack paths**.
+First-run default detector output: **zero alerts and zero candidate attack paths**.
 The evidence graph contains 1,721 nodes and 2,005 edges, not 1,721 physical hosts.
 This validates ingestion and evidence display, not detection recall or a complete
 attack-chain reconstruction. Additional experiments/rule evaluation remain needed.
@@ -44,3 +44,33 @@ Checks performed:
 Raw/normalized evidence and screenshots remain local under ignored directories.
 No credentials, raw EVTX, PCAP or private log payloads are included in this commit.
 See collectors/LAB_IMPORT.md for reproducible import and run commands.
+
+## Follow-up: bounded periodic communication
+
+Run `beacon-20260910T153854Z` is a separate controlled experiment, not an
+extension of the first run's time window. Evidence remains local at
+`D:\AttackTraceLab\evidence\beacon-20260910T153854Z`.
+
+- Web `192.168.60.30` sent 11 benign HTTP POST requests to the existing lab
+  simulator `192.168.56.40:8080/beacon`, at 20-second intervals. All returned 200.
+- Actual connection window: 2026-09-10 15:38:56 to 15:42:16 UTC, approximately
+  200 seconds. tcpdump captured 132 packets and reported zero kernel drops.
+- Zeek 7.0.11 parsed the PCAP offline with JSON logging and `-C` (skip checksum
+  validation for virtualized capture). The PCAP was not fabricated or relabeled.
+- The existing Zeek adapter produced 11 connection and 11 HTTP events. Existing
+  default rules, with no threshold changes, produced one `NET-BEACON` alert,
+  backed by all 11 connection events. Median interval was approximately 20s.
+- This is a periodic-communication candidate, **not proof of malicious C2 or a
+  successful compromise**. The rule has no MITRE technique assignment. This
+  experiment does not establish a complete attack chain or eight compromised nodes.
+- Shared JSON schemas validated all 22 events, the alert, graph and trace.
+  API ingestion accepted 22 events; combined local store contains 922. Repeating
+  the same ingestion accepted zero events. Existing 900 events remain intact.
+- Browser verification showed the separate task, 22 events, one alert, controlled
+  experiment notice and 11 evidence references. Screenshot is retained locally
+  at `runtime/beacon-alert.png`. Python regression: 185 passed, one skipped.
+
+The evidence directory contains the PCAP, request results, capture statistics,
+Zeek conn/http logs, capture script, version record and SHA-256 manifest.
+Derived normalized events, alert, graph and trace are in
+`runtime/beacon-20260910T153854Z`. No raw evidence or credentials are published.
