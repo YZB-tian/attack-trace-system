@@ -1,7 +1,7 @@
 """Build separate chronological candidate chains; never fill absent attack stages."""
 from __future__ import annotations
 from collections import defaultdict
-from common.models import AttackStage, TraceResult
+from common.models import AttackStage, TraceResult, GraphNode
 from common.time_utils import now_iso
 from .service import _key, _seconds
 
@@ -10,6 +10,12 @@ def trace_graph(graph, events, alerts, knowledge=None):
     events = {e.event_id: e for e in events}
     alerts = {a.alert_id: a for a in alerts}
     enodes = {n.id: n for n in graph.nodes if n.attributes.get("kind") == "event"}
+    # Isolated network events may be embedded on entities. Recreate only the
+    # private temporal view; returned TraceResult references real graph entities.
+    for entity in graph.nodes:
+        for observation in entity.attributes.get("event_observations", []):
+            nid = observation["node_id"]
+            enodes[nid] = GraphNode(id=nid, type="other", label=observation["action"], attributes=observation)
     previous = defaultdict(list)
     for edge in graph.edges:
         if edge.attributes.get("kind") == "event_correlation":
@@ -40,11 +46,11 @@ def trace_graph(graph, events, alerts, knowledge=None):
             existing = next((s for s in stages if aid in s.evidence_alert_ids), None)
             if existing:
                 existing.evidence_event_ids = sorted(set(existing.evidence_event_ids + [eid]))
-                existing.entity_ids = sorted(set(existing.entity_ids + [nid]))
+                existing.entity_ids = sorted(set(existing.entity_ids + node.attributes.get("entity_ids", [nid])))
                 continue
             stages.append(AttackStage(order=len(stages) + 1, tactic=a.mitre.tactic,
                 technique_id=technique, technique_name=a.mitre.technique_name, title=a.rule_name,
-                description=f"Observed at {event.timestamp}. {a.description}", entity_ids=[nid],
+                description=f"Observed at {event.timestamp}. {a.description}", entity_ids=node.attributes.get("entity_ids", [nid]),
                 evidence_event_ids=[eid], evidence_alert_ids=[aid], confidence=a.confidence))
     observed = {stage.technique_id for stage in stages if stage.technique_id}
     main_events = {enodes[n].attributes["event_id"] for n in main}

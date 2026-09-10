@@ -7,6 +7,7 @@ from common.models import NormalizedEvent, Alert
 from collectors.network.adapter import load_zeek_logs
 from detection.attack_stix import AttackKnowledge
 from detection.network_rules import NetworkConfig, detect_network
+from detection.host_rules import detect_host
 from detection.sigma_subset import SigmaRule
 from .service import correlate, _seconds
 from .paths import trace_graph
@@ -21,7 +22,7 @@ def analyze(task_id, events, *, alerts=(), knowledge=None, sigma_rules=(), windo
         unique[e.event_id] = e
     events = sorted(unique.values(), key=lambda e: (_seconds(e.timestamp), e.event_id))
     if any(e.task_id != task_id for e in events): raise ValueError("mixed task input")
-    detections = list(alerts) + detect_network(events, network_config, knowledge)
+    detections = list(alerts) + detect_network(events, network_config, knowledge) + detect_host(events, knowledge)
     for rule in sigma_rules:
         for e in events:
             detections.extend(rule.match(e, knowledge))
