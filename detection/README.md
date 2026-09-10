@@ -7,7 +7,7 @@
 
 ## 网络检测
 
-`detect(events)` 保持原函数签名；设置 ATTACK_STIX_PATH 后自动查官方数据。更完整的离线调用用 correlation.pipeline（要求显式 --stix）。
+`detect(events)` 保持原函数签名，默认运行网络检测及下述主机规则；设置 ATTACK_STIX_PATH 后自动查官方数据。更完整的离线调用用 correlation.pipeline（CLI 要求显式 --stix，Python analyze 调用不要求）。
 
 - DNS：长标签、高熵、不同标签比例、词法后缀集中度、TXT 与频率组合。至少 8 条，至少两个主要异常特征；词法后缀不等同于注册域。
 - HTTP：长 URI、高熵长查询参数、重复大 POST/PUT 与周期性。默认日志没有 HTTPS 明文，不声称解密；不恢复请求体内容。
@@ -45,3 +45,18 @@ AttackKnowledge 读取官方 STIX bundle，过滤 revoked/deprecated，提供技
 NetworkConfig 新增 http_min_encoded_length、http_large_upload_bytes、icmp_min_packets、icmp_min_average_bytes、icmp_payload_entropy，默认值见交付说明。旧 DNS、NTP 配置继续有效。新评分函数在 protocol_features.py，公共 detect 签名与 Alert 结构不变。
 
 新增 50 条明确标记的合成交付示例与协议测试；截至此次补充为 85 passed。独立真实协议效果与 Zeek 增采脚本执行仍待靶场验证，没有将合成数据算作真实数据。
+
+## 默认主机检测（2026-09-10）
+
+`detect_host(events, knowledge=None)` 由 `detect()` 和 `correlation.pipeline.analyze()` 默认调用，不需要指定 Sigma 文件，也不增加运行依赖。仅处理 host_log/host_behavior 的 process_create、process_exec、command_args。
+
+- `HOST-WIN-POWERSHELL-ENCODED`：PowerShell/pwsh 启动参数含 `-enc` 或 `-EncodedCommand`，随后为有效非空 UTF-16LE Base64。不会仅因出现 powershell.exe、普通 -Command 或 -File 就报警。编码执行也可能是合法管理操作，告警不证明恶意。
+- `HOST-LINUX-AUDIT-DISABLE`：明确的 auditctl `-e 0`、`-e0` 或 `-D` 参数。查询状态、启用审计、echo 引用不命中。当前只支持这些直接命令形式，不展开 sudo/sh 包装、脚本内容或分离的审计记录。
+
+OS 优先 metadata.os，其次公共资产表，再次明确的采集源。命令行读取 metadata.command_line、raw_event.CommandLine/command_line/cmdline；Linux command_args 兼容现有采集器的 object.type=command、object.name。不修改上游对象。无命令行或 OS 无法判定时不猜测。
+
+两个默认规则的 ATT&CK 映射来自 `host_techniques.json` 中的官方 STIX 小型摘录（附完整 bundle SHA-256），分别为 T1059.001、T1685.004。它只为这两个规则提供可核查映射，不是 APT 知识库。显式传入 knowledge 时以该版本为准；查不到时保留未解析技术 ID，mitre=null。当前本地官方数据中旧 T1562.001 已不在活动技术集合，故没有沿用旧编号。
+
+每个命中生成公共 Alert，包含来源事件、主机、时间、条件和命令字段位置；detector=host_heuristic_v1，confidence=0.8 为启发式分数，execution_success_proven=false。原命令保留在输入事件中，不执行任何命令。
+
+这两条是最小可交付的默认主机规则，不代表完整 Windows/Linux 威胁覆盖，也不替代可选 Sigma。运行方式和验收结果见 `correlation/HOST_GRAPH_HANDOFF.md`。

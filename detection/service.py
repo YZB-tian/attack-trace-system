@@ -6,5 +6,8 @@ def detect(events: Iterable[NormalizedEvent]) -> List[Alert]:
     import os
     from .attack_stix import AttackKnowledge
     from .network_rules import detect_network
+    from .host_rules import detect_host
     path = os.environ.get("ATTACK_STIX_PATH")
-    return detect_network(list(events), knowledge=AttackKnowledge(path) if path else None)
+    knowledge = AttackKnowledge(path) if path else None
+    events = list(events)
+    return detect_network(events, knowledge=knowledge) + detect_host(events, knowledge)

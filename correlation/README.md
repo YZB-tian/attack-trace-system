@@ -42,7 +42,7 @@ CLI 的 `--stix` 必须指向官方 bundle，不偷偷回退到手工 APT 库。
 ## 图与路径约定
 
 - Host ID 只来自资产或上游标准事件；进程按主机+GUID 合并，缺 GUID 时根据可见创建事件区分 PID 生命周期。缺少身份依据时不强行合并。
-- `other` 节点的 `attributes.kind=event` 表示原始事件；保留 event_id、timestamp、alert_ids、technique_ids。文件按主机+路径区分。
+- `other` 节点的 `attributes.kind=event` 表示事件证据锚点；参与时间关联、主机行为或没有足够实体事实的事件继续保留。没有跨事件关联作用的网络观察收进实体 `attributes.event_observations`，保留 event_id、timestamp、alert_ids、technique_ids；Trace 同时兼容这两种存放方式。文件按主机+路径区分。
 - `related_to` 边的 `attributes.kind=event_correlation` 是候选时间关联；包含 reasons、time_delta_seconds 和证据 IDs。实体事实边与攻击候选边明确区分。
 - 关联依据：相同进程实例、父子进程、同主机文件、跨来源五元组（30 秒内）、相同 Zeek 会话、连接+认证、目标主机的登录用户+进程。只同主机、同用户、同目标 DNS/IP 或时间接近不够。
 - `TraceResult.attack_chain` 只呈现证据最强的一个候选路径；其他独立路径在 `attribution.candidate_paths`，不会强行串联。最多输出 20 条路径，避免组合爆炸。
@@ -51,6 +51,7 @@ CLI 的 `--stix` 必须指向官方 bundle，不偷偷回退到手工 APT 库。
 - 先读文件再发网络请求只构成待核查路径，不能证明该文件内容外传。
 - `attribution.path_analysis` 列出已有告警支持的横向移动、提权、收集、外传候选边；`data_access_to_network_candidates` 列出同一路径的文件读写和网络事件，始终标明 content_transfer_proven=false。
 - C2 候选实体保留 first_seen/last_seen、connected_hosts、domains（由同 uid 的 HTTP host 提供）和 risk_score。
+- 相同实体、关系、动作及服务上下文的重复事实边聚合，所有 evidence IDs 取并集；不同时间、源端口、会话及置信度逐条保存在边的 `attributes.observations`。目的端口、协议或关联原因不同的关系不强行合并。顶层 timestamp 为首次观察，confidence 为最大值，具体值以 observations 为准。
 
 ## 组员交接
 
@@ -63,3 +64,9 @@ CLI 的 `--stix` 必须指向官方 bundle，不偷偷回退到手工 APT 库。
 完整的六项目阅读清单、已有问题、P0/P1/P2 和剩余验收项见 [IMPLEMENTATION_REVIEW.md](IMPLEMENTATION_REVIEW.md)。公共接口修改：否。
 
 HTTP/ICMP 离线功能补充、Zeek 可选增强脚本、正反例交付见 [HTTP_ICMP_HANDOFF.md](HTTP_ICMP_HANDOFF.md)。运行 `python -m correlation.protocol_demo --stix <官方STIX文件>` 可生成 50 条合成事件并验证四类公共输出，默认输出至 correlation/output/protocol_demo。该示例不能替代真实流量和靶场验收。
+
+## 2026-09-10 主机默认检测与图降噪
+
+`analyze(task_id, events)` 现在默认运行网络检测及两个内置 Windows/Linux 主机规则，调用方式不变。可选 Sigma 仍显式加载，不会默认扫描整个 Sigma 仓库。
+
+运行 `python -m correlation.host_demo` 可生成 Windows/Linux 正反例及 10 条 Beacon 回归输入；无需额外 STIX 下载。详细输入字段、结果、后端快照 HTTP 验证及其他组待办见 [HOST_GRAPH_HANDOFF.md](HOST_GRAPH_HANDOFF.md)。上述历史说明中的 Mock 后端指 dev 当前版本；真实后端在 `origin/integration/backend-pipeline`，需要后端负责人合入部署。

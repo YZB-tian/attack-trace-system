@@ -229,5 +229,7 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
                      evidence=[earlier.event_id, later.event_id], kind="event_correlation",
                      reasons=reasons, time_delta_seconds=dt, interpretation="candidate_link_not_proof_of_same_attacker")
     unique_edges = {e.id: e for e in edges}
-    return AttackGraph(graph_id=_key("graph_", task_id, sorted(by_id), sorted(a.alert_id for a in alerts)),
+    graph = AttackGraph(graph_id=_key("graph_", task_id, sorted(by_id), sorted(a.alert_id for a in alerts)),
         task_id=task_id, generated_at=now_iso(), nodes=list(nodes.values()), edges=list(unique_edges.values()))
+    from .compact import compact_graph
+    return compact_graph(graph, events)
