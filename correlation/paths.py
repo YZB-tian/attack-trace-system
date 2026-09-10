@@ -84,6 +84,7 @@ def trace_graph(graph, events, alerts, knowledge=None):
             "status": "candidate_data_access_then_communication",
             "content_transfer_proven": False})
     attribution = {
+        "data_classification": sorted({e.metadata.get("classification", "unspecified") for e in events.values()}),
         "method": "deterministic_evidence_correlation", "llm_used": False,
         "candidate_paths": [[enodes[n].attributes["event_id"] for n in p] for p in paths],
         "apt_similarity": knowledge.similarity(observed) if knowledge else [],
@@ -96,8 +97,9 @@ def trace_graph(graph, events, alerts, knowledge=None):
                        "No live multi-agent LLM analysis is performed by this module.",
                        "TTP similarity is not attribution; unobserved stages are not reconstructed."],
     }
+    scope = "Controlled emulation; separately orchestrated actions do not prove a full compromise chain. " if "controlled_emulation" in attribution["data_classification"] else ""
     return TraceResult(trace_id=_key("trace_", graph.graph_id), task_id=graph.task_id, generated_at=now_iso(),
-        status="completed", summary=f"Analyzed {len(events)} events and {len(alerts)} alerts; {len(paths)} candidate paths. Evidence-based analysis, not confirmed attribution.",
+        status="completed", summary=scope + f"Analyzed {len(events)} events and {len(alerts)} alerts; {len(paths)} candidate paths. Evidence-based analysis, not confirmed attribution.",
         initial_access_entity_id=candidates[0].target if candidates else None,
         suspected_c2_entity_ids=[n.id for n in graph.nodes if n.type.value == "c2"], attack_chain=stages,
         attribution=attribution, evidence_event_ids=sorted(events), evidence_alert_ids=sorted(alerts))

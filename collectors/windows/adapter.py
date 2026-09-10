@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -14,7 +15,7 @@ _LOGON_ACTIONS = {"logon_success", "logon_failed", "logoff"}
 # EventID -> action。覆盖 Sysmon(1-26) 与 Windows Security 常用事件。
 _EVENT_ACTION_MAP = {
     1: "process_create",       # Sysmon：进程创建
-    2: "process_create",       # Sysmon：文件创建时间被修改（保持与旧版行为一致）
+    2: "file_time_change",     # Sysmon file creation time change
     3: "network_connect",      # Sysmon：网络连接
     7: "image_load",           # Sysmon：镜像加载（反射加载特征）
     8: "remote_thread",        # Sysmon：远程线程创建（代码注入特征）
@@ -23,7 +24,7 @@ _EVENT_ACTION_MAP = {
     12: "registry_create",     # Sysmon：注册表键/值创建删除
     13: "registry_value_set",  # Sysmon：注册表值设置
     14: "registry_rename",     # Sysmon：注册表键/值重命名
-    22: "network_connect",     # Sysmon：DNS 查询
+    22: "dns_query",           # Sysmon DNS query
     23: "file_delete",         # Sysmon：文件删除
     26: "file_delete",         # Sysmon：文件删除（检测）
     4624: "logon_success",     # Security：登录成功
@@ -32,6 +33,9 @@ _EVENT_ACTION_MAP = {
     4647: "logoff",            # Security：用户启动注销
     4688: "process_create",    # Security：新进程创建
     4689: "process_terminate",  # Security：进程退出（旧版误归为 process_create，已修正）
+    4663: "file_access",
+    5140: "share_access",
+    5145: "file_access",
     5156: "network_connect",   # Security：WFP 连接允许
     5158: "network_connect",   # Security：WFP 连接绑定
 }
@@ -52,7 +56,8 @@ def _safe_int(value: Any) -> Optional[int]:
     if value is None or value == "":
         return None
     try:
-        return int(value)
+        text = str(value).strip()
+        return int(text, 16) if text.lower().startswith("0x") else int(text)
     except (TypeError, ValueError):
         return None
 
@@ -150,7 +155,10 @@ def normalize_windows_records(records: Iterable[Dict[str, Any]], task_id: str) -
         if not isinstance(record, dict):
             continue
 
-        event_id = f"evt_{task_id}_{idx:04d}"
+        raw_record = record
+        event_id = "evt_" + hashlib.sha256((task_id + json.dumps(record, sort_keys=True, ensure_ascii=False)).encode()).hexdigest()[:24]
+        if isinstance(record.get("fields"), dict):
+            record = {**record["fields"], **record, "EventID": record["event_id"], "Computer": record.get("host")}
         timestamp = _as_iso8601(record.get("UtcTime") or record.get("TimeCreated") or record.get("timestamp"))
         host_id = _resolve_asset_host_id(record.get("Computer") or record.get("host_id"))
         source = (
@@ -163,19 +171,24 @@ def normalize_windows_records(records: Iterable[Dict[str, Any]], task_id: str) -
             _clean_text(record.get("User"))
             or _clean_text(record.get("user"))
             or _clean_text(record.get("TargetUserName"))
+            or _clean_text(record.get("SubjectUserName"))
         )
         action = _event_action(record)
 
         # 进程实体（行为主体）
-        process_name = _clean_text(record.get("Image")) or _clean_text(record.get("ProcessName"))
+        process_name = _clean_text(record.get("Image")) or _clean_text(record.get("NewProcessName")) or _clean_text(record.get("ProcessName"))
         process_path = (
             _clean_text(record.get("Image"))
             or _clean_text(record.get("NewProcessName"))
             or _clean_text(record.get("ProcessPath"))
+            or _clean_text(record.get("ProcessName"))
         )
         parent_image = _clean_text(record.get("ParentImage")) or _clean_text(record.get("ParentProcessName"))
         pid = _safe_int(record.get("ProcessId") or record.get("PID"))
         ppid = _safe_int(record.get("ParentProcessId") or record.get("PPID"))
+        if _safe_int(record.get("EventID")) == 4688:
+            pid = _safe_int(record.get("NewProcessId"))
+            ppid = _safe_int(record.get("ProcessId"))
         hashes = _parse_sysmon_hashes(record.get("Hashes"))
         sha256 = _clean_text(record.get("hash_sha256")) or hashes.get("SHA256")
 
@@ -190,7 +203,7 @@ def normalize_windows_records(records: Iterable[Dict[str, Any]], task_id: str) -
             }
 
         # 对象实体：公共模型 object 只有一份，优先级 文件 > 注册表 > 进程
-        target_file = _clean_text(record.get("TargetFilename"))
+        target_file = _clean_text(record.get("TargetFilename")) or _clean_text(record.get("ObjectName")) or _clean_text(record.get("RelativeTargetName"))
         target_key = _clean_text(record.get("TargetObject"))
         object_info = None
         if target_file:
@@ -249,7 +262,10 @@ def normalize_windows_records(records: Iterable[Dict[str, Any]], task_id: str) -
             if parent_guid:
                 metadata["parent_process_guid"] = parent_guid
         # 登录会话字段：LogonId 是会话重建的关联键
-        logon_id = _clean_text(record.get("LogonId")) or _clean_text(record.get("logon_id"))
+        logon_id = (_clean_text(record.get("LogonId")) or _clean_text(record.get("logon_id"))
+                    or _clean_text(record.get("TargetLogonId")) or _clean_text(record.get("SubjectLogonId")))
+        if _safe_int(record.get("EventID")) == 4688 and not _clean_text(record.get("TargetUserName")):
+            logon_id = _clean_text(record.get("SubjectLogonId"))
         if logon_id:
             metadata["logon_id"] = logon_id
             logon_type = _safe_int(record.get("LogonType"))
@@ -290,7 +306,7 @@ def normalize_windows_records(records: Iterable[Dict[str, Any]], task_id: str) -
             process=process_info,
             object=object_info,
             network=network_info,
-            raw_event=record,
+            raw_event=raw_record,
             labels=labels,
             metadata=metadata,
         )

@@ -44,8 +44,10 @@ def test_zeek_tsv_types_unset_and_icmp(tmp_path):
 
 
 def test_json_session_uid_join_no_double_bytes(tmp_path):
-    (tmp_path / "conn.log").write_text(json.dumps(conn()), encoding="utf-8")
-    row = conn(_log_type="http", uri="/", method="GET")
+    assets = {a["host_id"]: a["ip"] for a in json.loads((ROOT / "config/assets.json").read_text(encoding="utf-8"))["assets"]}
+    endpoints = {"id.orig_h": assets["officepc01"], "id.resp_h": assets["c2server01"]}
+    (tmp_path / "conn.log").write_text(json.dumps(conn(**endpoints)), encoding="utf-8")
+    row = conn(_log_type="http", uri="/", method="GET", **endpoints)
     row.pop("proto")
     (tmp_path / "http.log").write_text(json.dumps(row), encoding="utf-8")
     events = load_zeek_logs(tmp_path, "task_test")
