@@ -7,6 +7,7 @@ import { Expand, Focus, GitBranch, Minus, Plus, RotateCcw, X } from "lucide-reac
 import type { AttackGraph, GraphEdge, GraphNode } from "../types/contracts";
 import { createGraphElements, edgeElementId, fitGraph, graphStyles, nodeColors, nodeElementId, runGraphLayout } from "./graphModel";
 import type { GraphLayout, GraphSelection } from "./graphModel";
+import { formatNodeDisplay } from "./node-display";
 import "./graph.css";
 
 cytoscape.use(dagre);
@@ -125,8 +126,8 @@ export default function AttackGraphView({ graph }: { graph: AttackGraph }) {
     </div>
     <p id={hintId} className="attack-graph-hint">滚轮缩放，拖动空白处平移，拖动节点调整位置。关系标签在悬停或选中时显示；所有关系始终保留。键盘可用下方选择器，画布内方向键平移，+ / − 缩放，0 适配全图。</p>
     <div className="attack-graph-selectors">
-      <label>节点<select aria-label="选择图节点" value={selectedNode?.id ?? ""} onChange={(event) => chooseElement(event.target.value ? { kind: "node", id: event.target.value } : null, true)}><option value="">选择节点查看属性（{graph.nodes.length}）</option>{graph.nodes.map((node) => <option key={node.id} value={node.id}>{node.label} · {node.type} · {node.id}</option>)}</select></label>
-      <label>关系<select aria-label="选择图关系" value={selectedEdge?.id ?? ""} onChange={(event) => chooseElement(event.target.value ? { kind: "edge", id: event.target.value } : null, true)}><option value="">选择关系查看证据（{graph.edges.length}）</option>{graph.edges.map((edge) => <option key={edge.id} value={edge.id}>{nodesById.get(edge.source)?.label ?? edge.source} 到 {nodesById.get(edge.target)?.label ?? edge.target} · {edge.relation} · {edge.id}</option>)}</select></label>
+      <label>节点<select aria-label="选择图节点" value={selectedNode?.id ?? ""} onChange={(event) => chooseElement(event.target.value ? { kind: "node", id: event.target.value } : null, true)}><option value="">选择节点查看属性（{graph.nodes.length}）</option>{graph.nodes.map((node) => <option key={node.id} value={node.id}>{formatNodeDisplay(node).fullLabel} · {node.id}</option>)}</select></label>
+      <label>关系<select aria-label="选择图关系" value={selectedEdge?.id ?? ""} onChange={(event) => chooseElement(event.target.value ? { kind: "edge", id: event.target.value } : null, true)}><option value="">选择关系查看证据（{graph.edges.length}）</option>{graph.edges.map((edge) => <option key={edge.id} value={edge.id}>{displayNodeLabel(edge.source, nodesById)} 到 {displayNodeLabel(edge.target, nodesById)} · {edge.relation} · {edge.id}</option>)}</select></label>
     </div>
     {model.unresolvedEdges.length > 0 && <p className="attack-graph-warning" role="status">{model.unresolvedEdges.length} 条关系引用的节点缺失，无法绘制。全部关系仍可在选择器查看证据。</p>}
     <div className="attack-graph-body">
@@ -143,11 +144,17 @@ export default function AttackGraphView({ graph }: { graph: AttackGraph }) {
 }
 
 function NodeDetails({ node, edges, onSelectEdge }: { node: GraphNode; edges: GraphEdge[]; onSelectEdge: (id: string) => void }) {
-  return <><span className="attack-graph-detail-kicker">节点详情 · {node.type}</span><h4>{node.label}</h4><dl><Detail label="节点 ID" value={node.id} /><Detail label="节点类型" value={node.type} /></dl><Attributes attributes={node.attributes} /><h5>关联关系 · {edges.length}</h5><div className="attack-graph-related">{edges.length ? edges.map((edge) => <button type="button" key={edge.id} onClick={() => onSelectEdge(edge.id)}><strong>{edge.relation}</strong><span>{edge.source} 到 {edge.target}</span><small>{edge.id}</small></button>) : <p>没有关联关系</p>}</div></>;
+  const display = formatNodeDisplay(node);
+  return <><span className="attack-graph-detail-kicker">节点详情 · [{display.typeLabel}]</span><h4>{display.title}</h4>{display.summary && <p className="attack-graph-muted">{display.summary}</p>}<dl><Detail label="原始标签" value={node.label} /><Detail label="节点 ID" value={node.id} /><Detail label="节点类型" value={node.type} /></dl><Attributes attributes={node.attributes} /><h5>关联关系 · {edges.length}</h5><div className="attack-graph-related">{edges.length ? edges.map((edge) => <button type="button" key={edge.id} onClick={() => onSelectEdge(edge.id)}><strong>{edge.relation}</strong><span>{edge.source} 到 {edge.target}</span><small>{edge.id}</small></button>) : <p>没有关联关系</p>}</div></>;
 }
 
 function EdgeDetails({ edge, nodesById, onSelectNode }: { edge: GraphEdge; nodesById: Map<string, GraphNode>; onSelectNode: (id: string) => void }) {
-  return <><span className="attack-graph-detail-kicker">关系详情</span><h4>{edge.relation}</h4><dl><Detail label="关系 ID" value={edge.id} /><Detail label="关系类型" value={edge.relation} /><Detail label="关系置信度" value={`${Math.round(edge.confidence * 100)}%`} /><Detail label="时间" value={edge.timestamp} /><Detail label="ATT&CK 技术" value={edge.technique_id} /></dl><div className="attack-graph-endpoints">{(["source", "target"] as const).map((key) => <div key={key}><span>{key === "source" ? "起点" : "终点"}</span>{nodesById.has(edge[key]) ? <button type="button" onClick={() => onSelectNode(edge[key])}>{nodesById.get(edge[key])?.label}</button> : <strong>节点缺失</strong>}<code>{edge[key]}</code></div>)}</div><EvidenceIds title="事件证据" ids={edge.evidence_event_ids} /><EvidenceIds title="告警证据" ids={edge.evidence_alert_ids} /><Attributes attributes={edge.attributes} /></>;
+  return <><span className="attack-graph-detail-kicker">关系详情</span><h4>{edge.relation}</h4><dl><Detail label="关系 ID" value={edge.id} /><Detail label="关系类型" value={edge.relation} /><Detail label="关系置信度" value={`${Math.round(edge.confidence * 100)}%`} /><Detail label="时间" value={edge.timestamp} /><Detail label="ATT&CK 技术" value={edge.technique_id} /></dl><div className="attack-graph-endpoints">{(["source", "target"] as const).map((key) => <div key={key}><span>{key === "source" ? "起点" : "终点"}</span>{nodesById.has(edge[key]) ? <button type="button" onClick={() => onSelectNode(edge[key])}>{displayNodeLabel(edge[key], nodesById)}</button> : <strong>节点缺失</strong>}<code>{edge[key]}</code></div>)}</div><EvidenceIds title="事件证据" ids={edge.evidence_event_ids} /><EvidenceIds title="告警证据" ids={edge.evidence_alert_ids} /><Attributes attributes={edge.attributes} /></>;
+}
+
+function displayNodeLabel(id: string, nodesById: Map<string, GraphNode>) {
+  const node = nodesById.get(id);
+  return node ? formatNodeDisplay(node).fullLabel : id;
 }
 
 function Detail({ label, value }: { label: string; value: unknown }) {
