@@ -9,20 +9,18 @@ import {
   FileWarning,
   GitBranch,
   LoaderCircle,
-  Network,
   RefreshCw,
   Search,
   Shield,
-  TerminalSquare,
 } from "lucide-react";
 import { client } from "./api/client";
 import { EventsView } from "./components/EventsView";
 import { AlertsView } from "./components/AlertsView";
+import ChainPreview from "./components/ChainPreview";
 import { parseEvidenceSummary } from "./components/data-panel-format";
 import type {
   Alert,
   AttackGraph,
-  GraphNode,
   NormalizedEvent,
   TaskStatus,
 } from "./types/contracts";
@@ -38,26 +36,28 @@ type Section = "overview" | "events" | "alerts" | "graph" | "trace";
 const emptyState = <T,>(): LoadState<T> => ({ data: null, loading: true, error: null });
 
 function useEndpoint<T>(loader: () => Promise<T>, dependencies: string[]): LoadState<T> & { reload: () => void } {
-  const [state, setState] = useState<LoadState<T>>(emptyState);
   const [revision, setRevision] = useState(0);
+  const requestKey = JSON.stringify([...dependencies, revision]);
+  const [state, setState] = useState<LoadState<T> & { requestKey: string }>(() => ({ ...emptyState<T>(), requestKey }));
   const reload = useCallback(() => setRevision((value) => value + 1), []);
 
   useEffect(() => {
     let active = true;
-    setState({ data: null, loading: true, error: null });
+    setState({ data: null, loading: true, error: null, requestKey });
     loader()
-      .then((data) => active && setState({ data, loading: false, error: null }))
+      .then((data) => active && setState({ data, loading: false, error: null, requestKey }))
       .catch((error: unknown) => {
-        if (active) setState({ data: null, loading: false, error: error instanceof Error ? error.message : "请求失败" });
+        if (active) setState({ data: null, loading: false, error: error instanceof Error ? error.message : "请求失败", requestKey });
       });
     return () => {
       active = false;
     };
-    // Loader is intentionally supplied by each endpoint and dependencies identify its inputs.
+    // The key identifies the loader inputs and refresh cycle; cleanup ignores late responses.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...dependencies, String(revision)]);
+  }, [requestKey]);
 
-  return { ...state, reload };
+  // Do not expose a previous task or refresh cycle while the new effect is starting.
+  return { ...(state.requestKey === requestKey ? state : emptyState<T>()), reload };
 }
 
 function formatTime(value?: string | null) {
@@ -98,19 +98,22 @@ function LoadingState() {
 }
 
 function App() {
-  const [taskId, setTaskId] = useState(DEFAULT_TASK);
+  const [query, setQuery] = useState({ taskId: DEFAULT_TASK, revision: 0 });
+  const { taskId } = query;
   const [taskInput, setTaskInput] = useState(DEFAULT_TASK);
   const [section, setSection] = useState<Section>("overview");
 
   const health = useEndpoint(client.health, []);
-  const events = useEndpoint(client.events, []);
-  const alerts = useEndpoint(client.alerts, []);
-  const task = useEndpoint(() => client.task(taskId), [taskId]);
-  const graph = useEndpoint(() => client.graph(taskId), [taskId]);
-  const trace = useEndpoint(() => client.trace(taskId), [taskId]);
+  const queryDependencies = [taskId, String(query.revision)];
+  const events = useEndpoint(client.events, queryDependencies);
+  const alerts = useEndpoint(client.alerts, queryDependencies);
+  const task = useEndpoint(() => client.task(taskId), queryDependencies);
+  const graph = useEndpoint(() => client.graph(taskId), queryDependencies);
+  const trace = useEndpoint(() => client.trace(taskId), queryDependencies);
 
   const reloadAll = () => {
-    health.reload(); events.reload(); alerts.reload(); task.reload(); graph.reload(); trace.reload();
+    health.reload();
+    setQuery((previous) => ({ ...previous, revision: previous.revision + 1 }));
   };
 
   const displayedEvents = useMemo(() => (events.data ?? []).filter((event) => event.task_id === taskId), [events.data, taskId]);
@@ -119,7 +122,11 @@ function App() {
   const chooseTask = (event: React.FormEvent) => {
     event.preventDefault();
     const next = taskInput.trim();
-    if (next) { setTaskId(next); setSection("overview"); }
+    if (next) {
+      setTaskInput(next);
+      setQuery((previous) => ({ taskId: next, revision: previous.revision + 1 }));
+      setSection("overview");
+    }
   };
 
   return <div className="app-shell">
@@ -128,17 +135,17 @@ function App() {
       <div className="side-caption">WORKSPACE</div>
       <nav className="nav-list" aria-label="主导航">
         <NavItem icon={Activity} label="任务概览" active={section === "overview"} onClick={() => setSection("overview")} />
-        <NavItem icon={Database} label="事件流" count={displayedEvents.length} active={section === "events"} onClick={() => setSection("events")} />
-        <NavItem icon={AlertTriangle} label="检测告警" count={displayedAlerts.length} active={section === "alerts"} onClick={() => setSection("alerts")} />
+        <NavItem icon={Database} label="事件流" count={events.loading || events.error ? undefined : displayedEvents.length} active={section === "events"} onClick={() => setSection("events")} />
+        <NavItem icon={AlertTriangle} label="检测告警" count={alerts.loading || alerts.error ? undefined : displayedAlerts.length} active={section === "alerts"} onClick={() => setSection("alerts")} />
         <NavItem icon={GitBranch} label="攻击图" active={section === "graph"} onClick={() => setSection("graph")} />
         <NavItem icon={Shield} label="溯源结果" active={section === "trace"} onClick={() => setSection("trace")} />
       </nav>
       <div className="sidebar-bottom"><div className="side-caption">SYSTEM</div><div className="system-status"><span className={`status-dot ${health.data ? "online" : health.error ? "offline" : "pending"}`} /><span>API {health.data ? "在线" : health.error ? "离线" : "检测中"}</span><span className="status-url">:8000</span></div><button className="refresh-button" onClick={reloadAll}><RefreshCw size={15} />刷新全部数据</button></div>
     </aside>
     <main className="main-content">
-      <header className="topbar"><div><div className="eyebrow">SECURITY OPERATIONS / TRACE WORKSPACE</div><h1>{sectionTitle(section)}</h1></div><form className="task-picker" onSubmit={chooseTask}><label htmlFor="task-id">分析任务</label><Search size={15} /><input id="task-id" value={taskInput} onChange={(event) => setTaskInput(event.target.value)} spellCheck={false} /><button type="submit" title="加载任务"><ChevronRight size={17} /></button></form></header>
+      <header className="topbar"><div><div className="eyebrow">SECURITY OPERATIONS / TRACE WORKSPACE</div><h1>{sectionTitle(section)}</h1></div><form className="task-picker" onSubmit={chooseTask}><label htmlFor="task-id">分析任务</label><Search size={15} /><input id="task-id" value={taskInput} onChange={(event) => setTaskInput(event.target.value)} spellCheck={false} /><button type="submit" title="加载任务" aria-label="加载任务"><ChevronRight size={17} /></button></form></header>
       <div className="content-wrap">
-        {section === "overview" && <Overview task={task} events={displayedEvents} alerts={displayedAlerts} graph={graph} onNavigate={setSection} />}
+        {section === "overview" && <Overview task={task} events={{ ...events, data: displayedEvents }} alerts={{ ...alerts, data: displayedAlerts }} graph={graph} onNavigate={setSection} />}
         {section === "events" && <EventsPanel state={{ ...events, data: displayedEvents }} />}
         {section === "alerts" && <AlertsPanel state={{ ...alerts, data: displayedAlerts }} />}
         {section === "graph" && <GraphPanel state={graph} />}
@@ -154,7 +161,9 @@ function NavItem({ icon: Icon, label, count, active, onClick }: { icon: typeof A
   return <button className={`nav-item ${active ? "active" : ""}`} aria-label={label} aria-current={active ? "page" : undefined} onClick={onClick}><Icon size={17} /><span>{label}</span>{typeof count === "number" && <small>{count}</small>}</button>;
 }
 
-function Overview({ task, events, alerts, graph, onNavigate }: { task: LoadState<TaskStatus> & { reload: () => void }; events: NormalizedEvent[]; alerts: Alert[]; graph: LoadState<AttackGraph> & { reload: () => void }; onNavigate: (section: Section) => void }) {
+function Overview({ task, events: eventState, alerts: alertState, graph, onNavigate }: { task: LoadState<TaskStatus> & { reload: () => void }; events: LoadState<NormalizedEvent[]> & { reload: () => void }; alerts: LoadState<Alert[]> & { reload: () => void }; graph: LoadState<AttackGraph> & { reload: () => void }; onNavigate: (section: Section) => void }) {
+  const events = eventState.data ?? [];
+  const alerts = alertState.data ?? [];
   const graphData = graph.data;
   const topAlert = alerts.reduce<Alert | null>((best, alert) => {
     if (!Number.isFinite(alert.confidence) || alert.confidence < 0 || alert.confidence > 1) return best;
@@ -164,10 +173,10 @@ function Overview({ task, events, alerts, graph, onNavigate }: { task: LoadState
   const highestAlertConfidence = topAlert ? heuristicScore ? `${Math.round(topAlert.confidence * 100)} / 100` : confidence(topAlert.confidence) : "-";
   return <div className="overview-grid">
     <section className="hero-panel"><div className="hero-copy"><span className="section-kicker"><Activity size={14} /> LIVE INVESTIGATION</span><h2>{task.data ? task.data.message : "正在载入任务状态"}</h2><p>{task.data ? `任务 ${task.data.task_id} · 最近更新 ${formatTime(task.data.updated_at)}` : "连接后端接口，加载当前攻击调查上下文。"}</p></div>{task.data && <div className="progress-block"><div className="progress-heading"><span>溯源进度</span><strong>{percent(task.data.progress)}</strong></div><div className="progress-track"><span style={{ width: percent(task.data.progress) }} /></div><div className="progress-meta"><span>阶段：{task.data.stage}</span><span className={`state-pill ${task.data.status}`}>{statusLabel(task.data.status)}</span></div></div>}{task.error && <ErrorState message={task.error} retry={task.reload} />}</section>
-    <div className="metric-row"><Metric icon={Database} label="标准化事件" value={events.length} accent="cyan" onClick={() => onNavigate("events")} /><Metric icon={AlertTriangle} label="检测告警" value={alerts.length} accent="amber" onClick={() => onNavigate("alerts")} /><Metric icon={GitBranch} label="攻击图节点" value={graph.data?.nodes.length ?? 0} accent="violet" onClick={() => onNavigate("graph")} /><Metric icon={Shield} label={heuristicScore ? "最高告警评分" : "最高告警置信度"} value={highestAlertConfidence} accent="green" hint="当前任务告警的最高 confidence 分数。启发式检测分数不代表经过校准的攻击概率。" onClick={() => onNavigate("alerts")} /></div>
-    <section className="panel event-preview"><PanelHeading icon={Database} title="最近事件" action="查看全部" onAction={() => onNavigate("events")} />{events.length === 0 ? <EmptyState title="暂无事件" detail="接口返回空数据" /> : <div className="mini-list">{events.slice(0, 3).map((event) => <div className="mini-row" key={event.event_id}><span className="event-time">{formatTime(event.timestamp)}</span><span className="event-action">{event.action}</span><span className="event-host">{event.host_id ?? event.source}</span><span className="source-tag">{sourceLabel(event.source_type)}</span></div>)}</div>}</section>
-    <section className="panel alert-preview"><PanelHeading icon={AlertTriangle} title="告警摘要" action="查看全部" onAction={() => onNavigate("alerts")} />{alerts.length === 0 ? <EmptyState title="暂无告警" detail="当前任务没有检测结果" /> : <div className="alert-stack">{alerts.slice(0, 3).map((alert) => <div className="alert-row" key={alert.alert_id}><span className={`severity-dot ${alert.severity}`} /><div><strong>{alert.rule_name}</strong><span>{alert.rule_id} · {formatTime(alert.timestamp_start)}</span></div><b>{severityLabel(alert.severity)}</b></div>)}</div>}</section>
-    <section className="panel chain-preview"><PanelHeading icon={GitBranch} title="攻击链路" action="展开攻击图" onAction={() => onNavigate("graph")} />{graph.loading ? <LoadingState /> : graph.error ? <ErrorState message={graph.error} retry={graph.reload} /> : graphData ? <div className="chain-flow">{graphData.nodes.slice(0, 4).map((node, index) => <div className="chain-node" key={node.id}><NodeGlyph type={node.type} /><span>{node.label}</span>{index < Math.min(graphData.nodes.length, 4) - 1 && <ChevronRight size={14} />}</div>)}</div> : <EmptyState title="暂无攻击图" />}</section>
+    <div className="metric-row"><Metric icon={Database} label="标准化事件" value={eventState.loading ? "…" : eventState.error ? "-" : events.length} accent="cyan" onClick={() => onNavigate("events")} /><Metric icon={AlertTriangle} label="检测告警" value={alertState.loading ? "…" : alertState.error ? "-" : alerts.length} accent="amber" onClick={() => onNavigate("alerts")} /><Metric icon={GitBranch} label="攻击图节点" value={graph.loading ? "…" : graph.error ? "-" : graph.data?.nodes.length ?? 0} accent="violet" onClick={() => onNavigate("graph")} /><Metric icon={Shield} label={heuristicScore ? "最高告警评分" : "最高告警置信度"} value={alertState.loading ? "…" : highestAlertConfidence} accent="green" hint="当前任务告警的最高 confidence 分数。启发式检测分数不代表经过校准的攻击概率。" onClick={() => onNavigate("alerts")} /></div>
+    <section className="panel event-preview"><PanelHeading icon={Database} title="最近事件" action="查看全部" onAction={() => onNavigate("events")} />{eventState.loading ? <LoadingState /> : eventState.error ? <ErrorState message={eventState.error} retry={eventState.reload} /> : events.length === 0 ? <EmptyState title="暂无事件" detail="接口返回空数据" /> : <div className="mini-list">{events.slice(0, 3).map((event) => <div className="mini-row" key={event.event_id}><span className="event-time">{formatTime(event.timestamp)}</span><span className="event-action">{event.action}</span><span className="event-host">{event.host_id ?? event.source}</span><span className="source-tag">{sourceLabel(event.source_type)}</span></div>)}</div>}</section>
+    <section className="panel alert-preview"><PanelHeading icon={AlertTriangle} title="告警摘要" action="查看全部" onAction={() => onNavigate("alerts")} />{alertState.loading ? <LoadingState /> : alertState.error ? <ErrorState message={alertState.error} retry={alertState.reload} /> : alerts.length === 0 ? <EmptyState title="暂无告警" detail="当前任务没有检测结果" /> : <div className="alert-stack">{alerts.slice(0, 3).map((alert) => <div className="alert-row" key={alert.alert_id}><span className={`severity-dot ${alert.severity}`} /><div><strong>{alert.rule_name}</strong><span>{alert.rule_id} · {formatTime(alert.timestamp_start)}</span></div><b>{severityLabel(alert.severity)}</b></div>)}</div>}</section>
+    <section className="panel chain-preview"><PanelHeading icon={GitBranch} title="攻击链路" action="展开攻击图" onAction={() => onNavigate("graph")} />{graph.loading ? <LoadingState /> : graph.error ? <ErrorState message={graph.error} retry={graph.reload} /> : graphData ? <ChainPreview nodes={graphData.nodes} /> : <EmptyState title="暂无攻击图" />}</section>
   </div>;
 }
 
@@ -177,14 +186,14 @@ function PanelHeading({ icon: Icon, title, action, onAction }: { icon: typeof Da
 
 function EventsPanel({ state }: { state: LoadState<NormalizedEvent[]> & { reload?: () => void } }) {
   return <section className="panel table-panel">
-    <PanelHeading icon={Database} title="标准化事件" action={`${state.data?.length ?? 0} 条`} />
+    <PanelHeading icon={Database} title="标准化事件" action={state.loading ? "读取中" : state.error ? "读取失败" : `${state.data?.length ?? 0} 条`} />
     {state.loading ? <LoadingState /> : state.error ? <ErrorState message={state.error} retry={state.reload} /> : state.data?.length ? <EventsView events={state.data} /> : <EmptyState title="暂无事件" detail="当前任务没有标准化事件" />}
   </section>;
 }
 
 function AlertsPanel({ state }: { state: LoadState<Alert[]> & { reload?: () => void } }) {
   return <section className="panel table-panel">
-    <PanelHeading icon={AlertTriangle} title="检测告警" action={`${state.data?.length ?? 0} 条`} />
+    <PanelHeading icon={AlertTriangle} title="检测告警" action={state.loading ? "读取中" : state.error ? "读取失败" : `${state.data?.length ?? 0} 条`} />
     {state.loading ? <LoadingState /> : state.error ? <ErrorState message={state.error} retry={state.reload} /> : state.data?.length ? <AlertsView alerts={state.data} /> : <EmptyState title="暂无告警" detail="当前任务没有检测结果" />}
   </section>;
 }
@@ -206,6 +215,6 @@ function TracePanel({ state }: { state: LoadState<TraceResult> & { reload: () =>
   </section>;
 }
 
-function NodeGlyph({ type }: { type: GraphNode["type"] }) { return <span className={`node-glyph ${type}`}>{type === "host" ? <TerminalSquare size={15} /> : type === "process" ? <Activity size={15} /> : type === "ip" || type === "c2" ? <Network size={15} /> : <Database size={15} />}</span>; }
+
 
 export default App;
