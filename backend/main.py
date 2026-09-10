@@ -1,298 +1,139 @@
+"""Single-process local evidence API. No implicit demonstration data."""
+from contextlib import asynccontextmanager
 from pathlib import Path
+from threading import RLock
 import json
+import os
+import tempfile
 from typing import List
 
 from fastapi import FastAPI, HTTPException
-
-from common.models import (
-    Alert,
-    AttackGraph,
-    NormalizedEvent,
-    TaskStatus,
-    TraceResult,
-)
+from common.models import NormalizedEvent
 from common.time_utils import now_iso
 from correlation.pipeline import analyze
 
-
-ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "testdata"
-
-app = FastAPI(
-    title="Attack Trace System API",
-    version="0.2.0",
-    description="真实集成后端：事件 -> 检测 -> 告警 -> 攻击图 -> 溯源结果。",
-)
-
-
-# ----------------------------
-# Runtime stores
-# ----------------------------
-
 _event_store: List[NormalizedEvent] = []
-
-_alert_store: dict[str, List[Alert]] = {}
-_graph_store: dict[str, AttackGraph] = {}
-_trace_store: dict[str, TraceResult] = {}
-_task_store: dict[str, dict] = {}
-
-
-def load_json(name: str):
-    return json.loads((DATA / name).read_text(encoding="utf-8"))
+_alert_store = {}
+_graph_store = {}
+_trace_store = {}
+_task_store = {}
+_lock = RLock()
 
 
-def events_for_task(task_id: str) -> List[NormalizedEvent]:
-    return [e for e in _event_store if e.task_id == task_id]
+def _storage_path():
+    value = os.environ.get("ATS_EVENTS_FILE")
+    return Path(value).resolve() if value else None
 
 
-def rebuild_task(task_id: str):
-    """
-    Run the real offline analysis pipeline for one task.
-    """
-
-    events = events_for_task(task_id)
-
-    if not events:
-        raise ValueError(f"no events for task: {task_id}")
-
-    created_at = _task_store.get(task_id, {}).get(
-        "created_at",
-        now_iso(),
-    )
-
-    _task_store[task_id] = {
-        "schema_version": "1.0",
-        "task_id": task_id,
-        "status": "running",
-        "stage": "analysis",
-        "progress": 50,
-        "message": "Running detection and correlation pipeline.",
-        "created_at": created_at,
-        "updated_at": now_iso(),
-    }
-
+def _persist(events):
+    path = _storage_path()
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    name = None
     try:
-        analyzed_events, alerts, graph, trace = analyze(
-            task_id,
-            events,
-        )
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         suffix=".tmp", delete=False) as stream:
+            name = stream.name
+            json.dump([e.model_dump(mode="json") for e in events], stream, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(name, path)
+    finally:
+        if name and os.path.exists(name):
+            os.unlink(name)
 
+
+@asynccontextmanager
+async def lifespan(app):
+    path = _storage_path()
+    if path and path.exists():
+        events = [NormalizedEvent.model_validate(x) for x in json.loads(path.read_text(encoding="utf-8"))]
+        with _lock:
+            for store in (_event_store, _alert_store, _graph_store, _trace_store, _task_store):
+                store.clear()
+            _ingest(events, persist=False)
+    yield
+
+
+app = FastAPI(title="Attack Trace System API", version="0.3.0", lifespan=lifespan)
+
+
+def _ingest(events, *, persist=True):
+    existing = {event.event_id: event for event in _event_store}
+    touched = set()
+    accepted = 0
+    for event in events:
+        if event.event_id in existing:
+            if existing[event.event_id] != event:
+                raise HTTPException(409, detail=f"conflicting event_id: {event.event_id}")
+            continue
+        existing[event.event_id] = event
+        touched.add(event.task_id)
+        accepted += 1
+    staged = list(existing.values())
+    results = {}
+    try:
+        for task_id in sorted(touched):
+            results[task_id] = analyze(task_id, [e for e in staged if e.task_id == task_id])
+        if accepted and persist:
+            _persist(staged)
+    except Exception as exc:
+        raise HTTPException(500, detail="Analysis or persistence failed; batch was not committed.") from exc
+    # Publish only after every task and the durable write have succeeded.
+    _event_store[:] = staged
+    for task_id, (_, alerts, graph, trace) in results.items():
         _alert_store[task_id] = alerts
         _graph_store[task_id] = graph
         _trace_store[task_id] = trace
-
-        _task_store[task_id] = {
-            "schema_version": "1.0",
-            "task_id": task_id,
-            "status": "completed",
-            "stage": "trace_complete",
-            "progress": 100,
-            "message": "Real analysis pipeline completed.",
-            "created_at": created_at,
-            "updated_at": now_iso(),
-        }
-
-    except Exception as exc:
-        _task_store[task_id] = {
-            "schema_version": "1.0",
-            "task_id": task_id,
-            "status": "failed",
-            "stage": "analysis_failed",
-            "progress": 0,
-            "message": str(exc),
-            "created_at": created_at,
-            "updated_at": now_iso(),
-        }
-
-        raise
+        _task_store[task_id] = dict(schema_version="1.0", task_id=task_id, status="completed",
+            stage="trace_complete", progress=100, message="Evidence analysis completed; findings are candidates.",
+            created_at=_task_store.get(task_id, {}).get("created_at", now_iso()), updated_at=now_iso())
+    return {"code": 0, "message": "ok", "data": {
+        "accepted": accepted, "total": len(staged), "tasks_processed": sorted(touched)}}
 
 
 @app.get("/api/health")
 def health():
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": {
-            "status": "healthy",
-        },
-    }
+    return {"code": 0, "message": "ok", "data": {"status": "healthy"}}
 
 
 @app.post("/api/events")
 def ingest_events(events: List[NormalizedEvent]):
-
-    existing = {
-        event.event_id: event
-        for event in _event_store
-    }
-
-    accepted = 0
-    touched_tasks = set()
-
-    for event in events:
-
-        # Idempotent repeat
-        if event.event_id in existing:
-
-            if existing[event.event_id] != event:
-                raise HTTPException(
-                    status_code=409,
-                    detail=f"conflicting event_id: {event.event_id}",
-                )
-
-            continue
-
-        _event_store.append(event)
-        existing[event.event_id] = event
-
-        accepted += 1
-        touched_tasks.add(event.task_id)
-
-    # Real integration happens here
-    for task_id in touched_tasks:
-        try:
-            rebuild_task(task_id)
-        except Exception as exc:
-            raise HTTPException(
-                status_code=500,
-                detail=f"analysis failed for {task_id}: {exc}",
-            )
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": {
-            "accepted": accepted,
-            "total": len(_event_store),
-            "tasks_processed": sorted(touched_tasks),
-        },
-    }
+    with _lock:
+        return _ingest(events)
 
 
 @app.get("/api/events")
 def get_events():
-
-    if _event_store:
-        data = _event_store
-    else:
-        data = [
-            NormalizedEvent.model_validate(x)
-            for x in load_json("normalized_events.json")
-        ]
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": [
-            x.model_dump(mode="json")
-            for x in data
-        ],
-    }
+    with _lock:
+        return {"code": 0, "message": "ok", "data": [e.model_dump(mode="json") for e in _event_store]}
 
 
 @app.get("/api/alerts")
 def get_alerts():
+    with _lock:
+        return {"code": 0, "message": "ok", "data": [a.model_dump(mode="json") for batch in _alert_store.values() for a in batch]}
 
-    if _alert_store:
 
-        data = []
-
-        for alerts in _alert_store.values():
-            data.extend(alerts)
-
-    else:
-        data = [
-            Alert.model_validate(x)
-            for x in load_json("alerts.json")
-        ]
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": [
-            x.model_dump(mode="json")
-            for x in data
-        ],
-    }
+def _get(store, task_id):
+    with _lock:
+        if task_id not in store:
+            raise HTTPException(404, detail="task not found")
+        value = store[task_id]
+        return {"code": 0, "message": "ok", "data": value if isinstance(value, dict) else value.model_dump(mode="json")}
 
 
 @app.get("/api/attack-graph/{task_id}")
 def get_attack_graph(task_id: str):
-
-    if task_id in _graph_store:
-
-        graph = _graph_store[task_id]
-
-    else:
-
-        graph = AttackGraph.model_validate(
-            load_json("attack_graph.json")
-        )
-
-        if graph.task_id != task_id:
-            raise HTTPException(
-                status_code=404,
-                detail="task not found",
-            )
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": graph.model_dump(mode="json"),
-    }
+    return _get(_graph_store, task_id)
 
 
 @app.get("/api/trace/{task_id}")
 def get_trace(task_id: str):
-
-    if task_id in _trace_store:
-
-        trace = _trace_store[task_id]
-
-    else:
-
-        trace = TraceResult.model_validate(
-            load_json("trace_result.json")
-        )
-
-        if trace.task_id != task_id:
-            raise HTTPException(
-                status_code=404,
-                detail="task not found",
-            )
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": trace.model_dump(mode="json"),
-    }
+    return _get(_trace_store, task_id)
 
 
 @app.get("/api/tasks/{task_id}")
 def get_task(task_id: str):
-
-    if task_id in _task_store:
-
-        task = _task_store[task_id]
-
-        return {
-            "code": 0,
-            "message": "ok",
-            "data": task,
-        }
-
-    task = TaskStatus.model_validate(
-        load_json("task_status.json")
-    )
-
-    if task.task_id != task_id:
-        raise HTTPException(
-            status_code=404,
-            detail="task not found",
-        )
-
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": task.model_dump(mode="json"),
-    }
+    return _get(_task_store, task_id)

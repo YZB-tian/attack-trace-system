@@ -40,7 +40,7 @@ def test_normalizes_file_syscall_and_network_fields():
         [
             {
                 "event_time": datetime(2026, 9, 8, 10, 6, tzinfo=timezone.utc),
-                "host_id": "10.10.2.10",
+                "host_id": "192.168.70.20",
                 "syscall": "openat",
                 "file_path": "/etc/shadow",
                 "src_ip": "10.10.2.10",

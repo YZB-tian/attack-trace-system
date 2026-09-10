@@ -161,7 +161,7 @@ def normalize_network_records(records: Iterable[Dict[str, Any]], task_id: str) -
                            icmp_code=_number(record.get("icmp_code") if kind == "icmp_payload" else record.get("id.resp_p"), True))
         sent = _number(record.get("orig_bytes"), True) if kind == "conn" else None
         received = _number(record.get("resp_bytes"), True) if kind == "conn" else None
-        if owner is dst_asset and src_asset is None:
+        if owner is not None and owner is dst_asset and src_asset is None:
             sent, received = received, sent
         result.append(NormalizedEvent(
             event_id=_id("evt_", task_id, record), task_id=task_id, timestamp=stamp.isoformat(),

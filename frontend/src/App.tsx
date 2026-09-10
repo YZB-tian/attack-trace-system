@@ -16,6 +16,7 @@ import {
   TerminalSquare,
 } from "lucide-react";
 import { client } from "./api/client";
+import { selectTask } from "./task-selection";
 import { EventsView } from "./components/EventsView";
 import { AlertsView } from "./components/AlertsView";
 import { parseEvidenceSummary } from "./components/data-panel-format";
@@ -30,20 +31,24 @@ import type { TraceResult } from "./types/trace";
 
 const AttackGraphView = lazy(() => import("./components/AttackGraphView"));
 
-const DEFAULT_TASK = "task_demo_001";
+const DEFAULT_TASK = new URLSearchParams(window.location.search).get("task") ?? "";
 
 type LoadState<T> = { data: T | null; loading: boolean; error: string | null };
 type Section = "overview" | "events" | "alerts" | "graph" | "trace";
 
 const emptyState = <T,>(): LoadState<T> => ({ data: null, loading: true, error: null });
 
-function useEndpoint<T>(loader: () => Promise<T>, dependencies: string[]): LoadState<T> & { reload: () => void } {
+function useEndpoint<T>(loader: () => Promise<T>, dependencies: string[], enabled = true): LoadState<T> & { reload: () => void } {
   const [state, setState] = useState<LoadState<T>>(emptyState);
   const [revision, setRevision] = useState(0);
   const reload = useCallback(() => setRevision((value) => value + 1), []);
 
   useEffect(() => {
     let active = true;
+    if (!enabled) {
+      setState({ data: null, loading: false, error: null });
+      return;
+    }
     setState({ data: null, loading: true, error: null });
     loader()
       .then((data) => active && setState({ data, loading: false, error: null }))
@@ -55,7 +60,7 @@ function useEndpoint<T>(loader: () => Promise<T>, dependencies: string[]): LoadS
     };
     // Loader is intentionally supplied by each endpoint and dependencies identify its inputs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...dependencies, String(revision)]);
+  }, [...dependencies, String(revision), enabled]);
 
   return { ...state, reload };
 }
@@ -105,9 +110,13 @@ function App() {
   const health = useEndpoint(client.health, []);
   const events = useEndpoint(client.events, []);
   const alerts = useEndpoint(client.alerts, []);
-  const task = useEndpoint(() => client.task(taskId), [taskId]);
-  const graph = useEndpoint(() => client.graph(taskId), [taskId]);
-  const trace = useEndpoint(() => client.trace(taskId), [taskId]);
+  useEffect(() => {
+    const next = selectTask(taskId, events.data ?? []);
+    if (next !== taskId) { setTaskId(next); setTaskInput(next); }
+  }, [events.data, taskId]);
+  const task = useEndpoint(() => client.task(taskId), [taskId], Boolean(taskId));
+  const graph = useEndpoint(() => client.graph(taskId), [taskId], Boolean(taskId));
+  const trace = useEndpoint(() => client.trace(taskId), [taskId], Boolean(taskId));
 
   const reloadAll = () => {
     health.reload(); events.reload(); alerts.reload(); task.reload(); graph.reload(); trace.reload();
@@ -138,6 +147,7 @@ function App() {
     <main className="main-content">
       <header className="topbar"><div><div className="eyebrow">SECURITY OPERATIONS / TRACE WORKSPACE</div><h1>{sectionTitle(section)}</h1></div><form className="task-picker" onSubmit={chooseTask}><label htmlFor="task-id">分析任务</label><Search size={15} /><input id="task-id" value={taskInput} onChange={(event) => setTaskInput(event.target.value)} spellCheck={false} /><button type="submit" title="加载任务"><ChevronRight size={17} /></button></form></header>
       <div className="content-wrap">
+        {displayedEvents.some((event) => event.metadata?.classification === "controlled_emulation") && <p role="status">受控实验数据 · 真实日志与通信记录 · 不代表完整入侵链已验证</p>}
         {section === "overview" && <Overview task={task} events={displayedEvents} alerts={displayedAlerts} graph={graph} onNavigate={setSection} />}
         {section === "events" && <EventsPanel state={{ ...events, data: displayedEvents }} />}
         {section === "alerts" && <AlertsPanel state={{ ...alerts, data: displayedAlerts }} />}

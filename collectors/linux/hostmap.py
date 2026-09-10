@@ -25,6 +25,6 @@ def hostname_to_host_id(hostname: Optional[str]) -> Optional[str]:
     if not hostname:
         return None
     for asset in _load_assets().get("assets", []):
-        if asset.get("hostname") == hostname:
+        if hostname.lower() in {str(asset.get("hostname", "")).lower(), str(asset.get("host_id", "")).lower()}:
             return asset.get("host_id")
     return None

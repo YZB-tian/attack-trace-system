@@ -19,7 +19,7 @@ def examples():
         raw_event={"ProcessGuid": "synthetic-powershell-instance"}, labels=["synthetic"])
     linux = NormalizedEvent(event_id="evt_linux_positive", task_id="task_host_linux",
         timestamp="2026-09-10T10:01:00+08:00", source_type="host_log", source="auditd",
-        host_id="coreserver01", user="lab_user", action="command_args",
+        host_id="webserver01", user="lab_user", action="command_args",
         process={"name": "auditctl", "path": "/sbin/auditctl"},
         object={"type": "command", "name": "/sbin/auditctl -e 0"},
         metadata={"audit_type": "EXECVE", "audit_seq": "fixture-1"}, labels=["synthetic"])

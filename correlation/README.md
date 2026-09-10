@@ -9,7 +9,7 @@
 
 Zeek JSONL/TSV + 其他组员的 NormalizedEvent → 网络/Sigma 检测 → 官方 STIX 映射 → AttackGraph → 候选攻击链和 APT Jaccard → 确定性 TraceResult。
 
-没有重建 API。默认后端仍读原 Mock；后端负责人可调用 `correlation.pipeline.analyze` 接入现有 API。未改动 agents 模块；本模块的 TraceResult 是可复核的离线结果，`attribution.llm_used=false`，不能当作大模型多 Agent 已完成。
+后端通过 `correlation.pipeline.analyze` 分析导入事件，不再默认读取 Mock。真实靶场导入见 `collectors/LAB_IMPORT.md`。未改动 agents 模块；本模块的 TraceResult 是可复核的离线结果，`attribution.llm_used=false`，不能当作大模型多 Agent 已完成。
 
 ## 安装和运行（在 attack-trace-system 根目录）
 

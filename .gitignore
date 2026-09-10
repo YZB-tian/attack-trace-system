@@ -35,6 +35,8 @@ tmp/
 # PCAP / large raw datasets: do not commit by default
 *.pcap
 *.pcapng
+*.evtx
+*.strace
 datasets/raw/
 
 # Frontend
