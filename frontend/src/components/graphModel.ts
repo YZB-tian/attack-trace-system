@@ -1,5 +1,6 @@
 import type { Core, ElementDefinition, LayoutOptions, StylesheetJson } from "cytoscape";
 import type { AttackGraph, GraphEdge, GraphNode } from "../types/contracts";
+import { formatNodeDisplay } from "./node-display.ts";
 
 export type GraphLayout = "cose" | "dagre";
 export type GraphSelection = { kind: "node" | "edge"; id: string } | null;
@@ -13,11 +14,11 @@ export const nodeColors: Record<GraphNode["type"], string> = {
   technique: "#e1a0da", other: "#a0b4c9",
 };
 
-function compactLabel(label: string) {
+function compactLabel(label: string, maxLines = 2) {
   const characters = Array.from(label.replace(/\s+/g, " "));
   const lines: string[] = [];
   let offset = 0;
-  for (let line = 0; line < 2 && offset < characters.length; line += 1) {
+  for (let line = 0; line < maxLines && offset < characters.length; line += 1) {
     let width = 0;
     let text = "";
     while (offset < characters.length) {
@@ -28,7 +29,7 @@ function compactLabel(label: string) {
       width += nextWidth;
       offset += 1;
     }
-    if (line === 1 && offset < characters.length) text = `${Array.from(text).slice(0, -1).join("")}…`;
+    if (line === maxLines - 1 && offset < characters.length) text = `${Array.from(text).slice(0, -1).join("")}…`;
     lines.push(text);
   }
   return lines.join("\n");
@@ -40,9 +41,11 @@ export function createGraphElements(graph: AttackGraph): { elements: ElementDefi
   const radius = Math.max(160, Math.sqrt(graph.nodes.length) * 80);
   const elements: ElementDefinition[] = graph.nodes.map((node, index) => {
     const angle = index * Math.PI * 2 / Math.max(graph.nodes.length, 1);
+    const display = formatNodeDisplay(node);
+    const typeLine = `[${display.typeLabel}]${display.port !== null ? ` :${display.port}` : ""}${display.protocol ? ` ${display.protocol}` : ""}`;
     return {
       group: "nodes",
-      data: { id: nodeElementId(node.id), contractId: node.id, label: `${compactLabel(node.label)}\n${node.type.toUpperCase()}`, color: nodeColors[node.type] },
+      data: { id: nodeElementId(node.id), contractId: node.id, label: `${compactLabel(display.address ?? display.title)}\n${compactLabel(typeLine, 1)}`, color: nodeColors[node.type] },
       position: { x: radius * Math.cos(angle), y: radius * Math.sin(angle) },
     };
   });
