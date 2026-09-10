@@ -15,6 +15,7 @@ interface ApiEnvelope<T> {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, {
+    cache: "no-store",
     ...init,
     headers: { Accept: "application/json", ...(init?.headers ?? {}) },
   });
