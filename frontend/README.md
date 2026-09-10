@@ -36,6 +36,9 @@ API_PROXY_TARGET=http://your-backend-host:8000
 
 ## 数据展示与交互
 
+- 输入任务 ID 后按 Enter 或点击“加载任务”，统一重新请求 Events、Alerts、Task、Graph、Trace。同一个任务再次查询也会刷新；Events/Alerts 仍通过现有全局接口获取，再按 `task_id` 过滤。保留“刷新全部数据”作为手动入口。
+- 请求期间显示加载状态，请求失败显示错误及重试入口，不将请求失败误报为 0 条数据。切换任务或再次查询后，过期请求不能覆盖当前数据；API 请求不复用浏览器 HTTP 缓存。
+- 首页攻击链路预览明确显示 `[IP]`、`[C2]` 等实体类型，并使用不同图标和颜色。C2 展示后端提供的地址、端口、协议及候选状态，例如 `198.51.100.20:443`、`[C2]`、`候选 C2 · TCP`。同地址的 IP 实体和 C2 服务分别保留，原始标签可在详情查看。
 - 攻击图使用 Cytoscape 绘制后端全部节点和可解析的关系。默认结构布局，提供分层布局；支持滚轮/按钮缩放、画布移动、节点拖动、重新布局、Fit View 和展开画布。
 - 关系标签默认在悬停或选中时出现，避免密集图中文字覆盖；可打开“显示全部关系标签”。不因隐藏标签而删除关系。
 - 点击节点查看完整属性和关联关系；点击边查看 `evidence_event_ids`、`evidence_alert_ids`、置信度、时间及属性。上方节点、关系选择器可键盘操作并定位元素。缺失端点的关系会明确提示，仍能从关系选择器查看详情。
@@ -57,6 +60,19 @@ node --test tests/*.test.mjs
 ```
 
 项目根目录还需执行 `python scripts/validate_contracts.py` 和 `pytest -q`。
+
+## 任务刷新浏览器回归
+
+先启动本地后端和 Vite，再在仓库根目录执行以下命令。测试使用 Python Playwright 与 Chromium，在本地测试后端 POST 明确标注的合成 Beacon 事件，随后检查已打开页面的任务切换、同任务重查、失败恢复与晚响应隔离。
+
+```bash
+python frontend/tests/browser_task_refresh.py \
+  --base-url http://127.0.0.1:5173 \
+  --api-url http://127.0.0.1:8000 \
+  --output-dir /tmp/attack-trace-refresh-checks
+```
+
+这项回归运行实际 HTTP 与后端检测/关联流水线，输入仍是合成测试样本，不代表用户真实采集任务的验收。外部 POST 完成后，需要选择任务或再次点击“加载任务”来同步数据；本次未增加后台轮询。
 
 ## 攻击图验收
 
