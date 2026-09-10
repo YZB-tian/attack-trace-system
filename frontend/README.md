@@ -20,7 +20,7 @@ npm run dev
 
 浏览器访问 `http://127.0.0.1:5173`。Vite 将 `/api` 代理到 `http://127.0.0.1:8000`。
 
-当前仓库 Mock 联调任务为 `task_demo_001`。
+页面默认选择已导入的真实任务，不再自动打开 Mock。真实日志导入与本地保存见 `collectors/LAB_IMPORT.md`。测试用 Mock 仍保留在 testdata，不会自动混入 API。
 
 ## 连接真实任务
 

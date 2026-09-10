@@ -39,7 +39,7 @@ def test_real_collectors_produce_supported_default_host_inputs():
     windows = normalize_windows_records([{"EventID": 1, "Computer": "officepc01",
         "UtcTime": "2026-09-10T10:00:00+08:00", "Image": r"C:\Windows\powershell.exe",
         "ProcessId": 1200, "CommandLine": command}], "task_adapter_windows")
-    linux = normalize_linux_records([{"host": "coreserver01", "raw":
+    linux = normalize_linux_records([{"host": "webserver01", "raw":
         'type=EXECVE msg=audit(1789000000.100:500): argc=3 a0="/sbin/auditctl" a1="-e" a2="0"'}], "task_adapter_linux")
     for rows, expected in [(windows, "HOST-WIN-POWERSHELL-ENCODED"), (linux, "HOST-LINUX-AUDIT-DISABLE")]:
         assert len(rows) == 1
