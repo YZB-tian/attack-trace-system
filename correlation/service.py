@@ -78,6 +78,15 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
         for eid in a.event_ids:
             if eid not in by_id: raise ValueError(f"dangling evidence {eid} in {a.alert_id}")
             by_event[eid].append(a)
+    def alert_tactic(alert):
+        if alert.mitre:
+            return alert.mitre.tactic.lower().replace(" ", "-")
+        try:
+            evidence = json.loads(alert.evidence_summary or "{}")
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return ""
+        return str(evidence.get("unresolved_tactic") or "").lower().replace(" ", "-")
+
     assets = json.loads((Path(__file__).resolve().parents[1] / "config/assets.json").read_text(encoding="utf-8"))["assets"]
     by_ip = {a["ip"]: a for a in assets}
     nodes, edges = {}, []
@@ -175,14 +184,18 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
                 tech = a.mitre.subtechnique_id or a.mitre.technique_id
                 tn = node("technique", tech, a.mitre.technique_name, technique_id=tech, tactic=a.mitre.tactic)
                 edge(enode, tn, "related_to", e, confidence=a.confidence, kind="detected_technique")
-            tactic = a.mitre.tactic.lower().replace(" ", "-") if a.mitre else ""
+            tactic = alert_tactic(a)
             rel = {"initial-access": "initial_access", "lateral-movement": "lateral_movement",
                    "privilege-escalation": "privilege_escalation", "collection": "data_access",
                    "exfiltration": "data_exfiltration"}.get(tactic)
             if rel:
                 edge(src or user or enode, dst or proc or host or enode, rel, e,
                      confidence=a.confidence, kind="alert_supported_candidate", alert_id=a.alert_id)
-            if a.rule_id == "NET-BEACON" and e.dst_ip:
+            is_c2_candidate = (
+                tactic == "command-and-control"
+                or a.rule_id in {"NET-BEACON", "NET-CROSS-SOURCE-BEACON"}
+            )
+            if is_c2_candidate and e.network and e.dst_ip and e.dst_port is not None:
                 c2 = node("c2", (e.dst_ip, e.dst_port, e.network.protocol), e.dst_ip,
                           ip=e.dst_ip, port=e.dst_port, protocol=e.network.protocol, status="candidate")
                 attrs = nodes[c2].attributes
@@ -195,10 +208,23 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
         state[e.event_id] = dict(node=enode, proc=proc, parent=parent, file=obj, src=src, dst=dst, host=host)
 
     # Correlate by strong entity evidence inside a bounded time interval.
+    # trace_graph ultimately chooses the strongest predecessor for each event.
+    # Keeping every same-process pair causes O(n^2) growth for syscall-heavy traces,
+    # so only the strongest supported predecessor is retained.
     for later, candidates in _correlation_candidates(events, state, window_seconds):
         ls = state[later.event_id]
+        ranked = []
         for earlier, dt in candidates:
             es = state[earlier.event_id]
+
+            # Ordinary unalerted syscall records remain evidence on their entity,
+            # but are not temporal attack-path vertices.
+            if (
+                (earlier.action == "syscall" and not by_event[earlier.event_id])
+                or (later.action == "syscall" and not by_event[later.event_id])
+            ):
+                continue
+
             reasons, score = [], 0.0
             if es["proc"] and es["proc"] == ls["proc"]:
                 reasons.append("same_process_instance"); score += .7
@@ -221,16 +247,142 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
                     and earlier.src_ip == later.src_ip and earlier.dst_ip == later.dst_ip
                     and earlier.src_ip != earlier.dst_ip and earlier.src_ip):
                 reasons.append("connection_and_authentication_endpoints"); score += .8
-            # A remote login can connect to a process only with the same target host and user.
             if (earlier.action in ("login", "login_success", "remote_login") and later.action == "process_create"
                     and earlier.host_id and earlier.host_id == later.host_id and earlier.user and earlier.user == later.user):
                 reasons.append("authenticated_user_on_target_host"); score += .7
-            if not reasons: continue
+
+            # Independently alert-supported observations on the same host, close
+            # in time, can form a candidate sequence. This is not proof that the
+            # same attacker caused both observations.
+            if (
+                by_event[earlier.event_id]
+                and by_event[later.event_id]
+                and earlier.host_id
+                and earlier.host_id == later.host_id
+                and dt <= 120
+            ):
+                reasons.append("same_host_alert_sequence"); score += .65
+
+            if not reasons:
+                continue
             score = min(.95, score + .1 * (1 - dt / window_seconds))
             if score >= .65:
-                edge(es["node"], ls["node"], "related_to", later, confidence=score,
-                     evidence=[earlier.event_id, later.event_id], kind="event_correlation",
-                     reasons=reasons, time_delta_seconds=dt, interpretation="candidate_link_not_proof_of_same_attacker")
+                ranked.append((score, -dt, earlier.event_id, earlier, reasons, dt))
+
+        if ranked:
+            score, _, _, earlier, reasons, dt = max(
+                ranked, key=lambda row: (row[0], row[1], row[2])
+            )
+            es = state[earlier.event_id]
+            edge(es["node"], ls["node"], "related_to", later, confidence=score,
+                 evidence=[earlier.event_id, later.event_id], kind="event_correlation",
+                 reasons=reasons, time_delta_seconds=dt,
+                 interpretation="candidate_link_not_proof_of_same_attacker")
+    # ALERT_SUPPORTED_TACTIC_SEQUENCE_V1
+    # Build only a very small number of cross-alert candidate links. This pass
+    # does NOT connect arbitrary same-host events. It requires:
+    #   1) two different detector alerts,
+    #   2) a shared host in their evidence,
+    #   3) a supported ATT&CK tactic transition,
+    #   4) chronological proximity.
+    # The link remains explicitly a candidate, not proof of common attacker
+    # identity or causality.
+    allowed_alert_transitions = {
+        ("credential-access", "command-and-control"),
+    }
+    alert_host_representatives = defaultdict(list)
+
+    for alert in alerts:
+        tactic = alert_tactic(alert)
+        if not tactic:
+            continue
+
+        per_host = defaultdict(list)
+        for event_id in alert.event_ids:
+            event = by_id[event_id]
+            if event.host_id:
+                per_host[event.host_id].append(event)
+
+        for host_id, evidence_rows in per_host.items():
+            # Credential-access sequences are represented by their successful
+            # authentication endpoint when present. C2/network alerts prefer an
+            # actual network observation on the shared host. This avoids choosing
+            # a receiver-side service log when a packet observation exists.
+            if tactic == "credential-access":
+                preferred = [
+                    event for event in evidence_rows
+                    if event.action in ("login_success", "login", "remote_login")
+                ]
+                representative = max(
+                    preferred or evidence_rows,
+                    key=lambda event: (_seconds(event.timestamp), event.event_id),
+                )
+            else:
+                preferred = [
+                    event for event in evidence_rows
+                    if event.network is not None
+                    and event.action in (
+                        "network_observed", "network_connect",
+                        "http_request", "dns_query", "icmp_echo",
+                    )
+                ]
+                representative = min(
+                    preferred or evidence_rows,
+                    key=lambda event: (_seconds(event.timestamp), event.event_id),
+                )
+
+            alert_host_representatives[host_id].append(
+                (alert, tactic, representative)
+            )
+
+    for host_id, entries in alert_host_representatives.items():
+        entries.sort(
+            key=lambda item: (
+                _seconds(item[2].timestamp),
+                item[0].alert_id,
+            )
+        )
+        for index, (earlier_alert, earlier_tactic, earlier_event) in enumerate(entries):
+            for later_alert, later_tactic, later_event in entries[index + 1:]:
+                if earlier_alert.alert_id == later_alert.alert_id:
+                    continue
+                if (earlier_tactic, later_tactic) not in allowed_alert_transitions:
+                    continue
+
+                delta = _seconds(later_event.timestamp) - _seconds(earlier_event.timestamp)
+                if delta < 0:
+                    continue
+                if delta > 120:
+                    break
+
+                edge(
+                    state[earlier_event.event_id]["node"],
+                    state[later_event.event_id]["node"],
+                    "related_to",
+                    later_event,
+                    confidence=min(
+                        .75,
+                        earlier_alert.confidence,
+                        later_alert.confidence,
+                    ),
+                    evidence=[
+                        earlier_event.event_id,
+                        later_event.event_id,
+                    ],
+                    kind="event_correlation",
+                    reasons=[
+                        "same_host_alert_sequence",
+                        f"{earlier_tactic}_to_{later_tactic}",
+                    ],
+                    time_delta_seconds=delta,
+                    shared_host_id=host_id,
+                    interpretation=(
+                        "alert_supported_candidate_sequence_not_proof_of_causality"
+                    ),
+                )
+                # At most one forward candidate per earlier alert on this host.
+                break
+
     unique_edges = {e.id: e for e in edges}
     graph = AttackGraph(graph_id=_key("graph_", task_id, sorted(by_id), sorted(a.alert_id for a in alerts)),
         task_id=task_id, generated_at=now_iso(), nodes=list(nodes.values()), edges=list(unique_edges.values()))

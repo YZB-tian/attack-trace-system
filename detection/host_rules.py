@@ -13,7 +13,7 @@ from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
 from common.models import MitreMapping
-from .network_rules import make_alert
+from .network_rules import make_alert, seconds
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -320,7 +320,7 @@ def detect_host(events, knowledge=None):
         features = {"os": product, "command_field": field, "executable": executable,
                     "matched_condition": reason, "action": event.action,
                     "execution_success_proven": False}
-        alert = make_alert([event], rid, title, .8, features, knowledge, technique)
+        alert = make_alert([event], rid, title, .8, features, knowledge, technique, tactic)
         alert.detector = "host_heuristic_v1"
         alert.description = title + ". Review original event and authorized administration context; success is not proven."
         # A tiny reviewed STIX extract makes the two default rules useful without
@@ -341,6 +341,94 @@ def detect_host(events, knowledge=None):
             evidence["mapping_source"] = "unmapped_without_stix_bundle"
         alert.evidence_summary = json.dumps(evidence, ensure_ascii=False, sort_keys=True)
         alerts.append(alert)
+
+    # GENERIC_NORMALIZED_AUTH_SEQUENCE_V1
+    # Detect a short burst of failed logins followed by a success using only the
+    # public NormalizedEvent contract. This is intentionally source-agnostic.
+    auth_groups = defaultdict(list)
+    for event in unique.values():
+        if event.source_type.value != "host_log":
+            continue
+        if event.action not in {"login_failure", "login_success"}:
+            continue
+        if not event.host_id or not event.src_ip:
+            continue
+        auth_groups[
+            (event.task_id, event.host_id, event.src_ip, str(event.user or ""))
+        ].append(event)
+
+    for (task_id, host_id, src_ip, user), rows in sorted(auth_groups.items()):
+        def _raw_order(event):
+            ref = event.metadata.get("raw_reference", {}) if isinstance(event.metadata, dict) else {}
+            if not isinstance(ref, dict):
+                return None, None
+            record = ref.get("record")
+            try:
+                record = int(record)
+            except (TypeError, ValueError):
+                record = None
+            return str(ref.get("file") or ""), record
+
+        for success in rows:
+            if success.action != "login_success":
+                continue
+            success_time = seconds(success.timestamp)
+            success_file, success_record = _raw_order(success)
+            failures = []
+            for row in rows:
+                if row.action != "login_failure":
+                    continue
+                delta = success_time - seconds(row.timestamp)
+                if not 0 <= delta <= 120:
+                    continue
+
+                # Some application logs have only second-level timestamps. When
+                # failure and success share the same timestamp, use the original
+                # source-record order if the collector preserved it. Never use
+                # event_id hash order as a chronology signal.
+                if delta == 0:
+                    failure_file, failure_record = _raw_order(row)
+                    if not (
+                        failure_file
+                        and failure_file == success_file
+                        and failure_record is not None
+                        and success_record is not None
+                        and failure_record < success_record
+                    ):
+                        continue
+                failures.append(row)
+            if len(failures) < 2:
+                continue
+
+            evidence = failures[-5:] + [success]
+            features = {
+                "host_id": host_id,
+                "source_ip": src_ip,
+                "user": user or None,
+                "failed_logins_before_success": len(failures),
+                "window_seconds": round(success_time - seconds(failures[0].timestamp), 3),
+                "success_observed": True,
+                "reason": "multiple_authentication_failures_followed_by_success",
+            }
+            alert = make_alert(
+                evidence,
+                "HOST-AUTH-FAILURE-THEN-SUCCESS",
+                "Multiple authentication failures followed by a successful login",
+                .72,
+                features,
+                knowledge,
+                "T1110",
+                "credential-access",
+            )
+            alert.detector = "host_heuristic_v1"
+            alert.description = (
+                "Multiple authentication failures were followed by a successful "
+                "login from the same source. This is a suspicious authentication "
+                "sequence, not proof of compromise; user mistakes can look similar."
+            )
+            alerts.append(alert)
+            break
+
     alerts.extend(_access_alerts(unique.values(), knowledge))
     dedup = {}
     for alert in alerts:

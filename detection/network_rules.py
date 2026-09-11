@@ -120,7 +120,9 @@ def make_alert(events, rule, title, score, features, knowledge=None, technique=N
     aid = hashlib.sha256(json.dumps([events[0].task_id, rule, ids]).encode()).hexdigest()[:24]
     mapping = knowledge.mapping(technique, tactic) if knowledge and technique else None
     evidence = dict(features, sample_count=len(ids), score_kind="heuristic_not_probability")
-    if technique and mapping is None: evidence["unresolved_technique_id"] = technique
+    if technique and mapping is None:
+        evidence["unresolved_technique_id"] = technique
+        evidence["unresolved_tactic"] = tactic
     end = max((e.metadata.get("zeek", {}).get("end_time") or e.timestamp for e in events), key=seconds)
     return Alert(alert_id="alert_" + aid, task_id=events[0].task_id,
         timestamp_start=events[0].timestamp, timestamp_end=end, event_ids=ids,
@@ -1067,4 +1069,85 @@ def detect_network(events, config=None, knowledge=None):
             alerts.append(make_alert(group, "NET-INTERNAL-SENSITIVE-UPLOAD",
                 "Internal host uploaded a large volume to an external destination",
                 .75, features, knowledge, "T1041", "exfiltration"))
+
+    # GENERIC_CROSS_SOURCE_BEACON_V1
+    # Correlate repeated receiver-side beacon events with independent packet-flow
+    # observations. No IP, run-id, lab label, or Zeek-only field is hard-coded.
+    observed_flows = [
+        e for e in events
+        if e.source_type.value == "network_flow"
+        and e.source == "pcap_scapy"
+        and e.action == "network_observed"
+        and e.network
+        and e.network.protocol == "tcp"
+        and e.src_ip
+        and e.dst_ip
+        and e.dst_port is not None
+    ]
+
+    receiver_beacons = defaultdict(list)
+    for e in events:
+        if e.source_type.value != "host_log":
+            continue
+        if e.action != "beacon" or not e.src_ip or not e.dst_ip or e.dst_port is None:
+            continue
+        receiver_beacons[(e.task_id, e.src_ip, e.dst_ip, e.dst_port)].append(e)
+
+    for (task_id, src_ip, dst_ip, dst_port), beacon_rows in sorted(receiver_beacons.items()):
+        beacon_rows = sorted(
+            {e.event_id: e for e in beacon_rows}.values(),
+            key=lambda e: (seconds(e.timestamp), e.event_id),
+        )
+        if len(beacon_rows) < 2:
+            continue
+
+        matched_flows = []
+        for flow in observed_flows:
+            if (
+                flow.task_id != task_id
+                or flow.src_ip != src_ip
+                or flow.dst_ip != dst_ip
+                or flow.dst_port != dst_port
+            ):
+                continue
+            flow_time = seconds(flow.timestamp)
+            if any(abs(flow_time - seconds(beacon.timestamp)) <= 5 for beacon in beacon_rows):
+                matched_flows.append(flow)
+
+        if not matched_flows:
+            continue
+
+        evidence_by_id = {
+            e.event_id: e for e in (beacon_rows + matched_flows)
+        }
+        evidence = sorted(
+            evidence_by_id.values(),
+            key=lambda e: (seconds(e.timestamp), e.event_id),
+        )
+        time_features = timing(beacon_rows)
+        features = {
+            "source_ip": src_ip,
+            "destination_ip": dst_ip,
+            "destination_port": dst_port,
+            "receiver_beacon_events": len(beacon_rows),
+            "matching_packet_flows": len(matched_flows),
+            "cross_source_confirmed": True,
+            "beacon_span_seconds": time_features["span"],
+            "median_interval_seconds": time_features["median_interval"],
+            "reason": "receiver_beacon_records_correlated_with_packet_flow",
+        }
+        alerts.append(
+            make_alert(
+                evidence,
+                "NET-CROSS-SOURCE-BEACON",
+                "Repeated beacon communication confirmed by receiver and packet evidence",
+                .90,
+                features,
+                knowledge,
+                "T1071.001",
+                "command-and-control",
+            )
+        )
+
+
     return alerts
