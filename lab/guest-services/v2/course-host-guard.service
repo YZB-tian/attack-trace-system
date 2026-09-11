@@ -1,0 +1,12 @@
+[Unit]
+Description=Prevent lab guests initiating connections through host services
+After=network-pre.target
+Before=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/nft -f /etc/course-host-guard.nft
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

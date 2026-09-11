@@ -1,0 +1,2 @@
+# Optional: needed only when loading explicitly selected Sigma YAML rules.
+PyYAML>=6.0,<7

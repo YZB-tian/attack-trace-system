@@ -35,7 +35,13 @@ tmp/
 # PCAP / large raw datasets: do not commit by default
 *.pcap
 *.pcapng
+*.evtx
+*.strace
 datasets/raw/
+
+# The sanitized evidence index under lab/ is published on purpose: it holds
+# derived analysis output and manifests, never raw captures or credentials.
+!lab/evidence-index/**
 
 # Frontend
 node_modules/

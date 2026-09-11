@@ -1,0 +1,9 @@
+table inet course_host_guard {
+    chain output {
+        type filter hook output priority 10; policy accept;
+        ct state established,related accept
+        ip daddr 192.168.56.1 reject
+        meta nfproto ipv6 meta l4proto tcp reject
+        meta nfproto ipv6 meta l4proto udp reject
+    }
+}

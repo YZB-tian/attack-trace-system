@@ -1,0 +1,203 @@
+[
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_685dc49e541273bb302bc753",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:05:17.686000+00:00",
+    "timestamp_end": "2020-05-02T03:05:17.687000+00:00",
+    "event_ids": [
+      "evt_pub_053267",
+      "evt_pub_053270"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LSASS-MEMORY-ACCESS",
+    "rule_name": "Process requested write access to LSASS memory (credential dumping candidate)",
+    "description": "Process requested write access to LSASS memory (credential dumping candidate); requires analyst verification Backup, EDR and password-filter components also request LSASS access.",
+    "mitre": {
+      "tactic": "credential-access",
+      "technique_id": "T1003",
+      "technique_name": "LSASS Memory",
+      "subtechnique_id": "T1003.001"
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"host_id\": null, \"source_image\": \"C:\\\\windows\\\\system32\\\\WindowsPowerShell\\\\v1.0\\\\PowerShell.exe\", \"target_image\": \"C:\\\\windows\\\\system32\\\\lsass.exe\", \"access_events\": 2, \"reason\": \"lsass_process_memory_write_access\", \"dump_created_proven\": false, \"sample_count\": 2, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_6a472d8a8146bcd3c5db39b0",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:05:17.686000+00:00",
+    "timestamp_end": "2020-05-02T03:05:17.686000+00:00",
+    "event_ids": [
+      "evt_pub_053268"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-PROCESS-INJECTION",
+    "rule_name": "Remote thread created inside another process (memory injection candidate)",
+    "description": "Remote thread created inside another process (memory injection candidate); requires analyst verification The thread start address is outside every loaded module, which is consistent with injected or reflectively loaded code.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1055",
+      "technique_name": "Process Injection",
+      "subtechnique_id": null
+    },
+    "confidence": 0.9,
+    "evidence_summary": "{\"host_id\": null, \"source_image\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"target_image\": \"C:\\\\Windows\\\\System32\\\\lsass.exe\", \"remote_thread_events\": 1, \"write_capable_access_events\": 0, \"unbacked_thread_events\": 1, \"reflective_or_injected_code_indicator\": true, \"reason\": \"create_remote_thread_into_another_process\", \"code_execution_proven\": false, \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_682d683046eca5f5256d7eb4",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:08:52.440000+00:00",
+    "timestamp_end": "2020-05-02T03:08:52.440000+00:00",
+    "event_ids": [
+      "evt_pub_089609"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LOLBIN-EXECUTION",
+    "rule_name": "System binary used to launch a remote or scripted payload",
+    "description": "System binary used to launch a remote or scripted payload. Review original event and authorized administration context; success is not proven.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "subtechnique_id": null
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"action\": \"process_create\", \"command_field\": \"metadata.command_line\", \"executable\": \"rundll32.exe\", \"execution_success_proven\": false, \"matched_condition\": \"lolbin_remote_or_scripted_argument\", \"os\": \"windows\", \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_98c55d9abcc9051e937bb1b4",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:08:52.484000+00:00",
+    "timestamp_end": "2020-05-02T03:08:52.484000+00:00",
+    "event_ids": [
+      "evt_pub_089735"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LOLBIN-EXECUTION",
+    "rule_name": "System binary used to launch a remote or scripted payload",
+    "description": "System binary used to launch a remote or scripted payload. Review original event and authorized administration context; success is not proven.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "subtechnique_id": null
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"action\": \"process_create\", \"command_field\": \"metadata.command_line\", \"executable\": \"rundll32.exe\", \"execution_success_proven\": false, \"matched_condition\": \"lolbin_remote_or_scripted_argument\", \"os\": \"windows\", \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_adba82425ddbf9002b5e7617",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:09:31.016000+00:00",
+    "timestamp_end": "2020-05-02T03:09:31.016000+00:00",
+    "event_ids": [
+      "evt_pub_091181"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LSASS-MEMORY-ACCESS",
+    "rule_name": "Process requested write access to LSASS memory (credential dumping candidate)",
+    "description": "Process requested write access to LSASS memory (credential dumping candidate); requires analyst verification Backup, EDR and password-filter components also request LSASS access.",
+    "mitre": {
+      "tactic": "credential-access",
+      "technique_id": "T1003",
+      "technique_name": "LSASS Memory",
+      "subtechnique_id": "T1003.001"
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"host_id\": null, \"source_image\": \"C:\\\\windows\\\\system32\\\\wsmprovhost.exe\", \"target_image\": \"C:\\\\windows\\\\system32\\\\lsass.exe\", \"access_events\": 1, \"reason\": \"lsass_process_memory_write_access\", \"dump_created_proven\": false, \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_5220fa7ab192c00c3afb839d",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:10:23.343000+00:00",
+    "timestamp_end": "2020-05-02T03:10:23.343000+00:00",
+    "event_ids": [
+      "evt_pub_091923"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LOLBIN-EXECUTION",
+    "rule_name": "System binary used to launch a remote or scripted payload",
+    "description": "System binary used to launch a remote or scripted payload. Review original event and authorized administration context; success is not proven.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "subtechnique_id": null
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"action\": \"process_create\", \"command_field\": \"metadata.command_line\", \"executable\": \"rundll32.exe\", \"execution_success_proven\": false, \"matched_condition\": \"lolbin_remote_or_scripted_argument\", \"os\": \"windows\", \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_b36505913691a06361a5972f",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:10:23.373000+00:00",
+    "timestamp_end": "2020-05-02T03:10:23.373000+00:00",
+    "event_ids": [
+      "evt_pub_092000"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LOLBIN-EXECUTION",
+    "rule_name": "System binary used to launch a remote or scripted payload",
+    "description": "System binary used to launch a remote or scripted payload. Review original event and authorized administration context; success is not proven.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "subtechnique_id": null
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"action\": \"process_create\", \"command_field\": \"metadata.command_line\", \"executable\": \"rundll32.exe\", \"execution_success_proven\": false, \"matched_condition\": \"lolbin_remote_or_scripted_argument\", \"os\": \"windows\", \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_4755b16ba02edded7f06b55b",
+    "task_id": "task_public_apt29_day1",
+    "timestamp_start": "2020-05-02T03:10:24.389000+00:00",
+    "timestamp_end": "2020-05-02T03:10:24.389000+00:00",
+    "event_ids": [
+      "evt_pub_092080"
+    ],
+    "host_ids": [],
+    "severity": "high",
+    "rule_id": "HOST-WIN-LOLBIN-EXECUTION",
+    "rule_name": "System binary used to launch a remote or scripted payload",
+    "description": "System binary used to launch a remote or scripted payload. Review original event and authorized administration context; success is not proven.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1218",
+      "technique_name": "System Binary Proxy Execution",
+      "subtechnique_id": null
+    },
+    "confidence": 0.8,
+    "evidence_summary": "{\"action\": \"process_create\", \"command_field\": \"metadata.command_line\", \"executable\": \"rundll32.exe\", \"execution_success_proven\": false, \"matched_condition\": \"lolbin_remote_or_scripted_argument\", \"os\": \"windows\", \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  }
+]

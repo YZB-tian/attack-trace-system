@@ -1,0 +1,42 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          lab-sensor
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: AttackTraceLab VMnet2 packet sensor
+### END INIT INFO
+
+PIDFILE=/var/run/lab-sensor.pid
+PCAP_DIR=/var/log/lab-sensor
+
+case "$1" in
+    start)
+        mkdir -p "$PCAP_DIR"
+        ifconfig eth0 promisc
+        start-stop-daemon --start --quiet --background --make-pidfile \
+            --pidfile "$PIDFILE" --exec /usr/sbin/tcpdump -- \
+            -i eth0 -nn -s 0 -U -C 20 -W 10 -w "$PCAP_DIR/vmnet2.pcap"
+        logger -t lab-sensor "packet capture started on eth0"
+        ;;
+    stop)
+        start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --retry 5
+        rm -f "$PIDFILE"
+        ifconfig eth0 -promisc
+        logger -t lab-sensor "packet capture stopped"
+        ;;
+    restart)
+        "$0" stop
+        "$0" start
+        ;;
+    status)
+        test -s "$PIDFILE" && kill -0 "$(cat "$PIDFILE")" 2>/dev/null
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

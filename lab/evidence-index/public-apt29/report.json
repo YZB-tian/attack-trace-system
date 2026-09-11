@@ -1,0 +1,24 @@
+{
+  "dataset": "D:\\build\\attack-trace-system\\runtime\\datasets\\apt29_day1\\apt29_evals_day1_manual_2020-05-01225525.json",
+  "records_read": 196081,
+  "records_converted": 39831,
+  "conversion_counters": {
+    "lines": 196081,
+    "event_id_10": 39286,
+    "skipped_event_ids": 156250,
+    "event_id_1": 450,
+    "event_id_8": 95
+  },
+  "alerts_total": 8,
+  "alerts_by_rule": {
+    "HOST-WIN-LSASS-MEMORY-ACCESS": 2,
+    "HOST-WIN-PROCESS-INJECTION": 1,
+    "HOST-WIN-LOLBIN-EXECUTION": 5
+  },
+  "alerts_by_technique": {
+    "T1003": 2,
+    "T1055": 1,
+    "T1218": 5
+  },
+  "note": "Public dataset labels are not used as detector input; alerts are heuristic candidates."
+}

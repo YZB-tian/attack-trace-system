@@ -1,0 +1,18 @@
+{
+  "source": "https://github.com/mitre-attack/attack-stix-data",
+  "bundle_sha256": "c0c463e0c303f62bd7442a80c8ee2f9ea5f19c8268c50f9dcfd36d78a8d18985",
+  "mappings": {
+    "T1059.001": {
+      "tactic": "execution",
+      "technique_id": "T1059",
+      "technique_name": "PowerShell",
+      "subtechnique_id": "T1059.001"
+    },
+    "T1685.004": {
+      "tactic": "defense-impairment",
+      "technique_id": "T1685",
+      "technique_name": "Disable or Modify Linux Audit System Log",
+      "subtechnique_id": "T1685.004"
+    }
+  }
+}

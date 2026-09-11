@@ -1,0 +1,34 @@
+[
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_f63dbea4dbb3912584b917b6",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp_start": "2026-09-10T15:38:56.735127+00:00",
+    "timestamp_end": "2026-09-10T15:42:16.736606+00:00",
+    "event_ids": [
+      "evt_07c5658c544f78b60b54f564",
+      "evt_0a695285198198a6081e9ae6",
+      "evt_322661e62e2587128f78bb0a",
+      "evt_335905984cb3869b37df770f",
+      "evt_3372d908e873f2018ac308c8",
+      "evt_8d0e3d862cb8774bfbcd1e3e",
+      "evt_8deba53416186a3db21c2fd7",
+      "evt_a25e954b4e7d46b6c0e7e13c",
+      "evt_afab96b1652ed8294a73b218",
+      "evt_de488f76961e981b7bb8cfca",
+      "evt_f6ed07b8623a61f679012790"
+    ],
+    "host_ids": [
+      "webserver01"
+    ],
+    "severity": "high",
+    "rule_id": "NET-BEACON",
+    "rule_name": "Periodic communication candidate (may be benign)",
+    "description": "Periodic communication candidate (may be benign); requires analyst verification",
+    "mitre": null,
+    "confidence": 0.8999921894641834,
+    "evidence_summary": "{\"span\": 199.99881100654602, \"regularity\": 0.9999609473209168, \"median_interval\": 19.99994695186615, \"stable_size\": true, \"sample_count\": 11, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "network_heuristic_v1",
+    "status": "open"
+  }
+]

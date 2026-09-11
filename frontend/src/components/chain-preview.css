@@ -1,0 +1,16 @@
+.chain-entity-preview { margin-top: 16px; min-width: 0; }
+.chain-entity-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.chain-entity { min-width: 0; padding: 13px; border: 1px solid #29445c; background: #0d2133; }
+.chain-entity-heading { display: flex; align-items: center; gap: 7px; margin-bottom: 11px; color: #73d5c2; }
+.chain-entity-type { font: 11px "DM Mono", monospace; font-weight: 500; }
+.chain-entity-title { display: block; color: #d1e4f3; font: 12px/1.7 "DM Mono", monospace; overflow-wrap: anywhere; }
+.chain-entity-summary { display: block; margin-top: 7px; color: #95b0c8; font-size: 10px; line-height: 1.7; overflow-wrap: anywhere; }
+.chain-entity.type-ip { border-color: #66532d; background: #262414; }
+.chain-entity.type-ip .chain-entity-heading { color: #ffbf60; }
+.chain-entity.type-c2 { border-color: #8a524a; background: #30221f; }
+.chain-entity.type-c2 .chain-entity-heading { color: #ff9775; }
+.chain-entity.type-process .chain-entity-heading { color: #b59cff; }
+.chain-entity.type-file .chain-entity-heading { color: #80aff3; }
+.chain-entity-count, .chain-entity-empty { margin: 11px 0 0; color: #7895ad; font-size: 11px; }
+@media (max-width: 920px) { .chain-entity-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .chain-entity-list { grid-template-columns: minmax(0, 1fr); } }

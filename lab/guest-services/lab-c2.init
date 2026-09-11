@@ -1,0 +1,37 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          lab-c2
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: AttackTraceLab benign C2 simulator
+### END INIT INFO
+
+PIDFILE=/var/run/lab-c2.pid
+DAEMON=/usr/local/sbin/lab-c2-server.py
+
+case "$1" in
+    start)
+        mkdir -p /var/log/lab-c2
+        start-stop-daemon --start --quiet --background --make-pidfile \
+            --pidfile "$PIDFILE" --exec /usr/bin/python -- "$DAEMON"
+        ;;
+    stop)
+        start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --retry 5
+        rm -f "$PIDFILE"
+        ;;
+    restart)
+        "$0" stop
+        "$0" start
+        ;;
+    status)
+        test -s "$PIDFILE" && kill -0 "$(cat "$PIDFILE")" 2>/dev/null
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

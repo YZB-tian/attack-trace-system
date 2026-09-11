@@ -1,0 +1,2137 @@
+[
+  {
+    "schema_version": "1.0",
+    "graph_id": "graph_b57dcfd33fd1c171b4f8314a",
+    "task_id": "task_memory-injection-20260910T184200Z",
+    "generated_at": "2026-09-11T03:25:34.164834+00:00",
+    "nodes": [
+      {
+        "id": "coreserver01",
+        "type": "host",
+        "label": "coreserver01",
+        "attributes": {}
+      },
+      {
+        "id": "user_f7e3d017b2ae2214e06d6f30",
+        "type": "user",
+        "label": "NT AUTHORITY\\SYSTEM",
+        "attributes": {
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_a40ac9e90e8d9d4b0e24446f",
+        "type": "process",
+        "label": "Sysmon64.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 228,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_fb49a10987832679745c0d36",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_661fc4af711c87dc200397f0",
+          "timestamp": "2026-09-10T18:41:12.562493+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_45cfd0aa24233b3a097736a6",
+        "type": "process",
+        "label": "PID 776",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 776,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "process_cd432febcf438a940ad37fb8",
+        "type": "process",
+        "label": "unsecapp.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 1048,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_020ce9f71b3e7dd2b05acc05",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_076db8abcbfbf83ea01838e9",
+          "timestamp": "2026-09-10T18:41:12.562898+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_1b853e24ed20d345c28de824",
+        "type": "process",
+        "label": "PID 924",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 924,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "user_d6d4083e6c92ee86fa9b645c",
+        "type": "user",
+        "label": "CORE01\\Administrator",
+        "attributes": {
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_9ac72f142b3da7d6e236b76e",
+        "type": "process",
+        "label": "cmd.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 5000,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_259e4478e24f88435b3f9f1e",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_59ce4fb485fed76ac9cb920f",
+          "timestamp": "2026-09-10T18:41:28.540892+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_bec63d7070e0bfbf6cb3841e",
+        "type": "process",
+        "label": "PID 3080",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 3080,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "process_b6d1c5a96a2807cc4c1e0d47",
+        "type": "process",
+        "label": "conhost.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 2712,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_372a6bb588ca8c3d322d5259",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_5acbc377986b4105a6ab6fd5",
+          "timestamp": "2026-09-10T18:41:28.553125+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_e5fb9c011a1dc4fba7d9554f",
+        "type": "process",
+        "label": "powershell.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 2108,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_2205f815f1d4aea96374303a",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_20bbd6b72794eaa3b6fa8f2c",
+          "timestamp": "2026-09-10T18:41:28.584646+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_bbc2c86158f4f3a3ffdd3d5d",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_0fe19ec42b565da4634e329e",
+          "timestamp": "2026-09-10T18:41:31.477920+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_9ef22336960c3027acd6a18b",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_cbc9f6e4cbfae0925a7bd626",
+          "timestamp": "2026-09-10T18:41:31.477960+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_e42927a330292c6e8284297b",
+        "type": "process",
+        "label": "notepad.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 5116,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_3f3dfe3f0ca04951740dc6c1",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_c13c33023475c04c3904493a",
+          "timestamp": "2026-09-10T18:41:31.478739+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_b9e61133dedb1d6a523df411",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_6328849214e226abb39bf2f9",
+          "timestamp": "2026-09-10T18:41:31.484096+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_517391d1b382e1a4ea061aea",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_7b09c43c6048653cb6d23980",
+          "timestamp": "2026-09-10T18:41:31.484715+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_ad4a00df5717d28e77c9ecf7",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_310a4fa7c0c483e09c8053d0",
+          "timestamp": "2026-09-10T18:41:31.491631+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_9b76f998f78d2fc7f03a3518",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_84bada86b757a316a3bc70ef",
+          "timestamp": "2026-09-10T18:41:31.493004+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_206e0ac85e44c488791c7250",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_d84dab83080cddb3786a1823",
+          "timestamp": "2026-09-10T18:41:31.493029+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_ed8f703636ab069de541acda",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_99cf83748a00ab550015bd68",
+          "timestamp": "2026-09-10T18:41:31.493361+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_9aff455d8f8c24297facbe98",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_921b293047125b86f58d101d",
+          "timestamp": "2026-09-10T18:41:31.494227+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_01cd2be931cea15e320bd994",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_dbd18d2b50250db4ce531b92",
+          "timestamp": "2026-09-10T18:41:31.523074+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_a4c74a536fef1359699d4c79",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_256228a7388e4b6ec8447e46",
+          "timestamp": "2026-09-10T18:41:31.523369+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_b18fcc7105b633eeec43bd19",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_36bf98dc83291a7584bd3bbd",
+          "timestamp": "2026-09-10T18:41:31.523815+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_1a5926375bc99aa2e613ea18",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_4391b0c3b75f404b61e0743d",
+          "timestamp": "2026-09-10T18:41:31.561058+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_5833913b5261ba61a71bf7f9",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_1ee5d78730f64ab84de7f9e6",
+          "timestamp": "2026-09-10T18:41:31.561318+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_b4ccbfd78c3f667cb61b380a",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_6aaf715a87b1de0c55d13e34",
+          "timestamp": "2026-09-10T18:41:31.577721+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_9eb5fa77e9b83b7613d8bfed",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_31c2c67731732918020412d4",
+          "timestamp": "2026-09-10T18:41:31.595498+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_f124e095639620d9eae1844f",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_a2b1e8a7194268711c99bdf9",
+          "timestamp": "2026-09-10T18:41:31.994920+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_83be27c6967abef022f37c30",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_63893b59bb9c76fda664c560",
+          "timestamp": "2026-09-10T18:41:32.411548+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_e84eedf75b4aff9a25daab31",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_a310ddd8b849259bae0ff26d",
+          "timestamp": "2026-09-10T18:41:32.411582+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_c510cf3a3aa6334a8d2c1b2c",
+        "type": "process",
+        "label": "csc.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 2632,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_b38f3081907807eedbdcca52",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_18774fda0f1e2971009ddc6a",
+          "timestamp": "2026-09-10T18:41:35.646794+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_902b3fe11ccc0c9a4314b7d9",
+        "type": "process",
+        "label": "cvtres.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 5900,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_5e1c0c30e41ba9abbb6ec660",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_58ef5e691e7a4b44ed9fbce6",
+          "timestamp": "2026-09-10T18:41:35.747568+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_91e897f49ca55144c0c737c2",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_7aed93be6f38e32af8d8e457",
+          "timestamp": "2026-09-10T18:41:35.860099+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_d3febc709446be2fc00fa8ea",
+        "type": "other",
+        "label": "remote_thread_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_09ca64f2582eb50d32fcc29f",
+          "timestamp": "2026-09-10T18:41:35.890550+00:00",
+          "alert_ids": [
+            "alert_486891e436d07891ec86fa0e"
+          ],
+          "technique_ids": [
+            "T1055"
+          ],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "technique_148c20909c6216d26af8b1dc",
+        "type": "technique",
+        "label": "Process Injection",
+        "attributes": {
+          "technique_id": "T1055",
+          "tactic": "stealth"
+        }
+      },
+      {
+        "id": "other_4220b3adf26c17a5e968ba28",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_0856eebfacb2b30f120f0c9a",
+          "timestamp": "2026-09-10T18:41:36.051774+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_eea441b63605eef89b03c95d",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_6bb5a6e7019d015ec05113ce",
+          "timestamp": "2026-09-10T18:41:36.051835+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "other_fe1acc1523f1bbd9b6d80949",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_e46159b86ab4860ec47fc116",
+          "timestamp": "2026-09-10T18:41:36.906600+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_736f90f27aeb710d22623fea",
+        "type": "process",
+        "label": "svchost.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 4860,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_4b922d59e43a89afad9f5a4d",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_88691e79a347bf765dd16f37",
+          "timestamp": "2026-09-10T18:41:42.796632+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_6e6c2f60887d3fb97b541c51",
+        "type": "process",
+        "label": "PID 776",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 776,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "process_f216e9c10ccc2117e39ed9b0",
+        "type": "process",
+        "label": "svchost.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 2584,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_96d47b63f963ed5b096005f6",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_e070af46e0dd4a67afdac402",
+          "timestamp": "2026-09-10T18:41:42.843445+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_8cbca20e278ff4ef51d1e4e4",
+        "type": "process",
+        "label": "PID 776",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 776,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "other_524f767338825c58b2093a00",
+        "type": "other",
+        "label": "process_access",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_ae7dba24573ff17dc70cc316",
+          "timestamp": "2026-09-10T18:41:45.533134+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_939b700ee5dbc35b44ed69a4",
+        "type": "process",
+        "label": "cmd.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 5528,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_e7bcf6fe920cf8b6f19e4fd6",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_832b0cb029f1c9ca4cc38afc",
+          "timestamp": "2026-09-10T18:41:52.735190+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_9e5a1f2cebea53d172f303ec",
+        "type": "process",
+        "label": "PID 3080",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 3080,
+          "identity_resolved": false
+        }
+      },
+      {
+        "id": "process_20d8cee4cf957c873de76ffe",
+        "type": "process",
+        "label": "conhost.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 3208,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_f0a737e32107bec25e4e743d",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_cd4ff8e4bef4c9f19980cf16",
+          "timestamp": "2026-09-10T18:41:52.738136+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      },
+      {
+        "id": "process_ca5a3215f510df48afd57db9",
+        "type": "process",
+        "label": "powershell.exe",
+        "attributes": {
+          "host_id": "coreserver01",
+          "pid": 5604,
+          "identity_resolved": true
+        }
+      },
+      {
+        "id": "other_27e48a5d457774dca85c1723",
+        "type": "other",
+        "label": "process_create",
+        "attributes": {
+          "kind": "event",
+          "event_id": "evt_f70032c71862bb2e8264e7db",
+          "timestamp": "2026-09-10T18:41:52.780246+00:00",
+          "alert_ids": [],
+          "technique_ids": [],
+          "host_id": "coreserver01"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge_77781341a66bc6d5b44a46a1",
+        "source": "other_fb49a10987832679745c0d36",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562493+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_661fc4af711c87dc200397f0"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_017b05f7c2939df7c0925578",
+        "source": "coreserver01",
+        "target": "process_a40ac9e90e8d9d4b0e24446f",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562493+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_661fc4af711c87dc200397f0"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_166c7525728d876b633377ff",
+        "source": "user_f7e3d017b2ae2214e06d6f30",
+        "target": "process_a40ac9e90e8d9d4b0e24446f",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562493+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_661fc4af711c87dc200397f0"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_b2810d7e9f6e424e0df2d356",
+        "source": "process_45cfd0aa24233b3a097736a6",
+        "target": "process_a40ac9e90e8d9d4b0e24446f",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:12.562493+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_661fc4af711c87dc200397f0"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_e37950f41665ace2eff92f89",
+        "source": "other_020ce9f71b3e7dd2b05acc05",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562898+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_076db8abcbfbf83ea01838e9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_f2804e15f1425780d0c479fa",
+        "source": "coreserver01",
+        "target": "process_cd432febcf438a940ad37fb8",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562898+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_076db8abcbfbf83ea01838e9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_56950779c867fccfbef19c4d",
+        "source": "user_f7e3d017b2ae2214e06d6f30",
+        "target": "process_cd432febcf438a940ad37fb8",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:12.562898+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_076db8abcbfbf83ea01838e9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_e9cb4f61ca08f878c954ff8e",
+        "source": "process_1b853e24ed20d345c28de824",
+        "target": "process_cd432febcf438a940ad37fb8",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:12.562898+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_076db8abcbfbf83ea01838e9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_cb20ef8eb1c315058b20d7d3",
+        "source": "other_259e4478e24f88435b3f9f1e",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.540892+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_59ce4fb485fed76ac9cb920f"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_9576887a781c8b730cddd3ab",
+        "source": "coreserver01",
+        "target": "process_9ac72f142b3da7d6e236b76e",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.540892+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_59ce4fb485fed76ac9cb920f"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_c99f4e6ccc689720afae9539",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_9ac72f142b3da7d6e236b76e",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.540892+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_59ce4fb485fed76ac9cb920f"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_3e5ce46dbadb5b18f8ab36d3",
+        "source": "process_bec63d7070e0bfbf6cb3841e",
+        "target": "process_9ac72f142b3da7d6e236b76e",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:28.540892+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_59ce4fb485fed76ac9cb920f"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_f01bcf8bc8dbd6237daed53c",
+        "source": "other_372a6bb588ca8c3d322d5259",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.553125+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_5acbc377986b4105a6ab6fd5"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_b4b8475787b5ae295bf9ff9e",
+        "source": "coreserver01",
+        "target": "process_b6d1c5a96a2807cc4c1e0d47",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.553125+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_5acbc377986b4105a6ab6fd5"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_373b6dfd5e3783b33ca3905e",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_b6d1c5a96a2807cc4c1e0d47",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.553125+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_5acbc377986b4105a6ab6fd5"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_5859970e6c71dd108b35370b",
+        "source": "process_9ac72f142b3da7d6e236b76e",
+        "target": "process_b6d1c5a96a2807cc4c1e0d47",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:28.553125+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_5acbc377986b4105a6ab6fd5"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_9c38a2aa3f1f41068da5d6b2",
+        "source": "other_2205f815f1d4aea96374303a",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.584646+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_4df5f10e861ac408626aee26",
+        "source": "coreserver01",
+        "target": "process_e5fb9c011a1dc4fba7d9554f",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.584646+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_34810626194ae274dc577ffa",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_e5fb9c011a1dc4fba7d9554f",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.584646+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_70ea4d4045b37c95fd7d592b",
+        "source": "process_9ac72f142b3da7d6e236b76e",
+        "target": "process_e5fb9c011a1dc4fba7d9554f",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:28.584646+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_9b038bd9725253e3b63f2cb5",
+        "source": "other_bbc2c86158f4f3a3ffdd3d5d",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.477920+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_0fe19ec42b565da4634e329e"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_ccfa1e1d6e9f0606a84cafc8",
+        "source": "other_9ef22336960c3027acd6a18b",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.477960+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_cbc9f6e4cbfae0925a7bd626"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_be7e37c8571aaf2b6c763ad4",
+        "source": "other_3f3dfe3f0ca04951740dc6c1",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.478739+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_c13c33023475c04c3904493a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_bebf2033c89c79b85f1522fa",
+        "source": "coreserver01",
+        "target": "process_e42927a330292c6e8284297b",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.478739+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_c13c33023475c04c3904493a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_c2b2b2b7eea40b1bdfeaf485",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_e42927a330292c6e8284297b",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.478739+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_c13c33023475c04c3904493a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_1a8ff9f3e3756831dfdacfa9",
+        "source": "process_e5fb9c011a1dc4fba7d9554f",
+        "target": "process_e42927a330292c6e8284297b",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:31.478739+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_c13c33023475c04c3904493a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_573d1cbc3e29caf65d4aa3c1",
+        "source": "other_b9e61133dedb1d6a523df411",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.484096+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_6328849214e226abb39bf2f9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_54c0fbece2189e9b92e803e7",
+        "source": "other_517391d1b382e1a4ea061aea",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.484715+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_7b09c43c6048653cb6d23980"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_77575a1482157d27e66926a1",
+        "source": "other_ad4a00df5717d28e77c9ecf7",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.491631+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_310a4fa7c0c483e09c8053d0"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_606a4dc4d3169a92b3663fc8",
+        "source": "other_9b76f998f78d2fc7f03a3518",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.493004+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_84bada86b757a316a3bc70ef"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_1ca2dd9e5ff9188ef9c120e8",
+        "source": "other_206e0ac85e44c488791c7250",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.493029+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_d84dab83080cddb3786a1823"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_e942ecc9b9cd36dd4ac280f6",
+        "source": "other_ed8f703636ab069de541acda",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.493361+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_99cf83748a00ab550015bd68"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_8638d8b486c11bfa098026dd",
+        "source": "other_9aff455d8f8c24297facbe98",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.494227+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_921b293047125b86f58d101d"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_ca5892a11168d754a361a31d",
+        "source": "other_01cd2be931cea15e320bd994",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.523074+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_dbd18d2b50250db4ce531b92"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_0aa93433c512f6c57a0ab4b8",
+        "source": "other_a4c74a536fef1359699d4c79",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.523369+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_256228a7388e4b6ec8447e46"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_65615ab7a5ab3387662cc1e7",
+        "source": "other_b18fcc7105b633eeec43bd19",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.523815+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_36bf98dc83291a7584bd3bbd"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_2a534c9dabbbbd187b6e6fe7",
+        "source": "other_1a5926375bc99aa2e613ea18",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.561058+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_4391b0c3b75f404b61e0743d"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_61e77669e18026b4bfdee8aa",
+        "source": "other_5833913b5261ba61a71bf7f9",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.561318+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_1ee5d78730f64ab84de7f9e6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_b4bd01d67f9e23ac67a547d0",
+        "source": "other_b4ccbfd78c3f667cb61b380a",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.577721+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_6aaf715a87b1de0c55d13e34"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_9ae3094f2260b78a2591af3e",
+        "source": "other_9eb5fa77e9b83b7613d8bfed",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.595498+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_31c2c67731732918020412d4"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_b4967af3f789383d05445b7b",
+        "source": "other_f124e095639620d9eae1844f",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.994920+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_a2b1e8a7194268711c99bdf9"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_d74236752139f53dc6934b5e",
+        "source": "other_83be27c6967abef022f37c30",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:32.411548+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_63893b59bb9c76fda664c560"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_734a36b4fea0c5f2d18e90cf",
+        "source": "other_e84eedf75b4aff9a25daab31",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:32.411582+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_a310ddd8b849259bae0ff26d"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_384ceed33fb0971d0aaf26c1",
+        "source": "other_b38f3081907807eedbdcca52",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.646794+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_d51043cfdf06b356f79fe84c",
+        "source": "coreserver01",
+        "target": "process_c510cf3a3aa6334a8d2c1b2c",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.646794+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_734042410cbc765f579a1989",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_c510cf3a3aa6334a8d2c1b2c",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.646794+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_c4a9c50ff708dd9096b5dea4",
+        "source": "process_e5fb9c011a1dc4fba7d9554f",
+        "target": "process_c510cf3a3aa6334a8d2c1b2c",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:35.646794+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_1f9c8f4561c55c0ce9613166",
+        "source": "other_5e1c0c30e41ba9abbb6ec660",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.747568+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_58ef5e691e7a4b44ed9fbce6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_3ebaa9088aca82cfc2ed1a03",
+        "source": "coreserver01",
+        "target": "process_902b3fe11ccc0c9a4314b7d9",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.747568+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_58ef5e691e7a4b44ed9fbce6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_47ad68275d1f9d4d6797c032",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_902b3fe11ccc0c9a4314b7d9",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.747568+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_58ef5e691e7a4b44ed9fbce6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_cb155e7f2bfadc078224dc35",
+        "source": "process_c510cf3a3aa6334a8d2c1b2c",
+        "target": "process_902b3fe11ccc0c9a4314b7d9",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:35.747568+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_58ef5e691e7a4b44ed9fbce6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_717bdc27f06673b5d124554b",
+        "source": "other_91e897f49ca55144c0c737c2",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.860099+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_7aed93be6f38e32af8d8e457"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_acad077b1f928bc5e8ae93a5",
+        "source": "other_d3febc709446be2fc00fa8ea",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.890550+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_09ca64f2582eb50d32fcc29f"
+        ],
+        "evidence_alert_ids": [
+          "alert_486891e436d07891ec86fa0e"
+        ],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_8e2107f8a088e635e3fb18f8",
+        "source": "other_d3febc709446be2fc00fa8ea",
+        "target": "technique_148c20909c6216d26af8b1dc",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.890550+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_09ca64f2582eb50d32fcc29f"
+        ],
+        "evidence_alert_ids": [
+          "alert_486891e436d07891ec86fa0e"
+        ],
+        "confidence": 0.9,
+        "attributes": {
+          "kind": "detected_technique"
+        }
+      },
+      {
+        "id": "edge_013207d964d9ae1390fecb38",
+        "source": "other_4220b3adf26c17a5e968ba28",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:36.051774+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_0856eebfacb2b30f120f0c9a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_7816da5c5aee4b2fa95dc9bb",
+        "source": "other_eea441b63605eef89b03c95d",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:36.051835+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_6bb5a6e7019d015ec05113ce"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_8650b5011b7fa2a63f0ec198",
+        "source": "other_fe1acc1523f1bbd9b6d80949",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:36.906600+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_e46159b86ab4860ec47fc116"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_106776cdfe8549a4dc50c83f",
+        "source": "other_4b922d59e43a89afad9f5a4d",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.796632+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_88691e79a347bf765dd16f37"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_c67e16073120b608e8e751da",
+        "source": "coreserver01",
+        "target": "process_736f90f27aeb710d22623fea",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.796632+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_88691e79a347bf765dd16f37"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_f33b665732d2cd0a734bc4f6",
+        "source": "user_f7e3d017b2ae2214e06d6f30",
+        "target": "process_736f90f27aeb710d22623fea",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.796632+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_88691e79a347bf765dd16f37"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_f8ac5ed6c427c5c64174de23",
+        "source": "process_6e6c2f60887d3fb97b541c51",
+        "target": "process_736f90f27aeb710d22623fea",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:42.796632+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_88691e79a347bf765dd16f37"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_23b06bb1e7f3d6407af1934c",
+        "source": "other_96d47b63f963ed5b096005f6",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.843445+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_e070af46e0dd4a67afdac402"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_b96ed28987d89b6fcc3b0bfc",
+        "source": "coreserver01",
+        "target": "process_f216e9c10ccc2117e39ed9b0",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.843445+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_e070af46e0dd4a67afdac402"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_ac9d8ebe842c3f0e10104fed",
+        "source": "user_f7e3d017b2ae2214e06d6f30",
+        "target": "process_f216e9c10ccc2117e39ed9b0",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:42.843445+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_e070af46e0dd4a67afdac402"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_d566c1bd6fe7b5f2edf31b81",
+        "source": "process_8cbca20e278ff4ef51d1e4e4",
+        "target": "process_f216e9c10ccc2117e39ed9b0",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:42.843445+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_e070af46e0dd4a67afdac402"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_df2ea7cc9d120c13e0aa4177",
+        "source": "other_524f767338825c58b2093a00",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:45.533134+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_ae7dba24573ff17dc70cc316"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_8acf90e573a0cbf43a909815",
+        "source": "other_e7bcf6fe920cf8b6f19e4fd6",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.735190+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_badfdcb8170c757b3f7d2b92",
+        "source": "coreserver01",
+        "target": "process_939b700ee5dbc35b44ed69a4",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.735190+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_c9e904fa1584b6badf7d7ac7",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_939b700ee5dbc35b44ed69a4",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.735190+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_0cb414a4a4d5caac5f0b2048",
+        "source": "process_9e5a1f2cebea53d172f303ec",
+        "target": "process_939b700ee5dbc35b44ed69a4",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:52.735190+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_abf9d3be9ad315b992b5619c",
+        "source": "other_f0a737e32107bec25e4e743d",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.738136+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_cd4ff8e4bef4c9f19980cf16"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_66392f4fcd0d81edf532cd91",
+        "source": "coreserver01",
+        "target": "process_20d8cee4cf957c873de76ffe",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.738136+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_cd4ff8e4bef4c9f19980cf16"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_5b642daa9e73f27e9e53bb61",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_20d8cee4cf957c873de76ffe",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.738136+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_cd4ff8e4bef4c9f19980cf16"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_2488740097d135cd5bf63f61",
+        "source": "process_939b700ee5dbc35b44ed69a4",
+        "target": "process_20d8cee4cf957c873de76ffe",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:52.738136+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_cd4ff8e4bef4c9f19980cf16"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_e51be09b002d6d9da1f15373",
+        "source": "other_27e48a5d457774dca85c1723",
+        "target": "coreserver01",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.780246+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_f70032c71862bb2e8264e7db"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_on"
+        }
+      },
+      {
+        "id": "edge_df16a059c5b05152a64b9624",
+        "source": "coreserver01",
+        "target": "process_ca5a3215f510df48afd57db9",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.780246+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_f70032c71862bb2e8264e7db"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "process_on_host"
+        }
+      },
+      {
+        "id": "edge_317a9b384c326f601f8fc948",
+        "source": "user_d6d4083e6c92ee86fa9b645c",
+        "target": "process_ca5a3215f510df48afd57db9",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.780246+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_f70032c71862bb2e8264e7db"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "user_process"
+        }
+      },
+      {
+        "id": "edge_a5fbc2e6973768df1e04a452",
+        "source": "process_939b700ee5dbc35b44ed69a4",
+        "target": "process_ca5a3215f510df48afd57db9",
+        "relation": "process_spawn",
+        "timestamp": "2026-09-10T18:41:52.780246+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_f70032c71862bb2e8264e7db"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 1.0,
+        "attributes": {
+          "kind": "observed_parent"
+        }
+      },
+      {
+        "id": "edge_22e927dd605d07272b48f586",
+        "source": "other_259e4478e24f88435b3f9f1e",
+        "target": "other_372a6bb588ca8c3d322d5259",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.553125+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_59ce4fb485fed76ac9cb920f",
+          "evt_5acbc377986b4105a6ab6fd5"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8999986407756806,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 0.01223301887512207,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_a0a09b70090458d2feb2496e",
+        "source": "other_259e4478e24f88435b3f9f1e",
+        "target": "other_2205f815f1d4aea96374303a",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:28.584646+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c",
+          "evt_59ce4fb485fed76ac9cb920f"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8999951384332445,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 0.04375410079956055,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_bbfff175b4327bc5787611d2",
+        "source": "other_2205f815f1d4aea96374303a",
+        "target": "other_3f3dfe3f0ca04951740dc6c1",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:31.478739+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_20bbd6b72794eaa3b6fa8f2c",
+          "evt_c13c33023475c04c3904493a"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8996784341070387,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 2.8940930366516113,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_2e687dcb3551a340aec5de41",
+        "source": "other_2205f815f1d4aea96374303a",
+        "target": "other_b38f3081907807eedbdcca52",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.646794+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a",
+          "evt_20bbd6b72794eaa3b6fa8f2c"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8992153168784248,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 7.062148094177246,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_496094669b4904721d61b1ad",
+        "source": "other_b38f3081907807eedbdcca52",
+        "target": "other_5e1c0c30e41ba9abbb6ec660",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:35.747568+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_18774fda0f1e2971009ddc6a",
+          "evt_58ef5e691e7a4b44ed9fbce6"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8999888029098511,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 0.10077381134033203,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_f694ac01436f1b7fd11c71c9",
+        "source": "other_e7bcf6fe920cf8b6f19e4fd6",
+        "target": "other_f0a737e32107bec25e4e743d",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.738136+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc",
+          "evt_cd4ff8e4bef4c9f19980cf16"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8999996726512909,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 0.002946138381958008,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      },
+      {
+        "id": "edge_98f29cd47771f12ac523e6a7",
+        "source": "other_e7bcf6fe920cf8b6f19e4fd6",
+        "target": "other_27e48a5d457774dca85c1723",
+        "relation": "related_to",
+        "timestamp": "2026-09-10T18:41:52.780246+00:00",
+        "technique_id": null,
+        "evidence_event_ids": [
+          "evt_832b0cb029f1c9ca4cc38afc",
+          "evt_f70032c71862bb2e8264e7db"
+        ],
+        "evidence_alert_ids": [],
+        "confidence": 0.8999949937661489,
+        "attributes": {
+          "kind": "event_correlation",
+          "reasons": [
+            "parent_child_process"
+          ],
+          "time_delta_seconds": 0.04505610466003418,
+          "interpretation": "candidate_link_not_proof_of_same_attacker"
+        }
+      }
+    ]
+  }
+]

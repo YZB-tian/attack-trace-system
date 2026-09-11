@@ -1,0 +1,164 @@
+[
+  {
+    "schema_version": "1.0",
+    "trace_id": "trace_dae1bfa82234f69837fe4e16",
+    "task_id": "task_memory-injection-20260910T184200Z",
+    "generated_at": "2026-09-11T03:25:34.170662+00:00",
+    "status": "completed",
+    "summary": "Analyzed 38 events and 1 alerts; 1 candidate paths. Evidence-based analysis, not confirmed attribution.",
+    "initial_access_entity_id": null,
+    "suspected_c2_entity_ids": [],
+    "attack_chain": [
+      {
+        "order": 1,
+        "tactic": "stealth",
+        "technique_id": "T1055",
+        "technique_name": "Process Injection",
+        "title": "Remote thread created inside another process (memory injection candidate)",
+        "description": "Observed at 2026-09-10T18:41:35.890550+00:00. Remote thread created inside another process (memory injection candidate); requires analyst verification The thread start address is outside every loaded module, which is consistent with injected or reflectively loaded code.",
+        "entity_ids": [
+          "other_d3febc709446be2fc00fa8ea"
+        ],
+        "evidence_event_ids": [
+          "evt_09ca64f2582eb50d32fcc29f"
+        ],
+        "evidence_alert_ids": [
+          "alert_486891e436d07891ec86fa0e"
+        ],
+        "confidence": 0.9
+      }
+    ],
+    "attribution": {
+      "data_classification": [
+        "real_observation"
+      ],
+      "method": "deterministic_evidence_correlation",
+      "llm_used": false,
+      "candidate_paths": [
+        [
+          "evt_09ca64f2582eb50d32fcc29f"
+        ]
+      ],
+      "apt_similarity": [
+        {
+          "group_id": "G0068",
+          "group_name": "PLATINUM",
+          "similarity": 0.09090909090909091,
+          "metric": "jaccard_exact_technique_ids",
+          "matched_techniques": [
+            "T1055"
+          ],
+          "observed_count": 1,
+          "group_technique_count": 11,
+          "interpretation": "TTP similarity only; not confirmed attribution"
+        },
+        {
+          "group_id": "G1047",
+          "group_name": "Velvet Ant",
+          "similarity": 0.045454545454545456,
+          "metric": "jaccard_exact_technique_ids",
+          "matched_techniques": [
+            "T1055"
+          ],
+          "observed_count": 1,
+          "group_technique_count": 22,
+          "interpretation": "TTP similarity only; not confirmed attribution"
+        },
+        {
+          "group_id": "G0091",
+          "group_name": "Silence",
+          "similarity": 0.03571428571428571,
+          "metric": "jaccard_exact_technique_ids",
+          "matched_techniques": [
+            "T1055"
+          ],
+          "observed_count": 1,
+          "group_technique_count": 28,
+          "interpretation": "TTP similarity only; not confirmed attribution"
+        },
+        {
+          "group_id": "G1018",
+          "group_name": "TA2541",
+          "similarity": 0.03571428571428571,
+          "metric": "jaccard_exact_technique_ids",
+          "matched_techniques": [
+            "T1055"
+          ],
+          "observed_count": 1,
+          "group_technique_count": 28,
+          "interpretation": "TTP similarity only; not confirmed attribution"
+        },
+        {
+          "group_id": "G0067",
+          "group_name": "APT37",
+          "similarity": 0.034482758620689655,
+          "metric": "jaccard_exact_technique_ids",
+          "matched_techniques": [
+            "T1055"
+          ],
+          "observed_count": 1,
+          "group_technique_count": 29,
+          "interpretation": "TTP similarity only; not confirmed attribution"
+        }
+      ],
+      "apt_similarity_scope": "primary_candidate_path_only",
+      "path_analysis": {
+        "lateral_movement": [],
+        "privilege_escalation": [],
+        "data_access": [],
+        "data_exfiltration": []
+      },
+      "data_access_to_network_candidates": [],
+      "stix_source": "runtime\\stix\\enterprise-attack.json",
+      "limitations": [
+        "Candidate relations do not prove common attacker identity.",
+        "Only the strongest candidate path populates attack_chain; other paths remain separate.",
+        "No live multi-agent LLM analysis is performed by this module.",
+        "TTP similarity is not attribution; unobserved stages are not reconstructed."
+      ]
+    },
+    "evidence_event_ids": [
+      "evt_076db8abcbfbf83ea01838e9",
+      "evt_0856eebfacb2b30f120f0c9a",
+      "evt_09ca64f2582eb50d32fcc29f",
+      "evt_0fe19ec42b565da4634e329e",
+      "evt_18774fda0f1e2971009ddc6a",
+      "evt_1ee5d78730f64ab84de7f9e6",
+      "evt_20bbd6b72794eaa3b6fa8f2c",
+      "evt_256228a7388e4b6ec8447e46",
+      "evt_310a4fa7c0c483e09c8053d0",
+      "evt_31c2c67731732918020412d4",
+      "evt_36bf98dc83291a7584bd3bbd",
+      "evt_4391b0c3b75f404b61e0743d",
+      "evt_58ef5e691e7a4b44ed9fbce6",
+      "evt_59ce4fb485fed76ac9cb920f",
+      "evt_5acbc377986b4105a6ab6fd5",
+      "evt_6328849214e226abb39bf2f9",
+      "evt_63893b59bb9c76fda664c560",
+      "evt_661fc4af711c87dc200397f0",
+      "evt_6aaf715a87b1de0c55d13e34",
+      "evt_6bb5a6e7019d015ec05113ce",
+      "evt_7aed93be6f38e32af8d8e457",
+      "evt_7b09c43c6048653cb6d23980",
+      "evt_832b0cb029f1c9ca4cc38afc",
+      "evt_84bada86b757a316a3bc70ef",
+      "evt_88691e79a347bf765dd16f37",
+      "evt_921b293047125b86f58d101d",
+      "evt_99cf83748a00ab550015bd68",
+      "evt_a2b1e8a7194268711c99bdf9",
+      "evt_a310ddd8b849259bae0ff26d",
+      "evt_ae7dba24573ff17dc70cc316",
+      "evt_c13c33023475c04c3904493a",
+      "evt_cbc9f6e4cbfae0925a7bd626",
+      "evt_cd4ff8e4bef4c9f19980cf16",
+      "evt_d84dab83080cddb3786a1823",
+      "evt_dbd18d2b50250db4ce531b92",
+      "evt_e070af46e0dd4a67afdac402",
+      "evt_e46159b86ab4860ec47fc116",
+      "evt_f70032c71862bb2e8264e7db"
+    ],
+    "evidence_alert_ids": [
+      "alert_486891e436d07891ec86fa0e"
+    ]
+  }
+]

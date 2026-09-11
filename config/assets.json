@@ -6,7 +6,7 @@
       "host_id": "attacker01",
       "role": "attacker",
       "hostname": "attacker01",
-      "ip": "10.10.0.10",
+      "ip": "192.168.56.10",
       "zone": "external",
       "os": "linux"
     },
@@ -14,7 +14,7 @@
       "host_id": "c2server01",
       "role": "c2_server",
       "hostname": "c2server01",
-      "ip": "10.10.0.20",
+      "ip": "192.168.56.40",
       "zone": "external",
       "os": "linux"
     },
@@ -22,15 +22,15 @@
       "host_id": "firewall01",
       "role": "firewall",
       "hostname": "firewall01",
-      "ip": "10.10.0.1",
+      "ip": "192.168.56.70",
       "zone": "boundary",
       "os": "appliance"
     },
     {
       "host_id": "webserver01",
       "role": "web_server",
-      "hostname": "webserver01",
-      "ip": "10.10.1.10",
+      "hostname": "web01",
+      "ip": "192.168.60.30",
       "zone": "dmz",
       "os": "linux"
     },
@@ -38,7 +38,7 @@
       "host_id": "mailserver01",
       "role": "email_server",
       "hostname": "mailserver01",
-      "ip": "10.10.1.20",
+      "ip": "192.168.60.50",
       "zone": "dmz",
       "os": "linux"
     },
@@ -46,26 +46,42 @@
       "host_id": "switch01",
       "role": "internal_switch",
       "hostname": "switch01",
-      "ip": "10.10.2.1",
+      "ip": "192.168.56.80",
       "zone": "internal",
-      "os": "appliance"
+      "os": "linux"
     },
     {
       "host_id": "officepc01",
       "role": "office_pc",
-      "hostname": "officepc01",
-      "ip": "10.10.2.10",
+      "hostname": "WIN11-OFFICE",
+      "ip": "192.168.70.20",
       "zone": "office",
       "os": "windows"
     },
     {
       "host_id": "coreserver01",
       "role": "core_server",
-      "hostname": "coreserver01",
-      "ip": "10.10.3.10",
+      "hostname": "CORE01",
+      "ip": "192.168.80.60",
       "zone": "server",
+      "os": "windows"
+    },
+    {
+      "host_id": "legacyweb01",
+      "role": "vulnerable_web_server",
+      "hostname": "legacyweb01",
+      "ip": "192.168.56.30",
+      "zone": "lab_vmnet2",
+      "os": "linux"
+    },
+    {
+      "host_id": "legacycore01",
+      "role": "vulnerable_internal_server",
+      "hostname": "legacycore01",
+      "ip": "192.168.56.60",
+      "zone": "lab_vmnet2",
       "os": "linux"
     }
   ],
-  "note": "仅用于授权课程靶场。IP 为示例私网地址；搭建真实靶场时由组长统一修改此文件。"
+  "note": "授权课程靶场实际地址。switch01 为 Ubuntu 透明网桥采集节点；资产存在不等于已完成八节点入侵链验证。legacyweb01/legacycore01 是用于真实漏洞利用链的额外隔离靶标（VMnet2，两台镜像内部主机名同为 metasploitable，导入时按证据来源映射）。"
 }

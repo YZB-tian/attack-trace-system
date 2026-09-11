@@ -1,0 +1,1796 @@
+{
+  "schema_version": "1.0",
+  "graph_id": "graph_6e30f972d9d239dfa71a15fc",
+  "task_id": "task_beacon-20260910T153854Z",
+  "generated_at": "2026-09-10T15:44:52.985962+00:00",
+  "nodes": [
+    {
+      "id": "webserver01",
+      "type": "host",
+      "label": "webserver01",
+      "attributes": {
+        "ip": "192.168.60.30",
+        "zone": "dmz"
+      }
+    },
+    {
+      "id": "c2server01",
+      "type": "host",
+      "label": "c2server01",
+      "attributes": {
+        "ip": "192.168.56.40",
+        "zone": "external"
+      }
+    },
+    {
+      "id": "other_6be59679763b82c21bfe3ba5",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_8deba53416186a3db21c2fd7",
+        "timestamp": "2026-09-10T15:38:56.735127+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "c2_ea71f84efd9850274d79e626",
+      "type": "c2",
+      "label": "192.168.56.40",
+      "attributes": {
+        "ip": "192.168.56.40",
+        "port": 8080,
+        "protocol": "tcp",
+        "status": "candidate",
+        "first_seen": "2026-09-10T15:38:56.735127+00:00",
+        "last_seen": "2026-09-10T15:42:16.733938+00:00",
+        "connected_hosts": [
+          "webserver01"
+        ],
+        "domains": [
+          "192.168.56.40:8080"
+        ],
+        "risk_score": 0.8999921894641834
+      }
+    },
+    {
+      "id": "other_c2c512dab82b90888ab344ca",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_e943d3928e1bd3af380de8ad",
+        "timestamp": "2026-09-10T15:38:56.736760+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "domain_8847a7394918608135d00bda",
+      "type": "domain",
+      "label": "192.168.56.40:8080",
+      "attributes": {}
+    },
+    {
+      "id": "other_28ca9a05f81837cdbf6d08d9",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_8d0e3d862cb8774bfbcd1e3e",
+        "timestamp": "2026-09-10T15:39:16.733523+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_532b04b058d6725d26bb7c50",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_3c08c659a2b9e0ff9f02103a",
+        "timestamp": "2026-09-10T15:39:16.734491+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_c23d6d5d2ed22d36f5c21ef1",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_afab96b1652ed8294a73b218",
+        "timestamp": "2026-09-10T15:39:36.734191+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_96377d41e674b9856e22c6b1",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_df8a61ec24f80f3801e89452",
+        "timestamp": "2026-09-10T15:39:36.735405+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_18de28c29396e44a7cf85e23",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_3372d908e873f2018ac308c8",
+        "timestamp": "2026-09-10T15:39:56.734128+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_9535311676de78a2328df1c1",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_069bb0951fce53ed2b89cfd4",
+        "timestamp": "2026-09-10T15:39:56.734704+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_e0a882df3eb3611f6d941eca",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_f6ed07b8623a61f679012790",
+        "timestamp": "2026-09-10T15:40:16.733570+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_0128500c5e8995325484473c",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_43390bdbb76d269eb758cb5f",
+        "timestamp": "2026-09-10T15:40:16.734264+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_1f2edd1066f1ef76e7e81a3f",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_a25e954b4e7d46b6c0e7e13c",
+        "timestamp": "2026-09-10T15:40:36.733527+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_b8d38ab3936d9f0c2b363dfd",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_4a1f42bc60babb8d88f87bda",
+        "timestamp": "2026-09-10T15:40:36.734194+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_f51d9f29308e02c6e83430ea",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_322661e62e2587128f78bb0a",
+        "timestamp": "2026-09-10T15:40:56.734677+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_e4d77fd76d3e1f5c6fe38053",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_98ee5e2016f5ff5ce1951516",
+        "timestamp": "2026-09-10T15:40:56.735303+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_fea5473c4884b3ed480e7d0c",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_de488f76961e981b7bb8cfca",
+        "timestamp": "2026-09-10T15:41:16.733477+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_381cdf1eb44fce70bf2a518a",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_7c8ec8fed034f65579cda0b3",
+        "timestamp": "2026-09-10T15:41:16.733890+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_d4bf1a9230eee1647be4e34e",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_0a695285198198a6081e9ae6",
+        "timestamp": "2026-09-10T15:41:36.733412+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_70961b462948030df9c017ce",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_ab88c628b59cf37c2d07aff3",
+        "timestamp": "2026-09-10T15:41:36.734100+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_65507512e159ce7ff732d273",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_07c5658c544f78b60b54f564",
+        "timestamp": "2026-09-10T15:41:56.733670+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_96bb107e722a6b99ddd7d0d8",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_51b941c8d8747303b210e20b",
+        "timestamp": "2026-09-10T15:41:56.734231+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_e16996a6f6209e71187e7a25",
+      "type": "other",
+      "label": "network_connect",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_335905984cb3869b37df770f",
+        "timestamp": "2026-09-10T15:42:16.733938+00:00",
+        "alert_ids": [
+          "alert_f63dbea4dbb3912584b917b6"
+        ],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    },
+    {
+      "id": "other_ff283ed577cfaa7ea3bdb0b8",
+      "type": "other",
+      "label": "http_request",
+      "attributes": {
+        "kind": "event",
+        "event_id": "evt_07ce792a0661a9a28d19c3c7",
+        "timestamp": "2026-09-10T15:42:16.734628+00:00",
+        "alert_ids": [],
+        "technique_ids": [],
+        "host_id": "webserver01"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_6b5dcac417239c1bcffe307e",
+      "source": "other_6be59679763b82c21bfe3ba5",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:38:56.735127+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_8deba53416186a3db21c2fd7"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_6bb4650471466943f8dee58f",
+      "source": "webserver01",
+      "target": "c2server01",
+      "relation": "network_connect",
+      "timestamp": "2026-09-10T15:38:56.735127+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07c5658c544f78b60b54f564",
+        "evt_0a695285198198a6081e9ae6",
+        "evt_322661e62e2587128f78bb0a",
+        "evt_335905984cb3869b37df770f",
+        "evt_3372d908e873f2018ac308c8",
+        "evt_8d0e3d862cb8774bfbcd1e3e",
+        "evt_8deba53416186a3db21c2fd7",
+        "evt_a25e954b4e7d46b6c0e7e13c",
+        "evt_afab96b1652ed8294a73b218",
+        "evt_de488f76961e981b7bb8cfca",
+        "evt_f6ed07b8623a61f679012790"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "network_connect",
+        "src_ip": "192.168.60.30",
+        "dst_ip": "192.168.56.40",
+        "protocol": "tcp",
+        "dst_port": 8080,
+        "observations": [
+          {
+            "timestamp": "2026-09-10T15:38:56.735127+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_8deba53416186a3db21c2fd7"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_44c94a37ebbad3c92cac478e",
+              "src_port": 51124,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:16.733523+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_8d0e3d862cb8774bfbcd1e3e"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_51dfabbcd8705f684cddbd4b",
+              "src_port": 60502,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:36.734191+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_afab96b1652ed8294a73b218"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_634f8538e89e11a76aca948d",
+              "src_port": 57140,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:56.734128+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_3372d908e873f2018ac308c8"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_f768e3356cee16f7d80a8d1c",
+              "src_port": 40500,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:16.733570+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_f6ed07b8623a61f679012790"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_0a536aaf91dd2b63bfa8f4d2",
+              "src_port": 55072,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:36.733527+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_a25e954b4e7d46b6c0e7e13c"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_7b65bb6c337da22199358c23",
+              "src_port": 33200,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:56.734677+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_322661e62e2587128f78bb0a"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_e30857c8b7c8a1f87db08a36",
+              "src_port": 60868,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:16.733477+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_de488f76961e981b7bb8cfca"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_c21d0d57803ad270be65e24e",
+              "src_port": 37980,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:36.733412+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_0a695285198198a6081e9ae6"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_75c6130e0f567c8b412c45d6",
+              "src_port": 49320,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:56.733670+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_07c5658c544f78b60b54f564"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_b78cd35c880e433d3a982124",
+              "src_port": 37658,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:42:16.733938+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_335905984cb3869b37df770f"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "network_connect",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_01236b700af700f4f12c725c",
+              "src_port": 44548,
+              "dst_port": 8080
+            }
+          }
+        ],
+        "observation_count": 11,
+        "first_seen": "2026-09-10T15:38:56.735127+00:00",
+        "last_seen": "2026-09-10T15:42:16.733938+00:00"
+      }
+    },
+    {
+      "id": "edge_de0eb384dac99ebc9b1b6940",
+      "source": "webserver01",
+      "target": "c2_ea71f84efd9850274d79e626",
+      "relation": "c2_communication",
+      "timestamp": "2026-09-10T15:38:56.735127+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07c5658c544f78b60b54f564",
+        "evt_0a695285198198a6081e9ae6",
+        "evt_322661e62e2587128f78bb0a",
+        "evt_335905984cb3869b37df770f",
+        "evt_3372d908e873f2018ac308c8",
+        "evt_8d0e3d862cb8774bfbcd1e3e",
+        "evt_8deba53416186a3db21c2fd7",
+        "evt_a25e954b4e7d46b6c0e7e13c",
+        "evt_afab96b1652ed8294a73b218",
+        "evt_de488f76961e981b7bb8cfca",
+        "evt_f6ed07b8623a61f679012790"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999921894641834,
+      "attributes": {
+        "kind": "suspected_beacon",
+        "observations": [
+          {
+            "timestamp": "2026-09-10T15:38:56.735127+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_8deba53416186a3db21c2fd7"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:16.733523+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_8d0e3d862cb8774bfbcd1e3e"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:36.734191+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_afab96b1652ed8294a73b218"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:56.734128+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_3372d908e873f2018ac308c8"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:16.733570+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_f6ed07b8623a61f679012790"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:36.733527+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_a25e954b4e7d46b6c0e7e13c"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:56.734677+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_322661e62e2587128f78bb0a"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:16.733477+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_de488f76961e981b7bb8cfca"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:36.733412+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_0a695285198198a6081e9ae6"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:56.733670+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_07c5658c544f78b60b54f564"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:42:16.733938+00:00",
+            "confidence": 0.8999921894641834,
+            "evidence_event_ids": [
+              "evt_335905984cb3869b37df770f"
+            ],
+            "evidence_alert_ids": [
+              "alert_f63dbea4dbb3912584b917b6"
+            ],
+            "attributes": {
+              "kind": "suspected_beacon"
+            }
+          }
+        ],
+        "observation_count": 11,
+        "first_seen": "2026-09-10T15:38:56.735127+00:00",
+        "last_seen": "2026-09-10T15:42:16.733938+00:00"
+      }
+    },
+    {
+      "id": "edge_407b38a9b3725160c1a9d451",
+      "source": "other_c2c512dab82b90888ab344ca",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:38:56.736760+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_e943d3928e1bd3af380de8ad"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_2bb4e952ecbd90b4867ed152",
+      "source": "webserver01",
+      "target": "c2server01",
+      "relation": "network_connect",
+      "timestamp": "2026-09-10T15:38:56.736760+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_069bb0951fce53ed2b89cfd4",
+        "evt_07ce792a0661a9a28d19c3c7",
+        "evt_3c08c659a2b9e0ff9f02103a",
+        "evt_43390bdbb76d269eb758cb5f",
+        "evt_4a1f42bc60babb8d88f87bda",
+        "evt_51b941c8d8747303b210e20b",
+        "evt_7c8ec8fed034f65579cda0b3",
+        "evt_98ee5e2016f5ff5ce1951516",
+        "evt_ab88c628b59cf37c2d07aff3",
+        "evt_df8a61ec24f80f3801e89452",
+        "evt_e943d3928e1bd3af380de8ad"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "http_request",
+        "src_ip": "192.168.60.30",
+        "dst_ip": "192.168.56.40",
+        "protocol": "tcp",
+        "dst_port": 8080,
+        "observations": [
+          {
+            "timestamp": "2026-09-10T15:38:56.736760+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_e943d3928e1bd3af380de8ad"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_44c94a37ebbad3c92cac478e",
+              "src_port": 51124,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:16.734491+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_3c08c659a2b9e0ff9f02103a"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_51dfabbcd8705f684cddbd4b",
+              "src_port": 60502,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:36.735405+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_df8a61ec24f80f3801e89452"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_634f8538e89e11a76aca948d",
+              "src_port": 57140,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:56.734704+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_069bb0951fce53ed2b89cfd4"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_f768e3356cee16f7d80a8d1c",
+              "src_port": 40500,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:16.734264+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_43390bdbb76d269eb758cb5f"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_0a536aaf91dd2b63bfa8f4d2",
+              "src_port": 55072,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:36.734194+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_4a1f42bc60babb8d88f87bda"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_7b65bb6c337da22199358c23",
+              "src_port": 33200,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:56.735303+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_98ee5e2016f5ff5ce1951516"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_e30857c8b7c8a1f87db08a36",
+              "src_port": 60868,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:16.733890+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_7c8ec8fed034f65579cda0b3"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_c21d0d57803ad270be65e24e",
+              "src_port": 37980,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:36.734100+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_ab88c628b59cf37c2d07aff3"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_75c6130e0f567c8b412c45d6",
+              "src_port": 49320,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:56.734231+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_51b941c8d8747303b210e20b"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_b78cd35c880e433d3a982124",
+              "src_port": 37658,
+              "dst_port": 8080
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:42:16.734628+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_07ce792a0661a9a28d19c3c7"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_request",
+              "src_ip": "192.168.60.30",
+              "dst_ip": "192.168.56.40",
+              "protocol": "tcp",
+              "session_id": "sess_01236b700af700f4f12c725c",
+              "src_port": 44548,
+              "dst_port": 8080
+            }
+          }
+        ],
+        "observation_count": 11,
+        "first_seen": "2026-09-10T15:38:56.736760+00:00",
+        "last_seen": "2026-09-10T15:42:16.734628+00:00"
+      }
+    },
+    {
+      "id": "edge_90120f78c5f8cdce756406f2",
+      "source": "webserver01",
+      "target": "domain_8847a7394918608135d00bda",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:38:56.736760+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_069bb0951fce53ed2b89cfd4",
+        "evt_07ce792a0661a9a28d19c3c7",
+        "evt_3c08c659a2b9e0ff9f02103a",
+        "evt_43390bdbb76d269eb758cb5f",
+        "evt_4a1f42bc60babb8d88f87bda",
+        "evt_51b941c8d8747303b210e20b",
+        "evt_7c8ec8fed034f65579cda0b3",
+        "evt_98ee5e2016f5ff5ce1951516",
+        "evt_ab88c628b59cf37c2d07aff3",
+        "evt_df8a61ec24f80f3801e89452",
+        "evt_e943d3928e1bd3af380de8ad"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "http_host",
+        "observations": [
+          {
+            "timestamp": "2026-09-10T15:38:56.736760+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_e943d3928e1bd3af380de8ad"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:16.734491+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_3c08c659a2b9e0ff9f02103a"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:36.735405+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_df8a61ec24f80f3801e89452"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:39:56.734704+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_069bb0951fce53ed2b89cfd4"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:16.734264+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_43390bdbb76d269eb758cb5f"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:36.734194+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_4a1f42bc60babb8d88f87bda"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:40:56.735303+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_98ee5e2016f5ff5ce1951516"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:16.733890+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_7c8ec8fed034f65579cda0b3"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:36.734100+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_ab88c628b59cf37c2d07aff3"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:41:56.734231+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_51b941c8d8747303b210e20b"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          },
+          {
+            "timestamp": "2026-09-10T15:42:16.734628+00:00",
+            "confidence": 1.0,
+            "evidence_event_ids": [
+              "evt_07ce792a0661a9a28d19c3c7"
+            ],
+            "evidence_alert_ids": [],
+            "attributes": {
+              "kind": "http_host"
+            }
+          }
+        ],
+        "observation_count": 11,
+        "first_seen": "2026-09-10T15:38:56.736760+00:00",
+        "last_seen": "2026-09-10T15:42:16.734628+00:00"
+      }
+    },
+    {
+      "id": "edge_0bfecda3dc18793115a7a74b",
+      "source": "other_28ca9a05f81837cdbf6d08d9",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:16.733523+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_8d0e3d862cb8774bfbcd1e3e"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_1510e17e77d83f93b6661304",
+      "source": "other_532b04b058d6725d26bb7c50",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:16.734491+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_3c08c659a2b9e0ff9f02103a"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_0f4b75ba6ca2200ca054b63e",
+      "source": "other_c23d6d5d2ed22d36f5c21ef1",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:36.734191+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_afab96b1652ed8294a73b218"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_f1ef74d6c52a5ff98f160abd",
+      "source": "other_96377d41e674b9856e22c6b1",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:36.735405+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_df8a61ec24f80f3801e89452"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_a8250681f771ea0e6241c434",
+      "source": "other_18de28c29396e44a7cf85e23",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:56.734128+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_3372d908e873f2018ac308c8"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_e97c261fb76f8247b25e829d",
+      "source": "other_9535311676de78a2328df1c1",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:56.734704+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_069bb0951fce53ed2b89cfd4"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_8b48d1862bf2447034e824df",
+      "source": "other_e0a882df3eb3611f6d941eca",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:16.733570+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_f6ed07b8623a61f679012790"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_604e2122a1e917e8cdb0486c",
+      "source": "other_0128500c5e8995325484473c",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:16.734264+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_43390bdbb76d269eb758cb5f"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_9812a86f12ac0e265bad5027",
+      "source": "other_1f2edd1066f1ef76e7e81a3f",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:36.733527+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_a25e954b4e7d46b6c0e7e13c"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_d4ebcb28e236869b7ad34530",
+      "source": "other_b8d38ab3936d9f0c2b363dfd",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:36.734194+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_4a1f42bc60babb8d88f87bda"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_2a676afa819963efba72f4e9",
+      "source": "other_f51d9f29308e02c6e83430ea",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:56.734677+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_322661e62e2587128f78bb0a"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_f010d3252cd6af3be34b7be3",
+      "source": "other_e4d77fd76d3e1f5c6fe38053",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:56.735303+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_98ee5e2016f5ff5ce1951516"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_7a084852bb36dd90b1cd8b17",
+      "source": "other_fea5473c4884b3ed480e7d0c",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:16.733477+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_de488f76961e981b7bb8cfca"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_5bd330fd10c6bd552babdea3",
+      "source": "other_381cdf1eb44fce70bf2a518a",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:16.733890+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_7c8ec8fed034f65579cda0b3"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_d1801e9b07379b852fbcc9a9",
+      "source": "other_d4bf1a9230eee1647be4e34e",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:36.733412+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_0a695285198198a6081e9ae6"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_6de9bb706d462e1f9c3d5a36",
+      "source": "other_70961b462948030df9c017ce",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:36.734100+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_ab88c628b59cf37c2d07aff3"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_ccf5f3bf675d9c2b9cea8185",
+      "source": "other_65507512e159ce7ff732d273",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:56.733670+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07c5658c544f78b60b54f564"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_edc818208fce876ddae95350",
+      "source": "other_96bb107e722a6b99ddd7d0d8",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:56.734231+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_51b941c8d8747303b210e20b"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_5e2bdc0c9e27be32d567af27",
+      "source": "other_e16996a6f6209e71187e7a25",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:42:16.733938+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_335905984cb3869b37df770f"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_5e703d46acdff32653bc1966",
+      "source": "other_ff283ed577cfaa7ea3bdb0b8",
+      "target": "webserver01",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:42:16.734628+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07ce792a0661a9a28d19c3c7"
+      ],
+      "evidence_alert_ids": [],
+      "confidence": 1.0,
+      "attributes": {
+        "kind": "observed_on"
+      }
+    },
+    {
+      "id": "edge_7b3f33341ad9f026de0e4760",
+      "source": "other_6be59679763b82c21bfe3ba5",
+      "target": "other_c2c512dab82b90888ab344ca",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:38:56.736760+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_8deba53416186a3db21c2fd7",
+        "evt_e943d3928e1bd3af380de8ad"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999998185634613,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0016329288482666016,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_940996b1ac19371cd318113f",
+      "source": "other_28ca9a05f81837cdbf6d08d9",
+      "target": "other_532b04b058d6725d26bb7c50",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:16.734491+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_3c08c659a2b9e0ff9f02103a",
+        "evt_8d0e3d862cb8774bfbcd1e3e"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.899999892420239,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0009682178497314453,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_db6a87b33e9269600c3db324",
+      "source": "other_c23d6d5d2ed22d36f5c21ef1",
+      "target": "other_96377d41e674b9856e22c6b1",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:36.735405+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_afab96b1652ed8294a73b218",
+        "evt_df8a61ec24f80f3801e89452"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999998651080662,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0012140274047851562,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_008ba1ac1cd348803e538f27",
+      "source": "other_18de28c29396e44a7cf85e23",
+      "target": "other_9535311676de78a2328df1c1",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:39:56.734704+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_069bb0951fce53ed2b89cfd4",
+        "evt_3372d908e873f2018ac308c8"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.899999935997857,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.000576019287109375,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_711c2b31ba4c1e5d1e067a43",
+      "source": "other_e0a882df3eb3611f6d941eca",
+      "target": "other_0128500c5e8995325484473c",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:16.734264+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_43390bdbb76d269eb758cb5f",
+        "evt_f6ed07b8623a61f679012790"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999229113261,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0006937980651855469,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_437a5eeb5a589155f46ab9ca",
+      "source": "other_1f2edd1066f1ef76e7e81a3f",
+      "target": "other_b8d38ab3936d9f0c2b363dfd",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:36.734194+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_4a1f42bc60babb8d88f87bda",
+        "evt_a25e954b4e7d46b6c0e7e13c"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999258783129,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0006670951843261719,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_cd4ca559283c47a32be70ff6",
+      "source": "other_f51d9f29308e02c6e83430ea",
+      "target": "other_e4d77fd76d3e1f5c6fe38053",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:40:56.735303+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_322661e62e2587128f78bb0a",
+        "evt_98ee5e2016f5ff5ce1951516"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999304612478,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0006258487701416016,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_4d0fb0b887e271fd45bf67e4",
+      "source": "other_fea5473c4884b3ed480e7d0c",
+      "target": "other_381cdf1eb44fce70bf2a518a",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:16.733890+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_7c8ec8fed034f65579cda0b3",
+        "evt_de488f76961e981b7bb8cfca"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999541176691,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.00041294097900390625,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_aa824206375bc0a5631839f6",
+      "source": "other_d4bf1a9230eee1647be4e34e",
+      "target": "other_70961b462948030df9c017ce",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:36.734100+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_0a695285198198a6081e9ae6",
+        "evt_ab88c628b59cf37c2d07aff3"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.899999923547109,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0006880760192871094,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_20195091243afaec32cf7b70",
+      "source": "other_65507512e159ce7ff732d273",
+      "target": "other_96bb107e722a6b99ddd7d0d8",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:41:56.734231+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07c5658c544f78b60b54f564",
+        "evt_51b941c8d8747303b210e20b"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999376667871,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0005609989166259766,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    },
+    {
+      "id": "edge_77b2b179fd373bf00d2d59ab",
+      "source": "other_e16996a6f6209e71187e7a25",
+      "target": "other_ff283ed577cfaa7ea3bdb0b8",
+      "relation": "related_to",
+      "timestamp": "2026-09-10T15:42:16.734628+00:00",
+      "technique_id": null,
+      "evidence_event_ids": [
+        "evt_07ce792a0661a9a28d19c3c7",
+        "evt_335905984cb3869b37df770f"
+      ],
+      "evidence_alert_ids": [
+        "alert_f63dbea4dbb3912584b917b6"
+      ],
+      "confidence": 0.8999999233351814,
+      "attributes": {
+        "kind": "event_correlation",
+        "reasons": [
+          "same_zeek_session"
+        ],
+        "time_delta_seconds": 0.0006899833679199219,
+        "interpretation": "candidate_link_not_proof_of_same_attacker"
+      }
+    }
+  ]
+}

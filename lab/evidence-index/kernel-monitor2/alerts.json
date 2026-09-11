@@ -1,0 +1,108 @@
+[
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_c78de68c2d8dfca184a17ee3",
+    "task_id": "task_kernel-monitor-20260910T183000Z",
+    "timestamp_start": "2026-09-10T01:10:30.075769+00:00",
+    "timestamp_end": "2026-09-11T02:11:17.751107+08:00",
+    "event_ids": [
+      "evt_0c97ce9957039adc92cccbab",
+      "evt_1b41fc64479536c844116652",
+      "evt_1f10b60a32f46e04022580cf",
+      "evt_1f99075fe9ab81e9eda334cb",
+      "evt_2f326afa95aa00b3f2c5177e",
+      "evt_31e82a2ea6278286f2d828f1",
+      "evt_39b0d44bc7eeb1bc56a02bcc",
+      "evt_3f45a125bbf3b5c9f4980fd1",
+      "evt_46817a35568b79f652a8c943",
+      "evt_470e409918f907b42d941e3d",
+      "evt_5a80389614598301c37d25aa",
+      "evt_5f83c54efd0543793e803381",
+      "evt_69194f6f1ca611f8606733f6",
+      "evt_6b49e05221c9195e67984431",
+      "evt_70b56486aa1ea76e7fd64895",
+      "evt_810dfd16ef9f0417da86321b",
+      "evt_a0dde576132359e1cb9c7bcd",
+      "evt_a819d0eba0de2bb1580d84a6",
+      "evt_a944407e54d807451b002a68",
+      "evt_ae44f97de01e8aad0c0af94c",
+      "evt_bd2b41af3b2dd6d2fbd5bf6e",
+      "evt_ccb313d4608fda8945fa79df",
+      "evt_d7b4ced744c657b1285fe53d",
+      "evt_fb18281e008d8959ed4c5225"
+    ],
+    "host_ids": [
+      "webserver01"
+    ],
+    "severity": "medium",
+    "rule_id": "HOST-LINUX-SUDO-TO-ROOT",
+    "rule_name": "Sudo command targeting root from a non-root account",
+    "description": "Sudo command targeting root from a non-root account; requires analyst verification Authorized administration also looks like this; review the caller and command.",
+    "mitre": {
+      "tactic": "privilege-escalation",
+      "technique_id": "T1548",
+      "technique_name": "Sudo and Sudo Caching",
+      "subtechnique_id": "T1548.003"
+    },
+    "confidence": 0.6,
+    "evidence_summary": "{\"host_id\": \"webserver01\", \"callers\": [\"labadmin\"], \"sudo_events\": 24, \"reason\": \"sudo_command_targets_root\", \"execution_success_proven\": false, \"sample_count\": 24, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_5247044d2e25eeda58f8a680",
+    "task_id": "task_kernel-monitor-20260910T183000Z",
+    "timestamp_start": "2026-09-10T18:11:05.425000+00:00",
+    "timestamp_end": "2026-09-10T18:11:05.492000+00:00",
+    "event_ids": [
+      "evt_0991b2352fbcc1b564fd8161",
+      "evt_5cea6aa43af9f2186d94cb36",
+      "evt_78ba584a496336e8c8abae72"
+    ],
+    "host_ids": [
+      "webserver01"
+    ],
+    "severity": "medium",
+    "rule_id": "HOST-LINUX-SENSITIVE-FILE-ACCESS",
+    "rule_name": "Sensitive credential file accessed on a monitored host",
+    "description": "Sensitive credential file accessed on a monitored host; requires analyst verification Backups and configuration management also read these files.",
+    "mitre": {
+      "tactic": "collection",
+      "technique_id": "T1005",
+      "technique_name": "Data from Local System",
+      "subtechnique_id": null
+    },
+    "confidence": 0.6,
+    "evidence_summary": "{\"host_id\": \"webserver01\", \"path\": \"/etc/shadow\", \"access_events\": 3, \"processes\": [\"python3\", \"sudo\"], \"reason\": \"credential_or_privilege_file_accessed\", \"read_success_proven\": false, \"sample_count\": 3, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  },
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_d9139fd28cfde2db614c2992",
+    "task_id": "task_kernel-monitor-20260910T183000Z",
+    "timestamp_start": "2026-09-10T18:11:05.458000+00:00",
+    "timestamp_end": "2026-09-10T18:11:05.458000+00:00",
+    "event_ids": [
+      "evt_a27704945eecc00b0b42afe1"
+    ],
+    "host_ids": [
+      "webserver01"
+    ],
+    "severity": "medium",
+    "rule_id": "HOST-LINUX-SENSITIVE-FILE-ACCESS",
+    "rule_name": "Sensitive credential file accessed on a monitored host",
+    "description": "Sensitive credential file accessed on a monitored host; requires analyst verification Backups and configuration management also read these files.",
+    "mitre": {
+      "tactic": "collection",
+      "technique_id": "T1005",
+      "technique_name": "Data from Local System",
+      "subtechnique_id": null
+    },
+    "confidence": 0.6,
+    "evidence_summary": "{\"host_id\": \"webserver01\", \"path\": \"/etc/sudoers\", \"access_events\": 1, \"processes\": [\"sudo\"], \"reason\": \"credential_or_privilege_file_accessed\", \"read_success_proven\": false, \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  }
+]

@@ -1,31 +1,103 @@
+"""Single-process local evidence API. No implicit demonstration data."""
+from contextlib import asynccontextmanager
 from pathlib import Path
+from threading import RLock
 import json
+import logging
+import os
+import tempfile
 from typing import List
 
 from fastapi import FastAPI, HTTPException
-
-from common.models import (
-    Alert,
-    AttackGraph,
-    NormalizedEvent,
-    TaskStatus,
-    TraceResult,
-)
-
-ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "testdata"
-
-app = FastAPI(
-    title="Attack Trace System API",
-    version="0.1.0",
-    description="统一接口骨架。当前读取 Mock 数据，便于十人并行开发和联调。",
-)
+from common.models import NormalizedEvent
+from common.time_utils import now_iso
+from correlation.pipeline import analyze
 
 _event_store: List[NormalizedEvent] = []
+_alert_store = {}
+_graph_store = {}
+_trace_store = {}
+_task_store = {}
+_lock = RLock()
 
 
-def load_json(name: str):
-    return json.loads((DATA / name).read_text(encoding="utf-8"))
+def _storage_path():
+    value = os.environ.get("ATS_EVENTS_FILE")
+    return Path(value).resolve() if value else None
+
+
+def _persist(events):
+    path = _storage_path()
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    name = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         suffix=".tmp", delete=False) as stream:
+            name = stream.name
+            json.dump([e.model_dump(mode="json") for e in events], stream, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(name, path)
+    finally:
+        if name and os.path.exists(name):
+            os.unlink(name)
+
+
+@asynccontextmanager
+async def lifespan(app):
+    path = _storage_path()
+    if path is not None:
+        # ATS_EVENTS_FILE doubles as the persistent store: every accepted batch
+        # rewrites it atomically. Point it at a store file, never at an importer
+        # output you want to keep.
+        logging.getLogger("uvicorn.error").info(
+            "证据存储：%s（每次接受新事件后会整体重写，请勿直接指向原始证据或导入产物）", path)
+    if path and path.exists():
+        events = [NormalizedEvent.model_validate(x) for x in json.loads(path.read_text(encoding="utf-8"))]
+        with _lock:
+            for store in (_event_store, _alert_store, _graph_store, _trace_store, _task_store):
+                store.clear()
+            _ingest(events, persist=False)
+    yield
+
+
+app = FastAPI(title="Attack Trace System API", version="0.3.0", lifespan=lifespan)
+
+
+def _ingest(events, *, persist=True):
+    existing = {event.event_id: event for event in _event_store}
+    touched = set()
+    accepted = 0
+    for event in events:
+        if event.event_id in existing:
+            if existing[event.event_id] != event:
+                raise HTTPException(409, detail=f"conflicting event_id: {event.event_id}")
+            continue
+        existing[event.event_id] = event
+        touched.add(event.task_id)
+        accepted += 1
+    staged = list(existing.values())
+    results = {}
+    try:
+        for task_id in sorted(touched):
+            results[task_id] = analyze(task_id, [e for e in staged if e.task_id == task_id])
+        if accepted and persist:
+            _persist(staged)
+    except Exception as exc:
+        raise HTTPException(500, detail="Analysis or persistence failed; batch was not committed.") from exc
+    # Publish only after every task and the durable write have succeeded.
+    _event_store[:] = staged
+    for task_id, (_, alerts, graph, trace) in results.items():
+        _alert_store[task_id] = alerts
+        _graph_store[task_id] = graph
+        _trace_store[task_id] = trace
+        _task_store[task_id] = dict(schema_version="1.0", task_id=task_id, status="completed",
+            stage="trace_complete", progress=100, message="Evidence analysis completed; findings are candidates.",
+            created_at=_task_store.get(task_id, {}).get("created_at", now_iso()), updated_at=now_iso())
+    return {"code": 0, "message": "ok", "data": {
+        "accepted": accepted, "total": len(staged), "tasks_processed": sorted(touched)}}
 
 
 @app.get("/api/health")
@@ -35,45 +107,49 @@ def health():
 
 @app.post("/api/events")
 def ingest_events(events: List[NormalizedEvent]):
-    _event_store.extend(events)
-    return {
-        "code": 0,
-        "message": "ok",
-        "data": {"accepted": len(events), "total": len(_event_store)},
-    }
+    with _lock:
+        return _ingest(events)
 
 
 @app.get("/api/events")
 def get_events():
-    data = _event_store or [NormalizedEvent.model_validate(x) for x in load_json("normalized_events.json")]
-    return {"code": 0, "message": "ok", "data": [x.model_dump(mode="json") for x in data]}
+    with _lock:
+        return {"code": 0, "message": "ok", "data": [e.model_dump(mode="json") for e in _event_store]}
 
 
 @app.get("/api/alerts")
 def get_alerts():
-    data = [Alert.model_validate(x) for x in load_json("alerts.json")]
-    return {"code": 0, "message": "ok", "data": [x.model_dump(mode="json") for x in data]}
+    with _lock:
+        return {"code": 0, "message": "ok", "data": [a.model_dump(mode="json") for batch in _alert_store.values() for a in batch]}
+
+
+def _get(store, task_id):
+    with _lock:
+        if task_id not in store:
+            raise HTTPException(404, detail="task not found")
+        value = store[task_id]
+        return {"code": 0, "message": "ok", "data": value if isinstance(value, dict) else value.model_dump(mode="json")}
 
 
 @app.get("/api/attack-graph/{task_id}")
 def get_attack_graph(task_id: str):
-    graph = AttackGraph.model_validate(load_json("attack_graph.json"))
-    if graph.task_id != task_id:
-        raise HTTPException(status_code=404, detail="task not found")
-    return {"code": 0, "message": "ok", "data": graph.model_dump(mode="json")}
+    return _get(_graph_store, task_id)
 
 
 @app.get("/api/trace/{task_id}")
 def get_trace(task_id: str):
-    trace = TraceResult.model_validate(load_json("trace_result.json"))
-    if trace.task_id != task_id:
-        raise HTTPException(status_code=404, detail="task not found")
-    return {"code": 0, "message": "ok", "data": trace.model_dump(mode="json")}
+    response = _get(_trace_store, task_id)
+    review_path = os.environ.get('ATS_LLM_REVIEW_FILE')
+    if review_path:
+        from agents.deepseek import load_review
+        with _lock:
+            baseline = _trace_store[task_id]
+            events = [e for e in _event_store if e.task_id == task_id]
+            result = load_review(review_path, events, baseline)
+            response['data'] = result.model_dump(mode='json')
+    return response
 
 
 @app.get("/api/tasks/{task_id}")
 def get_task(task_id: str):
-    task = TaskStatus.model_validate(load_json("task_status.json"))
-    if task.task_id != task_id:
-        raise HTTPException(status_code=404, detail="task not found")
-    return {"code": 0, "message": "ok", "data": task.model_dump(mode="json")}
+    return _get(_task_store, task_id)

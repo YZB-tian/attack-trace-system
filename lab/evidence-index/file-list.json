@@ -1,0 +1,267 @@
+[
+  {
+    "file": "beacon-20260910T153854Z/alerts.json",
+    "mb": 0.001,
+    "sha256": "37502c03204167f742b3ab10b0e245bb4869e8169077093b889f9dbcfd584cd4"
+  },
+  {
+    "file": "beacon-20260910T153854Z/attack_graph.json",
+    "mb": 0.054,
+    "sha256": "5f79bb87cf39562b3d4d395e0b11592e720f3d1199976025a727dc5ede150ae2"
+  },
+  {
+    "file": "beacon-20260910T153854Z/normalized_events.json",
+    "mb": 0.062,
+    "sha256": "d89943669b9f4e6030308d4569302b95fa98ffbb7b21a252296d7685ca0918cd"
+  },
+  {
+    "file": "beacon-20260910T153854Z/trace_result.json",
+    "mb": 0.003,
+    "sha256": "1dc9633f1ac8087456fd6b1c00b5ca344c56f333ba8528e8e710228accde86bc"
+  },
+  {
+    "file": "combined-store/events.json",
+    "mb": 9.332,
+    "sha256": "316ab068e01ce2f0e49f5304b9897f5b9f69d40005f5e6eb24007bb14994609c"
+  },
+  {
+    "file": "covert-negative/alerts.json",
+    "mb": 0.0,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  {
+    "file": "covert-negative/attack_graph.json",
+    "mb": 3.174,
+    "sha256": "8cef29ba13ce0953c2c980ab5eb13e9efec4d6bac2e2b0ba65c43c1c428f752f"
+  },
+  {
+    "file": "covert-negative/normalized_events.json",
+    "mb": 0.492,
+    "sha256": "cbeb5922d02508cb568a38bd4210289ff052ece07a116f9c4106e0ae18de6f9d"
+  },
+  {
+    "file": "covert-negative/trace_result.json",
+    "mb": 0.01,
+    "sha256": "4e96710c1255cb9759aa3fc0b7ad02cae7e6b3c823e7b71894be63da35694ac0"
+  },
+  {
+    "file": "covert-positive/alerts.json",
+    "mb": 0.03,
+    "sha256": "f7c32d2e11b4d64fee03d65d4b11e3294c83cae44eaf0fb67dce2ae1f098474b"
+  },
+  {
+    "file": "covert-positive/normalized_events.json",
+    "mb": 1.486,
+    "sha256": "91737575d73c0de26de11afc55d56e02ad51ab1bd5d776250d89a88c7f0b5af8"
+  },
+  {
+    "file": "covert-positive/trace_result.json",
+    "mb": 0.072,
+    "sha256": "865f5f03a258bf1856b357a8035fcf9a3c8855edc88b51a49ae93e831ef4a1ad"
+  },
+  {
+    "file": "evidence-manifests/exploit-chain-20260910T170757Z_raw_exploit-chain-20260910T170757Z-package_manifest.sha256",
+    "mb": 0.003,
+    "sha256": "ba1ec1ac27a5c6131acfe0bc6aff305ae2dd493e64706d41f1968331f149459f"
+  },
+  {
+    "file": "evidence-manifests/exploit-chain-20260910T170757Z_raw_exploit-chain-20260910T170757Z-zeeklogs_manifest.sha256",
+    "mb": 0.001,
+    "sha256": "4ac2c56be327aff21a44459cf91383f96772583c6a85dfba9ecf27cdadc6f94f"
+  },
+  {
+    "file": "evidence-manifests/exploit-chain-20260911T044921Z_raw_exploit-chain-20260911T044921Z-package_manifest.sha256",
+    "mb": 0.002,
+    "sha256": "695211a4c224323f12cb0b9d9dd3fda728352f4c2fbcc259582e3bfbf4eeda84"
+  },
+  {
+    "file": "evidence-manifests/kernel-monitor-20260910T181500Z_raw_manifest.sha256",
+    "mb": 0.001,
+    "sha256": "2f19a9c04a28704bea459d0921475a376cb4dbebede10791046969ea09548ba6"
+  },
+  {
+    "file": "evidence-manifests/kernel-monitor-20260910T183000Z_raw_manifest.sha256",
+    "mb": 0.0,
+    "sha256": "860a5e3868722254285c61d6c536d43dfe18d869d3665ffb715971c0304e7147"
+  },
+  {
+    "file": "exploit-chain-c2-window/alerts.json",
+    "mb": 0.003,
+    "sha256": "180df9dc1c0ffcbbba94b2ea2ca0b3669f46f30e0bf930219dc18c5660d86dd4"
+  },
+  {
+    "file": "exploit-chain-c2-window/attack_graph.json",
+    "mb": 0.092,
+    "sha256": "af71bb30e0f72d385784895842add032150b374e090803299a3bb4f6d32613d6"
+  },
+  {
+    "file": "exploit-chain-c2-window/normalized_events.json",
+    "mb": 0.083,
+    "sha256": "b98a27578f2e2b777ddc6a3cd44f50778d3b6ec8b0bd8c7e33ffbfdf511cde21"
+  },
+  {
+    "file": "exploit-chain-c2-window/trace_result.json",
+    "mb": 0.005,
+    "sha256": "10cc6fb412868c6a607d329d42125ab6848989b2a2d7cc7f4d8a0a0455bef555"
+  },
+  {
+    "file": "exploit-chain/alerts.json",
+    "mb": 0.009,
+    "sha256": "d00cb65d7a885d9396e54ede5fb09b578e688c324d590bdf02f490811c6a26f1"
+  },
+  {
+    "file": "exploit-chain/attack_graph.json",
+    "mb": 1.073,
+    "sha256": "51924a39b73a3d8ed1f0ae6dd8d18a77c797cafc0200f73eef167dae9d38d383"
+  },
+  {
+    "file": "exploit-chain/normalized_events.json",
+    "mb": 0.977,
+    "sha256": "8022df48930a3cc3bfd4ebc116e0ad0299a8ea598732af2be854c35fb109e37d"
+  },
+  {
+    "file": "exploit-chain/trace_result.json",
+    "mb": 0.039,
+    "sha256": "76e92476e06d775513a2ba8074decb275c7f8a7131a49b9543d4a6efa6f4a232"
+  },
+  {
+    "file": "exploit-chain2-c2window/alerts.json",
+    "mb": 0.004,
+    "sha256": "d5f8977809b2464071451c422d1ef5d286e9d9790d5056b8374f54ccf9bb1576"
+  },
+  {
+    "file": "exploit-chain2-c2window/attack_graph.json",
+    "mb": 0.188,
+    "sha256": "d6c11cedefd442a83ade5108ef2dd1fce1ce1b4c6cd7256f905d7623045c9aa9"
+  },
+  {
+    "file": "exploit-chain2-c2window/normalized_events.json",
+    "mb": 0.164,
+    "sha256": "c69491391e044293a6f2b995141672e55bc2aa6fc433cc1fd26ba1605113c641"
+  },
+  {
+    "file": "exploit-chain2-c2window/trace_result.json",
+    "mb": 0.009,
+    "sha256": "a9a892c4953acf6d84593eb1fa157858e42d060b918cb619de8f7224583b4553"
+  },
+  {
+    "file": "exploit-chain2/alerts.json",
+    "mb": 0.01,
+    "sha256": "ae749160a15e80a32b933980ae36c95a21747ceae09e4faf64a0fe1a01e864ad"
+  },
+  {
+    "file": "exploit-chain2/attack_graph.json",
+    "mb": 1.401,
+    "sha256": "3477360794d4f624593b82402a35e90a6127ca586dc6bb810512c6bd5646661f"
+  },
+  {
+    "file": "exploit-chain2/normalized_events.json",
+    "mb": 4.058,
+    "sha256": "8f9a014f8c19103b8f87dbec631f004a8cb23a3e799a6b5fe0d9b0f87ebf0b95"
+  },
+  {
+    "file": "exploit-chain2/trace_result.json",
+    "mb": 0.042,
+    "sha256": "18a591b5f5e4d5c1d41ad6feae2e1027d912aad14c40734b5fad04dc487b371a"
+  },
+  {
+    "file": "kernel-monitor/alerts.json",
+    "mb": 0.004,
+    "sha256": "f9f10698e648a1d6621c4fbf2227353ddd2eb48fbbf21bc929ea62691d55ea3a"
+  },
+  {
+    "file": "kernel-monitor/attack_graph.json",
+    "mb": 4.028,
+    "sha256": "e7e37060eb6ad5a66212dde73cf51bcce11fa9c1c1c3828a6bb5808c673ea7cd"
+  },
+  {
+    "file": "kernel-monitor/normalized_events.json",
+    "mb": 1.384,
+    "sha256": "5c9d55da1c157bd4eb30f55ce69b94c2904d4ef4d0a66c8e2419a0e6c27109eb"
+  },
+  {
+    "file": "kernel-monitor/trace_result.json",
+    "mb": 0.061,
+    "sha256": "87c683fae07c656ba8a09956b0c4664cf49ec25580068b6dc9b6745750940921"
+  },
+  {
+    "file": "kernel-monitor2/alerts.json",
+    "mb": 0.005,
+    "sha256": "f2c27ed4d65247f9954d15a349d53cf96712dd71449a97a28dd332bc94370c89"
+  },
+  {
+    "file": "kernel-monitor2/normalized_events.json",
+    "mb": 1.159,
+    "sha256": "2f1c33267c2424fbbf06a3c45de97c9509e516128ea6d8727fefe911fa90f9f9"
+  },
+  {
+    "file": "kernel-monitor2/trace_result.json",
+    "mb": 0.122,
+    "sha256": "c8f5e44982a907dab8cfa7fdaa16c736586200a5eea9c93a7b3079ebc648e0f3"
+  },
+  {
+    "file": "lab/normalized_events.json",
+    "mb": 1.012,
+    "sha256": "c30f076feeeb3d19e6abf107f0c8ed5963d77295817ca7fbeb607033149579c3"
+  },
+  {
+    "file": "memory-injection/alerts.json",
+    "mb": 0.001,
+    "sha256": "7d5fe0b9cf2b53c73c8217813ea1e9a070d667091baf2b9e3322cd02daf49c44"
+  },
+  {
+    "file": "memory-injection/attack_graph.json",
+    "mb": 0.064,
+    "sha256": "0cbb16217f1b408fa4bbf09ef53272051060e6ba7d33230eb06fbf28fbd136c7"
+  },
+  {
+    "file": "memory-injection/normalized_events.json",
+    "mb": 0.151,
+    "sha256": "86804ce8539d834161029e7fff373bb3e14fbe0465cd7ade325d63e0687f2e97"
+  },
+  {
+    "file": "memory-injection/trace_result.json",
+    "mb": 0.006,
+    "sha256": "912da4d48285d88b01d09f251c283503f96aaf161bdcb55d9f4463d3e52623df"
+  },
+  {
+    "file": "network-zeek-live/conn.log",
+    "mb": 7.248,
+    "sha256": "7f06b455269326e0ac32e6d4772d51323b26d64c15defbe75c7da579977363af"
+  },
+  {
+    "file": "network-zeek-live/dns.log",
+    "mb": 0.09,
+    "sha256": "9fc35afdcb90c1d64bfc0a1a805bd361c7909d542359019699974d25e68ffac8"
+  },
+  {
+    "file": "network-zeek-live/http.log",
+    "mb": 0.024,
+    "sha256": "c1eeaac90f95ef6be149dd489ad725ea9c25232aa150821fb7a2ad516cd86aeb"
+  },
+  {
+    "file": "network-zeek-live/irc.log",
+    "mb": 0.002,
+    "sha256": "e5e6da6ed70ffc50ca7318516503b1b6d9a8589b999d548158cbd8937ef206c8"
+  },
+  {
+    "file": "network-zeek-live/ssh.log",
+    "mb": 0.017,
+    "sha256": "39e80f3e79b6bbb756c63e301b67aa76f6f635634d1954530af28af95d964192"
+  },
+  {
+    "file": "public-apt29/alerts.json",
+    "mb": 0.01,
+    "sha256": "4e8719b28eeb5996798f88daf7bfa746d480a9c7b689f371af56712be0dccb35"
+  },
+  {
+    "file": "public-apt29/report.json",
+    "mb": 0.001,
+    "sha256": "337c0d62cf3ed73029adade92e4858d6a6819969d7e4ea1ae243209f3636846c"
+  },
+  {
+    "file": "README.md",
+    "mb": 0.003,
+    "sha256": "65757964d5271cff3fa0c16930bcee4c7f847f9263fcddaf14a1ff4856638f25"
+  }
+]
