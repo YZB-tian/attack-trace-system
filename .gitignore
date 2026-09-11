@@ -39,6 +39,10 @@ tmp/
 *.strace
 datasets/raw/
 
+# The sanitized evidence index under lab/ is published on purpose: it holds
+# derived analysis output and manifests, never raw captures or credentials.
+!lab/evidence-index/**
+
 # Frontend
 node_modules/
 dist/

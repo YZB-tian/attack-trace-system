@@ -1,0 +1,18 @@
+[Unit]
+Description=AttackTraceLab rotating packet capture
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tcpdump -Z root -i ens160 -n -s 0 -U -C 10 -W 24 -w /var/log/attacktrace/pcap/capture.pcap
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/attacktrace/pcap
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target

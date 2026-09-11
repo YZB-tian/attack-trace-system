@@ -1,0 +1,9 @@
+network:
+  version: 2
+  ethernets:
+    ens160:
+      routes:
+        - to: 192.168.60.0/24
+          via: 192.168.56.70
+        - to: 192.168.70.0/24
+          via: 192.168.56.70

@@ -1,0 +1,19 @@
+[Unit]
+Description=Office inline switch packet evidence
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tcpdump -Z root -i br-office -n -s 0 -U -C 5 -W 8 -w /var/log/attacktrace/office-pcap/capture.pcap
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/attacktrace/office-pcap
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_DAC_OVERRIDE CAP_SETUID CAP_SETGID
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target

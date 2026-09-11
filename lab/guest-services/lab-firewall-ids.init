@@ -1,0 +1,63 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          lab-firewall-ids
+# Required-Start:    $network $syslog
+# Required-Stop:     $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: AttackTraceLab packet filter and traffic recorder
+### END INIT INFO
+
+PIDFILE=/var/run/lab-firewall-tcpdump.pid
+PCAP_DIR=/var/log/lab-firewall
+
+start_rules() {
+    iptables -N LAB_FIREWALL 2>/dev/null || true
+    iptables -F LAB_FIREWALL
+    iptables -A LAB_FIREWALL -p tcp --dport 23 -s 192.168.56.1 -j RETURN
+    iptables -A LAB_FIREWALL -p tcp --dport 23 -m limit --limit 12/min --limit-burst 20 \
+        -j LOG --log-prefix "LAB_FW_DROP " --log-level 6
+    iptables -A LAB_FIREWALL -p tcp --dport 23 -j DROP
+    iptables -A LAB_FIREWALL -m state --state NEW -m limit --limit 30/min --limit-burst 50 \
+        -j LOG --log-prefix "LAB_FW_NEW " --log-level 6
+    iptables -A LAB_FIREWALL -j RETURN
+    while iptables -D INPUT -i eth0 -j LAB_FIREWALL 2>/dev/null; do :; done
+    iptables -I INPUT 1 -i eth0 -j LAB_FIREWALL
+}
+
+stop_rules() {
+    while iptables -D INPUT -i eth0 -j LAB_FIREWALL 2>/dev/null; do :; done
+    iptables -F LAB_FIREWALL 2>/dev/null || true
+    iptables -X LAB_FIREWALL 2>/dev/null || true
+}
+
+case "$1" in
+    start)
+        mkdir -p "$PCAP_DIR"
+        start_rules
+        start-stop-daemon --start --quiet --background --make-pidfile \
+            --pidfile "$PIDFILE" --exec /usr/sbin/tcpdump -- \
+            -i eth0 -nn -s 0 -U -C 10 -W 5 -w "$PCAP_DIR/traffic.pcap"
+        logger -t lab-firewall-ids "service started on eth0"
+        ;;
+    stop)
+        start-stop-daemon --stop --quiet --pidfile "$PIDFILE" --retry 5
+        rm -f "$PIDFILE"
+        stop_rules
+        logger -t lab-firewall-ids "service stopped"
+        ;;
+    restart)
+        "$0" stop
+        "$0" start
+        ;;
+    status)
+        iptables -L LAB_FIREWALL -n
+        test -s "$PIDFILE" && kill -0 "$(cat "$PIDFILE")" 2>/dev/null
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+        exit 1
+        ;;
+esac
+
+exit 0

@@ -1,0 +1,18 @@
+[Unit]
+Description=AttackTraceLab benign C2 simulator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=labc2
+Group=labc2
+ExecStart=/usr/local/sbin/attacktrace-c2
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/attacktrace
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+sudo ifconfig eth0 192.168.56.30 netmask 255.255.255.0 up
+printf 'auto lo\niface lo inet loopback\n\nauto eth0\niface eth0 inet static\n    address 192.168.56.30\n    netmask 255.255.255.0\n' | sudo tee /etc/network/interfaces
+sudo /etc/init.d/networking restart
+ifconfig eth0
+route -n
+arp -n
+ping -c 2 192.168.56.10
+ping -c 2 192.168.56.20

@@ -1,0 +1,29 @@
+[
+  {
+    "schema_version": "1.0",
+    "alert_id": "alert_486891e436d07891ec86fa0e",
+    "task_id": "task_memory-injection-20260910T184200Z",
+    "timestamp_start": "2026-09-10T18:41:35.890550+00:00",
+    "timestamp_end": "2026-09-10T18:41:35.890550+00:00",
+    "event_ids": [
+      "evt_09ca64f2582eb50d32fcc29f"
+    ],
+    "host_ids": [
+      "coreserver01"
+    ],
+    "severity": "high",
+    "rule_id": "HOST-WIN-PROCESS-INJECTION",
+    "rule_name": "Remote thread created inside another process (memory injection candidate)",
+    "description": "Remote thread created inside another process (memory injection candidate); requires analyst verification The thread start address is outside every loaded module, which is consistent with injected or reflectively loaded code.",
+    "mitre": {
+      "tactic": "stealth",
+      "technique_id": "T1055",
+      "technique_name": "Process Injection",
+      "subtechnique_id": null
+    },
+    "confidence": 0.9,
+    "evidence_summary": "{\"host_id\": \"coreserver01\", \"source_image\": \"C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\", \"target_image\": \"C:\\\\Windows\\\\System32\\\\notepad.exe\", \"remote_thread_events\": 1, \"write_capable_access_events\": 0, \"unbacked_thread_events\": 1, \"reflective_or_injected_code_indicator\": true, \"reason\": \"create_remote_thread_into_another_process\", \"code_execution_proven\": false, \"sample_count\": 1, \"score_kind\": \"heuristic_not_probability\"}",
+    "detector": "host_heuristic_v1",
+    "status": "open"
+  }
+]

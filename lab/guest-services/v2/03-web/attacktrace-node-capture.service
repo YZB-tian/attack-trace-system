@@ -1,0 +1,18 @@
+[Unit]
+Description=Course lab bounded local network evidence
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/tcpdump -Z root -i ens160 -n -s 0 -U -C 5 -W 8 -w /var/log/attacktrace/node-pcap/capture.pcap
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/var/log/attacktrace/node-pcap
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_DAC_OVERRIDE CAP_SETUID CAP_SETGID
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "trace_id": "trace_f195dfd6b1ae3c36ebeb4411",
+  "task_id": "task_beacon-20260910T153854Z",
+  "generated_at": "2026-09-10T15:44:52.987977+00:00",
+  "status": "completed",
+  "summary": "Controlled emulation; separately orchestrated actions do not prove a full compromise chain. Analyzed 22 events and 1 alerts; 11 candidate paths. Evidence-based analysis, not confirmed attribution.",
+  "initial_access_entity_id": null,
+  "suspected_c2_entity_ids": [
+    "c2_ea71f84efd9850274d79e626"
+  ],
+  "attack_chain": [],
+  "attribution": {
+    "data_classification": [
+      "controlled_emulation"
+    ],
+    "method": "deterministic_evidence_correlation",
+    "llm_used": false,
+    "candidate_paths": [
+      [
+        "evt_3372d908e873f2018ac308c8",
+        "evt_069bb0951fce53ed2b89cfd4"
+      ],
+      [
+        "evt_a25e954b4e7d46b6c0e7e13c",
+        "evt_4a1f42bc60babb8d88f87bda"
+      ],
+      [
+        "evt_8d0e3d862cb8774bfbcd1e3e",
+        "evt_3c08c659a2b9e0ff9f02103a"
+      ],
+      [
+        "evt_07c5658c544f78b60b54f564",
+        "evt_51b941c8d8747303b210e20b"
+      ],
+      [
+        "evt_8deba53416186a3db21c2fd7",
+        "evt_e943d3928e1bd3af380de8ad"
+      ],
+      [
+        "evt_afab96b1652ed8294a73b218",
+        "evt_df8a61ec24f80f3801e89452"
+      ],
+      [
+        "evt_0a695285198198a6081e9ae6",
+        "evt_ab88c628b59cf37c2d07aff3"
+      ],
+      [
+        "evt_f6ed07b8623a61f679012790",
+        "evt_43390bdbb76d269eb758cb5f"
+      ],
+      [
+        "evt_335905984cb3869b37df770f",
+        "evt_07ce792a0661a9a28d19c3c7"
+      ],
+      [
+        "evt_322661e62e2587128f78bb0a",
+        "evt_98ee5e2016f5ff5ce1951516"
+      ],
+      [
+        "evt_de488f76961e981b7bb8cfca",
+        "evt_7c8ec8fed034f65579cda0b3"
+      ]
+    ],
+    "apt_similarity": [],
+    "apt_similarity_scope": "primary_candidate_path_only",
+    "path_analysis": {
+      "lateral_movement": [],
+      "privilege_escalation": [],
+      "data_access": [],
+      "data_exfiltration": []
+    },
+    "data_access_to_network_candidates": [],
+    "stix_source": null,
+    "limitations": [
+      "Candidate relations do not prove common attacker identity.",
+      "Only the strongest candidate path populates attack_chain; other paths remain separate.",
+      "No live multi-agent LLM analysis is performed by this module.",
+      "TTP similarity is not attribution; unobserved stages are not reconstructed."
+    ]
+  },
+  "evidence_event_ids": [
+    "evt_069bb0951fce53ed2b89cfd4",
+    "evt_07c5658c544f78b60b54f564",
+    "evt_07ce792a0661a9a28d19c3c7",
+    "evt_0a695285198198a6081e9ae6",
+    "evt_322661e62e2587128f78bb0a",
+    "evt_335905984cb3869b37df770f",
+    "evt_3372d908e873f2018ac308c8",
+    "evt_3c08c659a2b9e0ff9f02103a",
+    "evt_43390bdbb76d269eb758cb5f",
+    "evt_4a1f42bc60babb8d88f87bda",
+    "evt_51b941c8d8747303b210e20b",
+    "evt_7c8ec8fed034f65579cda0b3",
+    "evt_8d0e3d862cb8774bfbcd1e3e",
+    "evt_8deba53416186a3db21c2fd7",
+    "evt_98ee5e2016f5ff5ce1951516",
+    "evt_a25e954b4e7d46b6c0e7e13c",
+    "evt_ab88c628b59cf37c2d07aff3",
+    "evt_afab96b1652ed8294a73b218",
+    "evt_de488f76961e981b7bb8cfca",
+    "evt_df8a61ec24f80f3801e89452",
+    "evt_e943d3928e1bd3af380de8ad",
+    "evt_f6ed07b8623a61f679012790"
+  ],
+  "evidence_alert_ids": [
+    "alert_f63dbea4dbb3912584b917b6"
+  ]
+}

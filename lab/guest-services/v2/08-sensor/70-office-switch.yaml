@@ -1,0 +1,26 @@
+network:
+  version: 2
+  ethernets:
+    office_up:
+      match:
+        macaddress: "00:50:56:20:08:01"
+      set-name: office-up
+      dhcp4: false
+      dhcp6: false
+      link-local: []
+    office_down:
+      match:
+        macaddress: "00:50:56:20:08:02"
+      set-name: office-down
+      dhcp4: false
+      dhcp6: false
+      link-local: []
+  bridges:
+    br-office:
+      interfaces: [office_up, office_down]
+      dhcp4: false
+      dhcp6: false
+      link-local: []
+      parameters:
+        stp: true
+        forward-delay: 4

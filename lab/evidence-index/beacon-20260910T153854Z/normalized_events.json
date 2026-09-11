@@ -1,0 +1,1949 @@
+[
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_8deba53416186a3db21c2fd7",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:38:56.735127+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 51124,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_44c94a37ebbad3c92cac478e"
+    },
+    "raw_event": {
+      "ts": 1789054736.735127,
+      "uid": "CspcZ4tbFC5GHr2Rf",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 51124,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0034301280975341797,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CspcZ4tbFC5GHr2Rf",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0034301280975341797,
+        "end_time": "2026-09-10T15:38:56.738557+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 1
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_e943d3928e1bd3af380de8ad",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:38:56.736760+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 51124,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_44c94a37ebbad3c92cac478e"
+    },
+    "raw_event": {
+      "ts": 1789054736.73676,
+      "uid": "CspcZ4tbFC5GHr2Rf",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 51124,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FG02B231dF0bjbcme3"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "Fj7vVO1LP9gVO8XOP7"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CspcZ4tbFC5GHr2Rf",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 1
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_8deba53416186a3db21c2fd7",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_8d0e3d862cb8774bfbcd1e3e",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:16.733523+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 60502,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_51dfabbcd8705f684cddbd4b"
+    },
+    "raw_event": {
+      "ts": 1789054756.733523,
+      "uid": "CPxDD69zxbY6s4Xhk",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 60502,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.001905202865600586,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CPxDD69zxbY6s4Xhk",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.001905202865600586,
+        "end_time": "2026-09-10T15:39:16.735428+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 2
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_3c08c659a2b9e0ff9f02103a",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:16.734491+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 60502,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_51dfabbcd8705f684cddbd4b"
+    },
+    "raw_event": {
+      "ts": 1789054756.734491,
+      "uid": "CPxDD69zxbY6s4Xhk",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 60502,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FD90Zthzkug5uq8m4"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "F990up1BDQntTly6Qj"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CPxDD69zxbY6s4Xhk",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 2
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_8d0e3d862cb8774bfbcd1e3e",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_afab96b1652ed8294a73b218",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:36.734191+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 57140,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_634f8538e89e11a76aca948d"
+    },
+    "raw_event": {
+      "ts": 1789054776.734191,
+      "uid": "Cvt8zC3DCAxyIXDFL5",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 57140,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0030231475830078125,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cvt8zC3DCAxyIXDFL5",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0030231475830078125,
+        "end_time": "2026-09-10T15:39:36.737214+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 3
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_df8a61ec24f80f3801e89452",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:36.735405+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 57140,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_634f8538e89e11a76aca948d"
+    },
+    "raw_event": {
+      "ts": 1789054776.735405,
+      "uid": "Cvt8zC3DCAxyIXDFL5",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 57140,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FpiEea25chifBjUjj4"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FouJbwJjT9ytgy50f"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cvt8zC3DCAxyIXDFL5",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 3
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_afab96b1652ed8294a73b218",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_3372d908e873f2018ac308c8",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:56.734128+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 40500,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_f768e3356cee16f7d80a8d1c"
+    },
+    "raw_event": {
+      "ts": 1789054796.734128,
+      "uid": "C5HMlmz4lP4OYurQ8",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 40500,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0016429424285888672,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "C5HMlmz4lP4OYurQ8",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0016429424285888672,
+        "end_time": "2026-09-10T15:39:56.735771+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 4
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_069bb0951fce53ed2b89cfd4",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:39:56.734704+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 40500,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_f768e3356cee16f7d80a8d1c"
+    },
+    "raw_event": {
+      "ts": 1789054796.734704,
+      "uid": "C5HMlmz4lP4OYurQ8",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 40500,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FLjAUn1WVOGlihPkng"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FvKgnr4Vems2ebCBud"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "C5HMlmz4lP4OYurQ8",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 4
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_3372d908e873f2018ac308c8",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_f6ed07b8623a61f679012790",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:16.733570+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 55072,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_0a536aaf91dd2b63bfa8f4d2"
+    },
+    "raw_event": {
+      "ts": 1789054816.73357,
+      "uid": "Cr8U1U3ItF26BJDC2b",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 55072,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0015909671783447266,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cr8U1U3ItF26BJDC2b",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0015909671783447266,
+        "end_time": "2026-09-10T15:40:16.735161+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 5
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_43390bdbb76d269eb758cb5f",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:16.734264+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 55072,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_0a536aaf91dd2b63bfa8f4d2"
+    },
+    "raw_event": {
+      "ts": 1789054816.734264,
+      "uid": "Cr8U1U3ItF26BJDC2b",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 55072,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FUQcDLvgp3dNUvoEa"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FXFMQz4qmqdtqZgsZ7"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cr8U1U3ItF26BJDC2b",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 5
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_f6ed07b8623a61f679012790",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_a25e954b4e7d46b6c0e7e13c",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:36.733527+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 33200,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_7b65bb6c337da22199358c23"
+    },
+    "raw_event": {
+      "ts": 1789054836.733527,
+      "uid": "CiRPSI0HRSmi3q6Nj",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 33200,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0017011165618896484,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CiRPSI0HRSmi3q6Nj",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0017011165618896484,
+        "end_time": "2026-09-10T15:40:36.735228+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 6
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_4a1f42bc60babb8d88f87bda",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:36.734194+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 33200,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_7b65bb6c337da22199358c23"
+    },
+    "raw_event": {
+      "ts": 1789054836.734194,
+      "uid": "CiRPSI0HRSmi3q6Nj",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 33200,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FhJZ3y3YBj4N7dNwl1"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FJm2Rx2c8bWpwxeCt1"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CiRPSI0HRSmi3q6Nj",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 6
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_a25e954b4e7d46b6c0e7e13c",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_322661e62e2587128f78bb0a",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:56.734677+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 60868,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_e30857c8b7c8a1f87db08a36"
+    },
+    "raw_event": {
+      "ts": 1789054856.734677,
+      "uid": "CEPRjs3SCyIC8yPDJ9",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 60868,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.002101898193359375,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CEPRjs3SCyIC8yPDJ9",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.002101898193359375,
+        "end_time": "2026-09-10T15:40:56.736779+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 7
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_98ee5e2016f5ff5ce1951516",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:40:56.735303+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 60868,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_e30857c8b7c8a1f87db08a36"
+    },
+    "raw_event": {
+      "ts": 1789054856.735303,
+      "uid": "CEPRjs3SCyIC8yPDJ9",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 60868,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "F21J0X1N53WmQsjlF4"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FEMy2x27l8bELi79yh"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CEPRjs3SCyIC8yPDJ9",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 7
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_322661e62e2587128f78bb0a",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_de488f76961e981b7bb8cfca",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:16.733477+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 37980,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_c21d0d57803ad270be65e24e"
+    },
+    "raw_event": {
+      "ts": 1789054876.733477,
+      "uid": "CwI79h3iO2RENrQIHk",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 37980,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.001689910888671875,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CwI79h3iO2RENrQIHk",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.001689910888671875,
+        "end_time": "2026-09-10T15:41:16.735167+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 8
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_7c8ec8fed034f65579cda0b3",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:16.733890+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 37980,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_c21d0d57803ad270be65e24e"
+    },
+    "raw_event": {
+      "ts": 1789054876.73389,
+      "uid": "CwI79h3iO2RENrQIHk",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 37980,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FvpfQ32IHqFR6v9a2l"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FKcyNf3wZhbsj7iokh"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CwI79h3iO2RENrQIHk",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 8
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_de488f76961e981b7bb8cfca",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_0a695285198198a6081e9ae6",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:36.733412+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 49320,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_75c6130e0f567c8b412c45d6"
+    },
+    "raw_event": {
+      "ts": 1789054896.733412,
+      "uid": "CR8NQaYbfRcToitZb",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 49320,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0016129016876220703,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CR8NQaYbfRcToitZb",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0016129016876220703,
+        "end_time": "2026-09-10T15:41:36.735025+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 9
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_ab88c628b59cf37c2d07aff3",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:36.734100+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 49320,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_75c6130e0f567c8b412c45d6"
+    },
+    "raw_event": {
+      "ts": 1789054896.7341,
+      "uid": "CR8NQaYbfRcToitZb",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 49320,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "F0wKdJ2e3wNZTISQh7"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "F0QRfm2R1XtND6R1c9"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "CR8NQaYbfRcToitZb",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 9
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_0a695285198198a6081e9ae6",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_07c5658c544f78b60b54f564",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:56.733670+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 37658,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_b78cd35c880e433d3a982124"
+    },
+    "raw_event": {
+      "ts": 1789054916.73367,
+      "uid": "Cg64941oE6uv376ccl",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 37658,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0024819374084472656,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cg64941oE6uv376ccl",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0024819374084472656,
+        "end_time": "2026-09-10T15:41:56.736152+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 10
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_51b941c8d8747303b210e20b",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:41:56.734231+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 37658,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_b78cd35c880e433d3a982124"
+    },
+    "raw_event": {
+      "ts": 1789054916.734231,
+      "uid": "Cg64941oE6uv376ccl",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 37658,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FjRKIm1stRHNf7mus3"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FL4644KSKQeF7LdGd"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cg64941oE6uv376ccl",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 10
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_07c5658c544f78b60b54f564",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_335905984cb3869b37df770f",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:42:16.733938+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 44548,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "network_connect",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": 205,
+      "bytes_out": 286,
+      "session_id": "sess_01236b700af700f4f12c725c"
+    },
+    "raw_event": {
+      "ts": 1789054936.733938,
+      "uid": "Cp9fVj3MOgsRGToGUj",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 44548,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "proto": "tcp",
+      "service": "http",
+      "duration": 0.0026679039001464844,
+      "orig_bytes": 286,
+      "resp_bytes": 205,
+      "conn_state": "SF",
+      "local_orig": true,
+      "local_resp": true,
+      "missed_bytes": 0,
+      "history": "ShADadfF",
+      "orig_pkts": 6,
+      "orig_ip_bytes": 606,
+      "resp_pkts": 6,
+      "resp_ip_bytes": 525
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cp9fVj3MOgsRGToGUj",
+        "service": "http",
+        "conn_state": "SF",
+        "orig_pkts": 6,
+        "resp_pkts": 6,
+        "orig_ip_bytes": 606,
+        "resp_ip_bytes": 525,
+        "missed_bytes": 0,
+        "log_type": "conn",
+        "duration": 0.0026679039001464844,
+        "end_time": "2026-09-10T15:42:16.736606+00:00",
+        "http_hosts": [
+          "192.168.56.40:8080"
+        ]
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\conn.log",
+        "line": 11
+      },
+      "bytes_perspective": "host_id",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "event_id": "evt_07ce792a0661a9a28d19c3c7",
+    "task_id": "task_beacon-20260910T153854Z",
+    "timestamp": "2026-09-10T15:42:16.734628+00:00",
+    "source_type": "network_flow",
+    "source": "zeek",
+    "host_id": "webserver01",
+    "src_ip": "192.168.60.30",
+    "src_port": 44548,
+    "dst_ip": "192.168.56.40",
+    "dst_port": 8080,
+    "user": null,
+    "action": "http_request",
+    "process": null,
+    "object": null,
+    "network": {
+      "protocol": "tcp",
+      "direction": "outbound",
+      "bytes_in": null,
+      "bytes_out": null,
+      "session_id": "sess_01236b700af700f4f12c725c"
+    },
+    "raw_event": {
+      "ts": 1789054936.734628,
+      "uid": "Cp9fVj3MOgsRGToGUj",
+      "id.orig_h": "192.168.60.30",
+      "id.orig_p": 44548,
+      "id.resp_h": "192.168.56.40",
+      "id.resp_p": 8080,
+      "trans_depth": 1,
+      "method": "POST",
+      "host": "192.168.56.40:8080",
+      "uri": "/beacon",
+      "version": "1.0",
+      "user_agent": "Python-urllib/3.12",
+      "request_body_len": 104,
+      "response_body_len": 44,
+      "status_code": 200,
+      "status_msg": "OK",
+      "tags": [],
+      "orig_fuids": [
+        "FSDqab4sRfXGo3DWY9"
+      ],
+      "orig_mime_types": [
+        "text/json"
+      ],
+      "resp_fuids": [
+        "FKexGi13oxP2VVSyg6"
+      ],
+      "resp_mime_types": [
+        "text/json"
+      ]
+    },
+    "labels": [
+      "real_lab",
+      "controlled_emulation"
+    ],
+    "metadata": {
+      "zeek": {
+        "uid": "Cp9fVj3MOgsRGToGUj",
+        "host": "192.168.56.40:8080",
+        "uri": "/beacon",
+        "method": "POST",
+        "user_agent": "Python-urllib/3.12",
+        "request_body_len": 104,
+        "response_body_len": 44,
+        "status_code": 200,
+        "log_type": "http",
+        "duration": null,
+        "end_time": null
+      },
+      "raw_reference": {
+        "file": "D:\\AttackTraceLab\\evidence\\beacon-20260910T153854Z\\http.log",
+        "line": 11
+      },
+      "bytes_perspective": "host_id",
+      "session_event_id": "evt_335905984cb3869b37df770f",
+      "classification": "controlled_emulation",
+      "run_id": "beacon-20260910T153854Z",
+      "evidence_files_sha256": {
+        "capture-beacon.py": "f29693447662434a83c59123f780ab401576e553edb7abbc597fc3c3c104e702",
+        "capture.txt": "f22f67b6d76c544b736b4f5359b9961b3458e146b63749842b2df1b7d25ad0d8",
+        "conn.log": "ba1dd49790bf16c5b02c6f4110bfaa99f7bd131e97630692d2554ab6fb86a6a1",
+        "http.log": "4262e304fc55e0cdd2e4e58b29691a2183df6a8263477ba218efa05184d0b3c3",
+        "requests.json": "25d37eba14b5ef9fbe9411ba6459f3a91a497dd9dc0e469e8fbb6a53509d790b",
+        "traffic.pcap": "3ee00be6b56b7fbd078f3c4b82ca1cef8543bdc04dcdcc031b1e29c4ca5234b3",
+        "zeek-version.txt": "387cf437795154fb7efa9178cf4247c2b62eb4926d7a86d2aa675cc15a3b173c"
+      },
+      "experiment_membership": "bounded_capture_not_compromise_proof"
+    }
+  }
+]
