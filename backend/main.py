@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from threading import RLock
 import json
+import logging
 import os
 import tempfile
 from typing import List
@@ -47,6 +48,12 @@ def _persist(events):
 @asynccontextmanager
 async def lifespan(app):
     path = _storage_path()
+    if path is not None:
+        # ATS_EVENTS_FILE doubles as the persistent store: every accepted batch
+        # rewrites it atomically. Point it at a store file, never at an importer
+        # output you want to keep.
+        logging.getLogger("uvicorn.error").info(
+            "证据存储：%s（每次接受新事件后会整体重写，请勿直接指向原始证据或导入产物）", path)
     if path and path.exists():
         events = [NormalizedEvent.model_validate(x) for x in json.loads(path.read_text(encoding="utf-8"))]
         with _lock:

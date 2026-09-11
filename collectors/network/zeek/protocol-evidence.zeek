@@ -46,7 +46,7 @@ event http_entity_data(c: connection, is_orig: bool, length: count, data: string
     local h = c$http_state$pending[depth];
     if ( |h$ats_body_sample| >= body_sample_limit ) return;
     local remaining = body_sample_limit - |h$ats_body_sample|;
-    h$ats_body_sample += sub_bytes(data, 0, remaining as int);
+    h$ats_body_sample += sub_bytes(data, 0, remaining);
     h$ats_body_sample_len = |h$ats_body_sample|;
     if ( h$ats_body_sample_len > 0 )
         {
@@ -58,7 +58,7 @@ event http_entity_data(c: connection, is_orig: bool, length: count, data: string
 
 function log_echo(c: connection, info: icmp_info, echo_id: count, seq: count, payload: string)
     {
-    local sample = sub_bytes(payload, 0, icmp_sample_limit as int);
+    local sample = sub_bytes(payload, 0, icmp_sample_limit);
     local h = 0.0;
     if ( |sample| > 0 ) h = find_entropy(sample)$entropy;
     Log::write(LOG, [$ts=network_time(), $uid=c$uid, $id=c$id,

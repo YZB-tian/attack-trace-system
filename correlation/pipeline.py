@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse
 import json
+import os
 from pathlib import Path
 from common.models import NormalizedEvent, Alert
 from collectors.network.adapter import load_zeek_logs
@@ -14,6 +15,12 @@ from .paths import trace_graph
 
 
 def analyze(task_id, events, *, alerts=(), knowledge=None, sigma_rules=(), window_seconds=900, network_config=None):
+    # Callers that do not load the bundle explicitly can still enable ATT&CK
+    # naming by exporting the documented ATTACK_STIX_PATH variable.
+    if knowledge is None:
+        configured = os.environ.get("ATTACK_STIX_PATH")
+        if configured and Path(configured).is_file():
+            knowledge = AttackKnowledge(Path(configured))
     # Exact repeats are idempotent; conflicting objects sharing an ID are an error.
     unique = {}
     for e in events:

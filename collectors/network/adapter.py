@@ -105,7 +105,7 @@ def normalize_network_records(records: Iterable[Dict[str, Any]], task_id: str) -
     result = []
     for record in records:
         kind = record.get("_log_type") or ("dns" if "query" in record else "http" if "uri" in record else "conn")
-        if kind not in {"conn", "dns", "http", "icmp_payload"}:
+        if kind not in {"conn", "dns", "http", "icmp_payload", "irc"}:
             raise ValueError(f"unsupported Zeek log: {kind}")
         stamp = _time(record.get("ts", record.get("timestamp")))
         src, dst = record.get("id.orig_h"), record.get("id.resp_h")
@@ -139,6 +139,7 @@ def normalize_network_records(records: Iterable[Dict[str, Any]], task_id: str) -
             "orig_pkts", "resp_pkts", "orig_ip_bytes", "resp_ip_bytes", "missed_bytes",
             "ats_body_sample_len", "ats_body_entropy", "ats_body_sha256",
             "payload_len", "payload_sample_len", "payload_entropy", "payload_sha256", "is_orig", "echo_id", "echo_seq",
+            "command", "value", "nick", "addl",
         ) if record.get(k) is not None}
         for name in ("request_body_len", "response_body_len", "orig_pkts", "resp_pkts", "orig_ip_bytes", "resp_ip_bytes",
                      "ats_body_sample_len", "payload_len", "payload_sample_len", "echo_id", "echo_seq"):
@@ -169,7 +170,8 @@ def normalize_network_records(records: Iterable[Dict[str, Any]], task_id: str) -
             src_ip=src, dst_ip=dst,
             src_port=None if proto in ("icmp", "icmp6") else _number(record.get("id.orig_p"), True),
             dst_port=None if proto in ("icmp", "icmp6") else _number(record.get("id.resp_p"), True),
-            action={"conn": "network_connect", "dns": "dns_query", "http": "http_request", "icmp_payload": "icmp_echo"}[kind],
+            action={"conn": "network_connect", "dns": "dns_query", "http": "http_request",
+                    "icmp_payload": "icmp_echo", "irc": "irc_command"}[kind],
             network={"protocol": proto, "session_id": session_id, "direction": direction,
                      "bytes_out": sent, "bytes_in": received},
             raw_event={k: v for k, v in record.items() if not k.startswith("_")},
@@ -181,7 +183,7 @@ def normalize_network_records(records: Iterable[Dict[str, Any]], task_id: str) -
 
 def load_zeek_logs(directory: str | Path, task_id: str) -> List[NormalizedEvent]:
     directory = Path(directory)
-    paths = [directory / f"{kind}.log" for kind in ("conn", "dns", "http", "icmp_payload")]
+    paths = [directory / f"{kind}.log" for kind in ("conn", "dns", "http", "icmp_payload", "irc")]
     paths = [p for p in paths if p.is_file()]
     if not paths:
         raise ValueError(f"no conn.log/dns.log/http.log/icmp_payload.log in {directory}")

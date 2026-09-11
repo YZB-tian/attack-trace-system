@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT))
 from common.models import NormalizedEvent
 from correlation.pipeline import analyze
 from agents.deepseek import DeepSeekClient, review_trace, evidence_digest
+from detection.attack_stix import AttackKnowledge
 
 
 def main():
@@ -18,6 +19,8 @@ def main():
     parser.add_argument('--events', type=Path, required=True)
     parser.add_argument('--task-id', required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--stix', type=Path,
+                        help='official enterprise-attack bundle so the baseline keeps ATT&CK mappings')
     args = parser.parse_args()
     config = {}
     env = ROOT / '.env'
@@ -29,7 +32,8 @@ def main():
     key = os.environ.get('LLM_API_KEY') or config.get('LLM_API_KEY')
     model = os.environ.get('LLM_MODEL') or config.get('LLM_MODEL', 'deepseek-flash')
     events = [NormalizedEvent.model_validate(e) for e in json.loads(args.events.read_text(encoding='utf-8-sig')) if e['task_id'] == args.task_id]
-    _, alerts, _, baseline = analyze(args.task_id, events)
+    knowledge = AttackKnowledge(args.stix) if args.stix else None
+    _, alerts, _, baseline = analyze(args.task_id, events, knowledge=knowledge)
     client = DeepSeekClient(key, model)
     result = review_trace(events, alerts, baseline, client, model)
     from jsonschema import Draft202012Validator, FormatChecker

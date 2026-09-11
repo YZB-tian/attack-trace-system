@@ -96,3 +96,20 @@ def test_trace_declares_emulation():
     trace = analyze("task_lab", [e])[3]
     assert trace.attribution["data_classification"] == ["controlled_emulation"]
     assert "controlled" in trace.summary.lower()
+
+
+def test_bundle_classification_is_checked_against_the_caller(tmp_path):
+    """The accepted class is a parameter, so the format is not a dead end."""
+    bundle(tmp_path)
+    manifest = json.loads((tmp_path / "manifest.json").read_text(encoding="utf-8"))
+    manifest["classification"] = "real_exploitation"
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    seal(tmp_path)
+
+    with pytest.raises(ValueError, match="unsupported evidence classification"):
+        loader()(tmp_path)
+
+    events, report = loader()(tmp_path, classification="real_exploitation")
+    assert report["classification"] == "real_exploitation"
+    assert all(e.metadata["classification"] == "real_exploitation" for e in events)
+    assert all("real_exploitation" in e.labels for e in events)

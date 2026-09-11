@@ -65,7 +65,23 @@
       "ip": "192.168.80.60",
       "zone": "server",
       "os": "windows"
+    },
+    {
+      "host_id": "legacyweb01",
+      "role": "vulnerable_web_server",
+      "hostname": "legacyweb01",
+      "ip": "192.168.56.30",
+      "zone": "lab_vmnet2",
+      "os": "linux"
+    },
+    {
+      "host_id": "legacycore01",
+      "role": "vulnerable_internal_server",
+      "hostname": "legacycore01",
+      "ip": "192.168.56.60",
+      "zone": "lab_vmnet2",
+      "os": "linux"
     }
   ],
-  "note": "授权课程靶场实际地址。switch01 为 Ubuntu 透明网桥采集节点；资产存在不等于已完成八节点入侵链验证。"
+  "note": "授权课程靶场实际地址。switch01 为 Ubuntu 透明网桥采集节点；资产存在不等于已完成八节点入侵链验证。legacyweb01/legacycore01 是用于真实漏洞利用链的额外隔离靶标（VMnet2，两台镜像内部主机名同为 metasploitable，导入时按证据来源映射）。"
 }

@@ -26,7 +26,7 @@ def _time(value, offset=None):
     return dt.astimezone(timezone.utc)
 
 
-def _verify(directory):
+def _verify(directory, allow_unlisted=False):
     verified = {}
     for entry in _json(directory / "sha256-manifest.json"):
         name = entry["file"]
@@ -41,19 +41,38 @@ def _verify(directory):
             raise ValueError(f"integrity hash mismatch: {name}")
         verified[name] = digest
     actual = {p.name for p in directory.iterdir() if p.is_file() and p.name != "sha256-manifest.json"}
-    if actual != set(verified):
-        raise ValueError("files missing from manifest")
+    # Evidence stays immutable by default: any file the manifest does not cover
+    # makes the bundle an unreliable snapshot. Callers that knowingly keep extra
+    # files (notes, exports) can opt in, and the report always lists them.
+    missing = sorted(set(verified) - actual)
+    if missing:
+        raise ValueError(f"files listed in the manifest are missing: {missing}")
+    unlisted = sorted(actual - set(verified))
+    if unlisted and not allow_unlisted:
+        raise ValueError(f"unlisted files are present and not covered by the manifest: {unlisted}")
     return verified
 
 
-def import_bundle(directory):
+def import_bundle(directory, allow_unlisted=False, classification="controlled_emulation"):
+    """Import one course evidence bundle.
+
+    ``classification`` is the evidence class this bundle format declares; it
+    defaults to the controlled-emulation bundle the format was written for and
+    can be widened by a caller that reuses the same layout for other evidence.
+    """
     directory = Path(directory).resolve()
-    hashes = _verify(directory)
+    hashes = _verify(directory, allow_unlisted=allow_unlisted)
+    extras = sorted(p.name for p in directory.iterdir()
+                    if p.is_file() and p.name != "sha256-manifest.json" and p.name not in hashes)
     manifest = _json(directory / "manifest.json")
-    if manifest.get("classification") != "controlled_emulation":
-        raise ValueError("unsupported evidence classification")
+    declared = manifest.get("classification")
+    if declared != classification:
+        raise ValueError(f"unsupported evidence classification: {declared!r}")
     run = manifest["run_id"]
     task = "task_" + run
+    # The lab hosts run UTC; RFC3164 auth.log lines carry no offset of their own,
+    # so the assumption is explicit here instead of inheriting the parser default.
+    host_offset_hours = manifest.get("host_timezone_offset_hours", 0)
     start = _time(manifest["started_utc"])
     timeline = _json(directory / "office-timeline.json")
     ends = [_time(x["TimeUtc"]) for x in timeline if x.get("Stage") == "complete"]
@@ -75,8 +94,8 @@ def import_bundle(directory):
         reference = {"file": name, "record": index, "sha256": hashes[name]}
         event.event_id = "evt_" + hashlib.sha256(f"{run}|{name}|{hashes[name]}|{index}".encode()).hexdigest()[:24]
         event.timestamp = dt.isoformat()
-        event.labels = sorted(set(event.labels + ["real_lab", "controlled_emulation"]))
-        event.metadata.update(classification="controlled_emulation", run_id=run, raw_reference=reference,
+        event.labels = sorted(set(event.labels + ["real_lab", declared]))
+        event.metadata.update(classification=declared, run_id=run, raw_reference=reference,
                               experiment_membership="time_window_not_causality")
         events.append(event)
 
@@ -135,7 +154,8 @@ def import_bundle(directory):
     if name in hashes:
         consumed.add(name)
         for index, line in enumerate((directory / name).read_text(encoding="utf-8-sig").splitlines(), 1):
-            parsed = normalize_linux_records([line], task, year=start.year, default_host=by_id["webserver01"]["hostname"])
+            parsed = normalize_linux_records([line], task, tz_offset_hours=host_offset_hours,
+                                             year=start.year, default_host=by_id["webserver01"]["hostname"])
             if not parsed:
                 counts["unparsed_auth_lines"] += 1
             for event in parsed:
@@ -198,8 +218,9 @@ def import_bundle(directory):
         if name not in consumed:
             counts["retained_evidence_files"] += 1
     events.sort(key=lambda e: (e.timestamp, e.event_id))
-    report = dict(run_id=run, task_id=task, classification="controlled_emulation",
+    report = dict(run_id=run, task_id=task, classification=declared,
         start=start.isoformat(), end=end.isoformat(), events=len(events), verified_files=len(hashes),
+        host_timezone_offset_hours=host_offset_hours, unlisted_files=extras,
         excluded_outside_window=counts["excluded_outside_window"], counters=dict(counts),
         sources=dict(Counter(e.source for e in events)),
         host_ids=sorted({e.host_id for e in events if e.host_id}),

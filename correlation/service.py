@@ -85,7 +85,10 @@ def correlate(task_id, events, alerts, window_seconds=900) -> AttackGraph:
     process_births = defaultdict(list)
     process_exits = defaultdict(list)
     for e in events:
-        if e.host_id and e.process and e.process.pid is not None and e.action == "process_create":
+        # An execve observed as process_exec is the same creation boundary as a
+        # Sysmon process_create; both anchor a PID's lifetime when no GUID is
+        # available, so collectors that only emit process_exec still merge.
+        if e.host_id and e.process and e.process.pid is not None and e.action in ("process_create", "process_exec"):
             process_births[(e.host_id, e.process.pid)].append(e)
         if e.host_id and e.process and e.process.pid is not None and e.action in ("process_exit", "process_terminate"):
             process_exits[(e.host_id, e.process.pid)].append(e)

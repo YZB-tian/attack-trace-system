@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import json
-from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -14,10 +13,26 @@ from typing import Any, Dict, Optional
 _ASSETS_PATH = Path(__file__).resolve().parents[2] / "config" / "assets.json"
 
 
-@lru_cache(maxsize=1)
 def _load_assets() -> Dict[str, Any]:
-    with open(_ASSETS_PATH, encoding="utf-8") as fh:
-        return json.load(fh)
+    """Read the asset table, re-reading it when the file changes.
+
+    A plain cache would keep serving stale hosts after ``config/assets.json`` is
+    edited, so the cache key is the file's mtime and size.
+    """
+    global _cache
+    try:
+        stat = _ASSETS_PATH.stat()
+    except FileNotFoundError:
+        _cache = None
+        raise
+    stamp = (stat.st_mtime_ns, stat.st_size)
+    if _cache is None or _cache[0] != stamp:
+        with open(_ASSETS_PATH, encoding="utf-8") as fh:
+            _cache = (stamp, json.load(fh))
+    return _cache[1]
+
+
+_cache: Optional[tuple[tuple[int, int], Dict[str, Any]]] = None
 
 
 def hostname_to_host_id(hostname: Optional[str]) -> Optional[str]:

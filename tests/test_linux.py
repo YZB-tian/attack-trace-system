@@ -488,3 +488,19 @@ def test_malformed_skipped():
         "task_demo_001",
     )
     assert events == []
+
+
+def test_time_basis_records_where_the_timezone_came_from():
+    """A naive RFC3164 line only has the caller's assumption behind its offset."""
+    naive = _normalize(["Sep  8 10:00:00 webserver01 sshd[1]: Accepted password for root from 1.2.3.4 port 22 ssh2"],
+                       tz_offset_hours=0)[0]
+    assert naive.metadata["time_basis"] == "assumed_offset_+0000"
+
+    explicit = _normalize(["<134>1 2026-09-08T10:00:00+08:00 webserver01 sshd 1234 - - Failed password for root from 10.10.0.10 port 22 ssh2"])[0]
+    assert explicit.metadata["time_basis"] == "explicit_timezone"
+
+    auditd = normalize_linux_records(
+        ['type=SYSCALL msg=audit(1609459201.123:459): arch=c000003e syscall=59 success=yes exit=0 ppid=1000 pid=2000 auid=1000 uid=0 comm="whoami" exe="/usr/bin/whoami"'],
+        "task_demo_001",
+    )[0]
+    assert auditd.metadata["time_basis"] == "audit_epoch_utc"

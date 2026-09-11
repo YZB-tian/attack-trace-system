@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import re
 from datetime import timedelta
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -14,6 +15,22 @@ from common.models import EventObject, NormalizedEvent, ProcessInfo
 
 from . import parsers
 from .hostmap import hostname_to_host_id
+
+# RFC5424 and full ISO timestamps carry their own offset; RFC3164 syslog lines do
+# not, so the caller's offset is an assumption that must stay visible downstream.
+_EXPLICIT_TIMEZONE = re.compile(
+    r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})"
+)
+
+
+def _time_basis(line: str, is_auditd: bool, tz_offset_hours: int) -> str:
+    """Name where the timestamp's timezone came from."""
+    if is_auditd:
+        return "audit_epoch_utc"
+    if _EXPLICIT_TIMEZONE.search(line):
+        return "explicit_timezone"
+    sign = "+" if tz_offset_hours >= 0 else "-"
+    return f"assumed_offset_{sign}{abs(tz_offset_hours):02d}00"
 
 
 def _raw_line(rec: Any) -> Tuple[Optional[str], Optional[str]]:
@@ -34,6 +51,7 @@ def _to_event(
     raw_line: str,
     task_id: str,
     source: str,
+    time_basis: str,
 ) -> NormalizedEvent:
     host_id = hostname_to_host_id(parsed.hostname)
 
@@ -51,6 +69,7 @@ def _to_event(
         obj = EventObject(type=parsed.object_type, name=parsed.object_name)
 
     metadata: Dict[str, Any] = dict(parsed.extra_metadata)
+    metadata["time_basis"] = time_basis
     if parsed.session_id:
         metadata["session_id"] = parsed.session_id
     if parsed.target_user:
@@ -106,7 +125,8 @@ def normalize_linux_records(
             continue
 
         host = host_hint or default_host
-        if parsers.is_auditd_line(line):
+        is_auditd = parsers.is_auditd_line(line)
+        if is_auditd:
             parsed = parsers.parse_auditd_line(line, tz=tz, hostname=host)
             source = "auditd"
         else:
@@ -118,6 +138,7 @@ def normalize_linux_records(
         off_host = parsed.hostname or host
         offset = clock_offset.get(off_host, 0) if off_host else 0
         ts_dt = parsed.timestamp_dt + timedelta(seconds=offset) if offset else parsed.timestamp_dt
-        events.append(_to_event(parsed, ts_dt.isoformat(), line, task_id, source))
+        events.append(_to_event(parsed, ts_dt.isoformat(), line, task_id, source,
+                                _time_basis(line, is_auditd, tz_offset_hours)))
 
     return events
