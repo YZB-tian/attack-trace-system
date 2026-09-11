@@ -55,3 +55,28 @@
 .attack-graph-view.is-expanded .attack-graph-inspector { max-height: calc(100dvh - 180px); }
 @media (max-width: 1100px) { .attack-graph-body { grid-template-columns: minmax(0, 1fr); } .attack-graph-inspector { max-height: 400px; } .attack-graph-inspector > .attack-graph-empty { min-height: 110px; } }
 @media (max-width: 640px) { .attack-graph-selectors { grid-template-columns: 1fr; } .attack-graph-canvas { height: 450px; } .attack-graph-controls button { min-height: 38px; padding: 8px; } .attack-graph-view.is-expanded { inset: 5px; padding: 12px; } }
+
+/* Filtering and search controls, added after the UX review so a large graph is
+   usable by default instead of rendering every node at unreadable zoom. */
+.attack-graph-help { display: grid; gap: 6px; margin: 12px 0 0; padding: 12px 14px; border: 1px solid #2b4662; background: #0d2033; }
+.attack-graph-help p { margin: 0; color: #a5bed4; font-size: 11px; line-height: 1.7; }
+.attack-graph-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 12px 0; }
+.attack-graph-type-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.attack-graph-filter-caption { color: #89a4be; font-size: 11px; }
+.type-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 5px 9px; border: 1px solid #2b4662; color: #c1d5e8; background: #102338; font-size: 11px; cursor: pointer; }
+.type-chip i { width: 8px; height: 8px; border-radius: 2px; }
+.type-chip small { color: #7f9ab2; font: 10px "DM Mono", monospace; }
+.type-chip.is-off { border-style: dashed; border-color: #3a4a5c; color: #6f839a; background: #0b1828; }
+.type-chip.is-off i { opacity: .35; }
+.attack-graph-toggle { display: inline-flex; align-items: center; gap: 7px; color: #a0b8cd; font-size: 11px; cursor: pointer; }
+.attack-graph-toggle input { width: 15px; height: 15px; margin: 0; accent-color: #2de1c2; }
+.attack-graph-reset { min-height: 30px; padding: 5px 10px; border: 1px solid #4b9b97; color: #9fe6d8; background: #133338; font-size: 11px; cursor: pointer; }
+.attack-graph-search { display: inline-flex; align-items: center; gap: 7px; flex: 1; min-width: 0; padding: 0 9px; border: 1px solid #2b4662; background: #102338; }
+.attack-graph-search svg { color: #7f9ab2; flex-shrink: 0; }
+.attack-graph-search input { flex: 1; min-width: 0; padding: 8px 0; border: 0; outline: 0; color: #dce9fb; background: transparent; font-size: 11px; }
+.attack-graph-search-note { width: 100%; color: #7f9ab2; font-size: 10px; }
+.attack-graph-filter-summary { margin: 0 0 12px; color: #9fc3dd; font-size: 11px; }
+@media (max-width: 640px) {
+  .attack-graph-filters { gap: 10px; }
+  .type-chip { min-height: 34px; }
+}

@@ -1,0 +1,60 @@
+.attribution-panel { display: grid; gap: 22px; margin-top: 14px; min-width: 0; }
+.attribution-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 22px; margin: 0; }
+.attribution-facts > div { min-width: 0; }
+.attribution-facts dt { color: #92a9c2; font-size: 11px; }
+.attribution-facts dd { margin: 6px 0 0; color: #d5e3f4; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.attribution-chip { display: inline-block; margin-right: 6px; padding: 3px 7px; border: 1px solid #2b6b62; color: #9fe6d8; background: #0e2a30; font-size: 11px; }
+.attribution-section { min-width: 0; padding-top: 16px; border-top: 1px solid #1a2d42; }
+.attribution-section h5 { display: flex; align-items: center; gap: 7px; margin: 0 0 10px; color: #c3d8ea; font-size: 13px; font-weight: 600; }
+.attribution-muted { margin: 8px 0 0; color: #8299b3; font-size: 11px; line-height: 1.7; }
+.path-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.path-list li { display: grid; gap: 8px; padding: 11px 12px; border: 1px solid #234058; background: #0b192a; }
+.path-index { color: #7ba7c0; font: 10px "DM Mono", monospace; }
+.path-events { display: flex; flex-wrap: wrap; gap: 6px; }
+.event-chip { display: inline-grid; gap: 2px; padding: 6px 8px; border: 1px solid #2b4a63; background: #10263b; color: #cadbea; font-size: 10px; }
+.event-chip strong { font-size: 11px; font-weight: 600; color: #e2eefb; }
+.event-chip small { color: #7f9ab2; font: 10px "DM Mono", monospace; }
+.event-chip-time { color: #93b0c8; font: 10px "DM Mono", monospace; }
+.event-chip.is-unknown { border-style: dashed; border-color: #5c4b2f; background: #241f16; }
+.attribution-disclosure { margin-top: 12px; }
+.attribution-disclosure > summary { padding: 4px 0; color: #8fbacd; font-size: 11px; cursor: pointer; }
+.attribution-disclosure > summary:hover { color: #2de1c2; }
+/* The global `table { min-width: 820px }` rule would force this table wider than
+   the panel on narrow screens, so the width is reset here. */
+.attribution-table { width: 100%; min-width: 0; max-width: 100%; margin-top: 10px; border-collapse: collapse; table-layout: fixed; }
+.attribution-table th { padding: 8px 9px; color: #8da4c0; border-bottom: 1px solid #21354b; font-size: 10px; text-align: left; }
+.attribution-table td { padding: 10px 9px; color: #c6d8ea; border-bottom: 1px solid #16283d; font-size: 11px; vertical-align: top; overflow-wrap: anywhere; word-break: break-word; }
+.attribution-table th:first-child, .attribution-table td:first-child { width: 22%; }
+.attribution-table th:nth-child(2), .attribution-table td:nth-child(2) { width: 12%; }
+.attribution-table th:nth-child(3), .attribution-table td:nth-child(3) { width: 20%; }
+.attribution-table td small { display: block; margin-top: 3px; color: #7f9ab2; font: 10px "DM Mono", monospace; }
+.stage-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.stage-path-card { min-width: 0; padding: 12px; border: 1px solid #234058; background: #0b192a; }
+.stage-path-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.stage-path-head span { color: #cadbea; font-size: 12px; }
+.stage-path-head strong { color: #9fe6d8; font: 11px "DM Mono", monospace; }
+.stage-path-list { display: grid; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+.stage-path-list li { display: grid; gap: 4px; padding: 8px; border: 1px solid #1f3a51; }
+.stage-path-list code { color: #a9c7de; font: 10px/1.6 "DM Mono", monospace; overflow-wrap: anywhere; }
+.stage-path-list small { color: #7f9ab2; font-size: 10px; }
+.data-path-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.data-path-list li { display: grid; gap: 6px; padding: 11px 12px; border: 1px solid #234058; background: #0b192a; }
+.data-path-head { display: flex; flex-wrap: wrap; gap: 12px; color: #cadbea; font-size: 11px; }
+.data-path-destinations { color: #9fc3dd; font: 11px "DM Mono", monospace; overflow-wrap: anywhere; }
+.data-path-list small { color: #bfa06a; font-size: 10px; }
+.limitation-list { display: grid; gap: 7px; margin: 0; padding-left: 18px; color: #9db4cb; font-size: 11px; line-height: 1.7; }
+.llm-finding-list { display: grid; gap: 12px; margin: 12px 0 0; padding: 0; list-style: none; }
+.llm-finding-list li { padding: 11px 12px; border: 1px solid #234058; background: #0b192a; }
+.llm-finding-list p { margin: 0; color: #cbdcec; font-size: 11px; line-height: 1.75; }
+.llm-finding-evidence { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.evidence-index-head { display: flex; gap: 22px; }
+.evidence-index-head > div { display: grid; gap: 4px; }
+.evidence-index-head span { color: #92a9c2; font-size: 11px; }
+.evidence-index-head strong { color: #dceafb; font: 22px "DM Mono", monospace; }
+.evidence-id-list { display: grid; gap: 5px; margin: 12px 0 0; padding: 0; list-style: none; }
+.evidence-id-list code { display: block; padding: 5px 7px; border: 1px solid #1f3a51; color: #89a9c8; background: #0e2033; font: 10px/1.6 "DM Mono", monospace; overflow-wrap: anywhere; }
+.evidence-id-alerts code { border-color: #4a3a2a; color: #e0c294; background: #241e15; }
+@media (max-width: 900px) {
+  .attribution-facts { grid-template-columns: minmax(0, 1fr); }
+  .stage-path-grid { grid-template-columns: minmax(0, 1fr); }
+}

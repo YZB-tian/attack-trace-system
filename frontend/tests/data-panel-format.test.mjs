@@ -9,7 +9,8 @@ test("Beacon evidence keeps zero and false, and marks heuristic scores as non-pr
   assert.equal(parsed.heuristic, true);
   assert.equal(parsed.original, original);
   assert.deepEqual(Object.fromEntries(parsed.fields.map(({ key, value }) => [key, value])), {
-    sample_count: "0", span: "0 s", median_interval: "0 s", regularity: "0.00", stable_size: "否", score_kind: "启发式评分（非概率）",
+    // Durations are rounded to two decimals so raw float noise never reaches the screen.
+    sample_count: "0", span: "0.00 秒", median_interval: "0.00 秒", regularity: "0.00", stable_size: "否", score_kind: "启发式评分（非概率）",
   });
 });
 

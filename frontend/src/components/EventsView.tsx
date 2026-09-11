@@ -1,7 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { FileSearch, X } from "lucide-react";
 import type { NormalizedEvent } from "../types/contracts";
-import { dataTime, detailValue, endpointLabel, eventSourceLabel } from "./data-panel-format";
+import { dataTime, dataTimeExact, detailValue, endpointLabel } from "./data-panel-format";
+import { actionLabel, detectionSourceLabel, sourceTypeLabel } from "../labels";
 import "./data-panels.css";
 
 export function EventsView({ events }: { events: NormalizedEvent[] }) {
@@ -10,7 +11,6 @@ export function EventsView({ events }: { events: NormalizedEvent[] }) {
   const selected = events.find((event) => event.event_id === selectedId);
 
   return <div className="events-view">
-    <p className="data-panel-hint">点击事件行或“详情”，查看完整字段与原始证据。</p>
     <table className="events-table">
       <caption className="data-sr-only">标准化事件：时间、主机、来源、行为和网络摘要</caption>
       <colgroup><col className="event-time-column" /><col className="event-host-column" /><col className="event-source-column" /><col className="event-action-column" /><col className="event-network-column" /></colgroup>
@@ -19,10 +19,10 @@ export function EventsView({ events }: { events: NormalizedEvent[] }) {
         openerRef.current = click.currentTarget.querySelector("button");
         setSelectedId(event.event_id);
       }}>
-        <td data-label="时间"><time dateTime={event.timestamp} title={event.timestamp}>{dataTime(event.timestamp)}</time></td>
+        <td data-label="时间"><time dateTime={event.timestamp} title={dataTimeExact(event.timestamp)}>{dataTime(event.timestamp)}</time></td>
         <td data-label="主机"><code>{event.host_id ?? "未提供"}</code></td>
-        <td data-label="来源"><span className="source-tag">{eventSourceLabel(event.source_type)}</span><span className="event-source-name">{event.source}</span></td>
-        <td data-label="行为"><strong>{event.action}</strong><button type="button" className="event-detail-button" aria-label={`查看事件 ${event.event_id} 详情`} aria-haspopup="dialog"><FileSearch size={13} aria-hidden="true" />详情</button></td>
+        <td data-label="来源"><span className="source-tag">{sourceTypeLabel(event.source_type)}</span><span className="event-source-name" title={event.source}>{detectionSourceLabel(event.source)}</span></td>
+        <td data-label="行为"><strong title={event.action}>{actionLabel(event.action)}</strong><button type="button" className="event-detail-button" aria-label={`查看事件 ${event.event_id} 详情`} aria-haspopup="dialog"><FileSearch size={13} aria-hidden="true" />详情</button></td>
         <td data-label="网络摘要"><NetworkSummary event={event} /></td>
       </tr>)}</tbody>
     </table>

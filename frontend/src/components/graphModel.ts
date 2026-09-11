@@ -48,6 +48,9 @@ export function createGraphElements(graph: AttackGraph): { elements: ElementDefi
   });
   const unresolvedEdges: GraphEdge[] = [];
   const loopCounts = new Map<string, number>();
+  // Parallel edges between the same ordered pair would otherwise be drawn on top
+  // of each other with identical control points.
+  const parallelCounts = new Map<string, number>();
   for (const edge of graph.edges) {
     if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
       unresolvedEdges.push(edge);
@@ -55,12 +58,17 @@ export function createGraphElements(graph: AttackGraph): { elements: ElementDefi
     }
     const loopIndex = edge.source === edge.target ? (loopCounts.get(edge.source) ?? 0) : 0;
     if (edge.source === edge.target) loopCounts.set(edge.source, loopIndex + 1);
+    const pairKey = `${edge.source}\u0000${edge.target}`;
+    const parallelIndex = parallelCounts.get(pairKey) ?? 0;
+    parallelCounts.set(pairKey, parallelIndex + 1);
+    const curveDistance = parallelIndex === 0 ? 0 : 34 * Math.ceil(parallelIndex / 2) * (parallelIndex % 2 ? 1 : -1);
     elements.push({
       group: "edges",
       data: {
         id: edgeElementId(edge.id), contractId: edge.id,
         source: nodeElementId(edge.source), target: nodeElementId(edge.target),
         relation: edge.relation, loopDirection: `${-45 + loopIndex * 65}deg`,
+        curveDistance,
       },
     });
   }
@@ -167,6 +175,7 @@ export const graphStyles: StylesheetJson = [
   } },
   { selector: "edge", style: {
     "curve-style": "bezier", "control-point-step-size": 54,
+    "control-point-distances": "data(curveDistance)", "control-point-weights": 0.5,
     "loop-direction": "data(loopDirection)", "loop-sweep": "-75deg",
     "width": 1.5, "line-color": "#6685a3", "target-arrow-color": "#88a7c6",
     "target-arrow-shape": "triangle", "arrow-scale": 1.1, "opacity": 0.72,

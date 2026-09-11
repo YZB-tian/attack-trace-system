@@ -1,16 +1,25 @@
 import type { NormalizedEvent } from "../types/contracts";
+import { compactTime, evidenceKeyLabel, exactTime, secondsLabel, scoreKindLabel, valueLabel } from "../labels.ts";
+
+/** Fields that are genuinely boolean; other keys keep their raw rendering. */
+const BOOLEAN_KEYS = new Set([
+  "stable_size", "write_capable", "identity_resolved", "success_proven",
+  "execution_success_proven", "content_bytes_proven", "code_execution_proven",
+  "dump_created_proven", "reverse_connection_observed", "body_entropy_available",
+  "payload_entropy_available", "short_hex_txt_pattern",
+]);
 
 export function eventSourceLabel(value: NormalizedEvent["source_type"]) {
   return { host_log: "主机日志", host_behavior: "主机行为", network_flow: "网络流量", boundary_log: "边界日志" }[value] ?? value;
 }
 
 export function dataTime(value?: string | null) {
-  if (!value) return "未提供";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat("zh-CN", {
-    month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
-  }).format(date);
+  return compactTime(value);
+}
+
+/** Longest tooltip form: local rendering plus the untouched ISO instant. */
+export function dataTimeExact(value?: string | null) {
+  return exactTime(value);
 }
 
 export function endpointLabel(ip?: string | null, port?: number | null) {
@@ -49,10 +58,14 @@ const evidenceLabels = {
 };
 
 function evidenceValue(key: string, value: unknown) {
-  if ((key === "span" || key === "median_interval") && typeof value === "number" && Number.isFinite(value)) return `${value} s`;
+  if ((key === "span" || key === "median_interval") && typeof value === "number" && Number.isFinite(value)) return secondsLabel(value);
   if (key === "regularity" && typeof value === "number" && Number.isFinite(value)) return value.toFixed(2);
-  if (key === "stable_size" && typeof value === "boolean") return value ? "是" : "否";
-  if (key === "score_kind" && value === "heuristic_not_probability") return "启发式评分（非概率）";
+  if (key === "score_kind" && typeof value === "string") return scoreKindLabel(value);
+  if (typeof value === "boolean" && (BOOLEAN_KEYS.has(key) || key.endsWith("_proven"))) return value ? "是" : "否";
+  if (typeof value === "string") return valueLabel(value);
+  if (Array.isArray(value) && value.every((item) => typeof item === "string" || typeof item === "number")) {
+    return value.length ? value.join("、") : "（空列表）";
+  }
   return detailValue(value);
 }
 
@@ -72,7 +85,9 @@ export function parseEvidenceSummary(original: string): ParsedEvidence {
     if (Object.prototype.hasOwnProperty.call(record, key)) result.fields.push({ key, label, value: evidenceValue(key, record[key]) });
   }
   for (const [key, value] of Object.entries(record)) {
-    if (!Object.prototype.hasOwnProperty.call(evidenceLabels, key)) result.otherFields.push({ key, label: key, value: detailValue(value) });
+    if (!Object.prototype.hasOwnProperty.call(evidenceLabels, key)) {
+      result.otherFields.push({ key, label: evidenceKeyLabel(key), value: evidenceValue(key, value) });
+    }
   }
   return result;
 }
