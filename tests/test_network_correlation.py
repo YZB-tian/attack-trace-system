@@ -90,6 +90,72 @@ def test_ntp_shape_filter_is_narrow_and_can_be_disabled():
     assert detect_network(normalize_network_records(records, "task_test"))
 
 
+def test_dhcp_periodic_broadcast_is_not_generic_beacon():
+    from detection.network_rules import NetworkConfig
+
+    records = []
+    for n in range(10):
+        row = conn(
+            n,
+            proto="udp",
+            service="dhcp",
+            conn_state="S0",
+            orig_bytes=3000,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 128
+        row["id.orig_h"] = "0.0.0.0"
+        row["id.resp_h"] = "255.255.255.255"
+        row["id.orig_p"] = 68
+        row["id.resp_p"] = 67
+        records.append(row)
+
+    events = normalize_network_records(records, "task_test")
+    rules = {a.rule_id for a in detect_network(events)}
+    assert "NET-BEACON" not in rules
+
+    rules_unsuppressed = {
+        a.rule_id
+        for a in detect_network(
+            events,
+            NetworkConfig(suppress_dhcp_beacons=False),
+        )
+    }
+    assert "NET-BEACON" in rules_unsuppressed
+
+
+def test_unanswered_udp123_retries_are_not_generic_failed_connects():
+    from detection.network_rules import NetworkConfig
+
+    records = []
+    for n in range(8):
+        row = conn(
+            n,
+            proto="udp",
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 60
+        row["id.orig_p"] = 45000 + n
+        row["id.resp_p"] = 123
+        row["service"] = "-"
+        records.append(row)
+
+    events = normalize_network_records(records, "task_test")
+    rules = {a.rule_id for a in detect_network(events)}
+    assert "NET-REPEATED-FAILED-CONNECT" not in rules
+
+    rules_unsuppressed = {
+        a.rule_id
+        for a in detect_network(
+            events,
+            NetworkConfig(suppress_unanswered_udp123_retries=False),
+        )
+    }
+    assert "NET-REPEATED-FAILED-CONNECT" in rules_unsuppressed
+
+
 def test_short_hex_dns_requires_sustained_txt_churn():
     import hashlib
     records = [conn(n, _log_type="dns", query=hashlib.sha256(str(n).encode()).hexdigest()[:18] + ".channel.example",
@@ -101,6 +167,696 @@ def test_short_hex_dns_requires_sustained_txt_churn():
     assert not detect_network(normalize_network_records(records[:10], "task_test"))
     for row in records: row["qtype_name"] = "A"
     assert not detect_network(normalize_network_records(records, "task_test"))
+
+
+def test_repeated_failed_connections_raise_candidate_without_merging_scan_targets():
+    # Same endpoint + fresh source ports + S0/no-response => repeated retry candidate.
+    rows = [
+        conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        for n in range(8)
+    ]
+    events = normalize_network_records(rows, "task_test")
+    rules = {a.rule_id for a in detect_network(events)}
+    assert "NET-REPEATED-FAILED-CONNECT" in rules
+
+    # A broad scan touches many destination IPs. Endpoint grouping must prevent
+    # those one-off failures from being merged into the retry rule.
+    scan_rows = []
+    for n in range(8):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["id.resp_h"] = f"10.20.0.{n + 1}"
+        scan_rows.append(row)
+    scan_rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(scan_rows, "task_test"))
+    }
+    assert "NET-REPEATED-FAILED-CONNECT" not in scan_rules
+
+
+def test_repeated_failed_connections_allow_bursty_source_port_reuse():
+    # Botnet reconnect loops can reuse one ephemeral source port for several
+    # SYN attempts before moving to the next port. Two ports across eight
+    # failed attempts gives churn=0.25.
+    rows = []
+    for n in range(8):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["id.orig_p"] = 43000 if n < 4 else 43004
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-REPEATED-FAILED-CONNECT" in rules
+
+
+
+def test_low_churn_mixed_success_and_failure_does_not_raise_retry_alert():
+    # Low-churn groups are allowed only for essentially pure failed/no-response
+    # retry loops. This models the round-2 iot34 false positive, where some
+    # connections succeeded (SF) and returned data.
+    rows = []
+    for n in range(10):
+        is_success = n == 9
+        row = conn(
+            n,
+            conn_state="SF" if is_success else "S0",
+            orig_bytes=50 if is_success else 0,
+            resp_bytes=120 if is_success else 0,
+        )
+        # 3 distinct source ports / 10 samples => churn 0.30
+        if n < 4:
+            row["id.orig_p"] = 43000
+        elif n < 7:
+            row["id.orig_p"] = 43004
+        else:
+            row["id.orig_p"] = 43008
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-REPEATED-FAILED-CONNECT" not in rules
+
+
+
+def test_conn_log_irc_service_can_raise_c2_candidate_without_irc_command_log():
+    rows = [
+        conn(
+            n,
+            service="irc",
+            conn_state="SF",
+            orig_bytes=120 + n,
+            resp_bytes=180 + n,
+        )
+        for n in range(8)
+    ]
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-IRC-C2-CANDIDATE" in rules
+
+
+def test_partial_irc_service_on_classic_port_can_raise_reconnect_campaign():
+    rows = []
+    for n in range(20):
+        row = conn(
+            n,
+            service="irc" if n < 5 else "-",
+            conn_state="S0" if n < 12 else "S3",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1700000000.0 + n * 30
+        row["id.resp_p"] = 6667
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-IRC-RECONNECT-CAMPAIGN" in rules
+
+
+def test_partial_irc_pattern_on_non_irc_port_does_not_raise_irc_campaign():
+    rows = []
+    for n in range(20):
+        row = conn(
+            n,
+            service="irc" if n < 5 else "-",
+            conn_state="S0" if n < 12 else "S3",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1700000000.0 + n * 30
+        row["id.resp_p"] = 443
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-IRC-RECONNECT-CAMPAIGN" not in rules
+
+
+
+
+def test_horizontal_scan_s0_only_across_many_destination_ips():
+    rows = []
+    for n in range(20):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 10
+        row["id.resp_h"] = f"10.20.0.{n + 1}"
+        row["id.resp_p"] = 22
+        rows.append(row)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    scan = next(a for a in alerts if a.rule_id == "NET-HORIZONTAL-SCAN")
+    evidence = json.loads(scan.evidence_summary)
+
+    assert len(scan.event_ids) == 20
+    assert evidence["unique_destination_ips"] == 20
+    assert evidence["connection_state"] == "S0"
+    assert evidence["evidence_scope"] == "s0_only"
+
+
+def test_horizontal_scan_rejected_connections_are_not_scan_evidence():
+    rows = []
+    for n in range(20):
+        row = conn(
+            n,
+            conn_state="REJ",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 10
+        row["id.resp_h"] = f"10.30.0.{n + 1}"
+        row["id.resp_p"] = 22
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-HORIZONTAL-SCAN" not in rules
+
+
+def test_horizontal_scan_alert_attaches_only_s0_rows_from_mixed_window():
+    rows = []
+    for n in range(20):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 10
+        row["id.resp_h"] = f"10.40.0.{n + 1}"
+        row["id.resp_p"] = 22
+        rows.append(row)
+
+    for n in range(20, 25):
+        row = conn(
+            n,
+            conn_state="REJ",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 5
+        row["id.resp_h"] = f"10.50.0.{n + 1}"
+        row["id.resp_p"] = 22
+        rows.append(row)
+
+    events = normalize_network_records(rows, "task_test")
+    by_id = {e.event_id: e for e in events}
+    scan = next(a for a in detect_network(events) if a.rule_id == "NET-HORIZONTAL-SCAN")
+
+    assert len(scan.event_ids) == 20
+    assert {
+        by_id[eid].metadata["zeek"]["conn_state"]
+        for eid in scan.event_ids
+    } == {"S0"}
+
+
+
+def test_http_download_campaign_requires_repeated_multi_destination_transfers():
+    rows = []
+    for n in range(4):
+        row = conn(
+            n,
+            service="http",
+            conn_state="SF",
+            orig_bytes=100,
+            resp_bytes=65536,
+        )
+        row["ts"] = 1788825600 + n * 10
+        row["id.resp_h"] = "203.0.113.10" if n % 2 == 0 else "203.0.113.11"
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    download = next(a for a in alerts if a.rule_id == "NET-HTTP-DOWNLOAD-CAMPAIGN")
+    evidence = json.loads(download.evidence_summary)
+
+    assert len(download.event_ids) == 4
+    assert evidence["flow_count"] == 4
+    assert evidence["unique_destination_ips"] == 2
+    assert evidence["minimum_bytes_in"] == 16384
+    assert evidence["minimum_response_ratio"] == 64.0
+    assert evidence["campaign_shape"] == "repeated_multi_endpoint_response_heavy_http"
+
+
+def test_http_download_campaign_does_not_flag_single_destination_download_burst():
+    rows = []
+    for n in range(6):
+        row = conn(
+            n,
+            service="http",
+            conn_state="SF",
+            orig_bytes=100,
+            resp_bytes=131072,
+        )
+        row["ts"] = 1788825600 + n * 8
+        row["id.resp_h"] = "203.0.113.20"
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-HTTP-DOWNLOAD-CAMPAIGN" not in rules
+
+
+def test_http_download_campaign_does_not_flag_small_http_responses():
+    rows = []
+    for n in range(4):
+        row = conn(
+            n,
+            service="http",
+            conn_state="SF",
+            orig_bytes=100,
+            resp_bytes=4096,
+        )
+        row["ts"] = 1788825600 + n * 10
+        row["id.resp_h"] = "203.0.113.30" if n % 2 == 0 else "203.0.113.31"
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-HTTP-DOWNLOAD-CAMPAIGN" not in rules
+
+
+
+def test_retry_persistent_connection_detects_failures_then_long_success():
+    rows = []
+    for n in range(5):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 20
+        row["id.orig_p"] = 41000 + n
+        row["id.resp_p"] = 443
+        rows.append(row)
+
+    success = conn(
+        99,
+        conn_state="SF",
+        duration=7200,
+        orig_bytes=4096,
+        resp_bytes=4096,
+    )
+    success["ts"] = 1788825700
+    success["id.orig_p"] = 42000
+    success["id.resp_p"] = 443
+    rows.append(success)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    alert = next(
+        a for a in alerts
+        if a.rule_id == "NET-RETRY-PERSISTENT-CONNECTION"
+    )
+    evidence = json.loads(alert.evidence_summary)
+
+    assert len(alert.event_ids) == 6
+    assert evidence["failure_count"] == 5
+    assert evidence["persistent_success_count"] == 1
+    assert evidence["max_success_duration"] == 7200
+    assert evidence["transition_shape"] == (
+        "repeated_failures_with_persistent_connection"
+    )
+
+
+def test_retry_persistent_connection_requires_long_success():
+    rows = []
+    for n in range(5):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 20
+        row["id.orig_p"] = 43000 + n
+        rows.append(row)
+
+    success = conn(
+        100,
+        conn_state="SF",
+        duration=60,
+        orig_bytes=4096,
+        resp_bytes=4096,
+    )
+    success["ts"] = 1788825700
+    success["id.orig_p"] = 44000
+    rows.append(success)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-RETRY-PERSISTENT-CONNECTION" not in rules
+
+
+def test_multi_endpoint_irc_campaign_detects_rotating_endpoints():
+    rows = []
+    destinations = [
+        "203.0.113.10",
+        "203.0.113.11",
+        "203.0.113.12",
+        "203.0.113.13",
+    ]
+    for n in range(6):
+        row = conn(
+            n,
+            service="irc" if n < 4 else "-",
+            conn_state="S1" if n < 4 else "S0",
+            orig_bytes=200 if n < 4 else 0,
+            resp_bytes=400 if n < 4 else 0,
+        )
+        row["ts"] = 1788825600 + n * 300
+        row["id.resp_h"] = destinations[n % len(destinations)]
+        row["id.resp_p"] = 2407
+        rows.append(row)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    alert = next(
+        a for a in alerts
+        if a.rule_id == "NET-MULTI-ENDPOINT-IRC-CAMPAIGN"
+    )
+    evidence = json.loads(alert.evidence_summary)
+
+    assert len(alert.event_ids) == 6
+    assert evidence["irc_flow_count"] == 4
+    assert evidence["unique_destination_ips"] == 4
+    assert evidence["campaign_shape"] == "multi_endpoint_irc_same_port"
+
+
+def test_multi_endpoint_irc_campaign_requires_multiple_destinations():
+    rows = []
+    for n in range(6):
+        row = conn(
+            n,
+            service="irc",
+            conn_state="S1",
+            orig_bytes=200,
+            resp_bytes=400,
+        )
+        row["ts"] = 1788825600 + n * 300
+        row["id.resp_h"] = "203.0.113.20"
+        row["id.resp_p"] = 2407
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-MULTI-ENDPOINT-IRC-CAMPAIGN" not in rules
+
+
+
+def test_dns_retries_are_not_generic_failed_connects():
+    from detection.network_rules import NetworkConfig
+
+    rows = []
+    for n in range(8):
+        row = conn(
+            n,
+            proto="udp",
+            service="dns",
+            conn_state="S0" if n != 7 else "SF",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 5
+        row["id.orig_p"] = 53000 + n
+        row["id.resp_p"] = 53
+        rows.append(row)
+
+    events = normalize_network_records(rows, "task_test")
+    rules = {a.rule_id for a in detect_network(events)}
+    assert "NET-REPEATED-FAILED-CONNECT" not in rules
+
+    rules_unsuppressed = {
+        a.rule_id
+        for a in detect_network(
+            events,
+            NetworkConfig(suppress_dns_retries=False),
+        )
+    }
+    assert "NET-REPEATED-FAILED-CONNECT" in rules_unsuppressed
+
+
+def test_retry_persistent_connection_accepts_long_horizon_s2_session():
+    rows = []
+    for n in range(5):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 3600
+        row["id.orig_p"] = 45000 + n
+        row["service"] = "-"
+        rows.append(row)
+
+    success = conn(
+        100,
+        service="-",
+        conn_state="S2",
+        duration=8 * 3600,
+        orig_bytes=14000,
+        resp_bytes=14000,
+    )
+    success["ts"] = 1788825600 + 17 * 3600
+    success["id.orig_p"] = 46000
+    rows.append(success)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    alert = next(
+        a for a in alerts
+        if a.rule_id == "NET-RETRY-PERSISTENT-CONNECTION"
+    )
+    evidence = json.loads(alert.evidence_summary)
+
+    assert len(alert.event_ids) == 6
+    assert evidence["persistent_success_count"] == 1
+    assert evidence["max_success_duration"] == 8 * 3600
+    assert evidence["transition_shape"] == (
+        "repeated_failures_with_persistent_connection"
+    )
+
+
+def test_retry_persistent_connection_rejects_high_volume_long_session():
+    rows = []
+    for n in range(5):
+        row = conn(
+            n,
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825600 + n * 3600
+        row["id.orig_p"] = 47000 + n
+        row["service"] = "-"
+        rows.append(row)
+
+    success = conn(
+        101,
+        service="-",
+        conn_state="S1",
+        duration=8 * 3600,
+        orig_bytes=200000,
+        resp_bytes=200000,
+    )
+    success["ts"] = 1788825600 + 17 * 3600
+    success["id.orig_p"] = 48000
+    rows.append(success)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-RETRY-PERSISTENT-CONNECTION" not in rules
+
+
+def test_http_download_retry_campaign_can_correlate_persistent_tcp23():
+    rows = []
+    dst = "203.0.113.50"
+
+    # Five large response-heavy HTTP downloads.
+    for n in range(5):
+        row = conn(
+            n,
+            service="http",
+            conn_state="SF",
+            orig_bytes=150,
+            resp_bytes=150000,
+        )
+        row["ts"] = 1788825600 + n * 20
+        row["id.orig_p"] = 50000 + n
+        row["id.resp_h"] = dst
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    # Four failed/no-response attempts to the same HTTP endpoint.
+    for n in range(4):
+        row = conn(
+            20 + n,
+            service="-",
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825610 + n * 20
+        row["id.orig_p"] = 51000 + n
+        row["id.resp_h"] = dst
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    # Same source/destination pair, concurrent persistent TCP/23 session.
+    telnet = conn(
+        99,
+        service="-",
+        conn_state="S1",
+        duration=7200,
+        orig_bytes=639,
+        resp_bytes=627,
+    )
+    telnet["ts"] = 1788825650
+    telnet["id.orig_p"] = 52000
+    telnet["id.resp_h"] = dst
+    telnet["id.resp_p"] = 23
+    rows.append(telnet)
+
+    alerts = detect_network(normalize_network_records(rows, "task_test"))
+    alert = next(
+        a for a in alerts
+        if a.rule_id == "NET-HTTP-DOWNLOAD-RETRY-CAMPAIGN"
+    )
+    evidence = json.loads(alert.evidence_summary)
+
+    assert len(alert.event_ids) == 10
+    assert evidence["heavy_http_download_count"] == 5
+    assert evidence["failed_no_response_count"] == 4
+    assert evidence["correlated_tcp23_count"] == 1
+    assert evidence["campaign_shape"] == (
+        "same_endpoint_http_download_plus_retries"
+    )
+
+
+def test_http_download_retry_campaign_requires_five_heavy_downloads():
+    rows = []
+    dst = "203.0.113.60"
+
+    # IoT34-like shape: many failures, but only four heavy HTTP responses.
+    for n in range(4):
+        row = conn(
+            n,
+            service="http",
+            conn_state="SF",
+            orig_bytes=150,
+            resp_bytes=120000,
+        )
+        row["ts"] = 1788825600 + n * 30
+        row["id.resp_h"] = dst
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    for n in range(13):
+        row = conn(
+            30 + n,
+            service="-",
+            conn_state="S0",
+            orig_bytes=0,
+            resp_bytes=0,
+        )
+        row["ts"] = 1788825605 + n * 20
+        row["id.orig_p"] = 54000 + n
+        row["id.resp_h"] = dst
+        row["id.resp_p"] = 80
+        rows.append(row)
+
+    rules = {
+        a.rule_id
+        for a in detect_network(normalize_network_records(rows, "task_test"))
+    }
+    assert "NET-HTTP-DOWNLOAD-RETRY-CAMPAIGN" not in rules
+
+
+def test_volumetric_udp_outbound_detects_one_way_high_volume_flow():
+    row = conn(
+        1,
+        proto="udp",
+        conn_state="S0",
+        duration=300,
+        orig_bytes=200 * 1024 * 1024,
+        resp_bytes=0,
+        orig_pkts=200000,
+        resp_pkts=0,
+    )
+    row["id.resp_p"] = 80
+
+    alerts = detect_network(normalize_network_records([row], "task_test"))
+    alert = next(
+        a for a in alerts
+        if a.rule_id == "NET-VOLUMETRIC-UDP-OUTBOUND"
+    )
+    evidence = json.loads(alert.evidence_summary)
+
+    assert evidence["traffic_shape"] == "high_volume_one_way_udp"
+    assert evidence["bytes_out"] == 200 * 1024 * 1024
+    assert evidence["orig_packets"] == 200000
+
+
+def test_volumetric_udp_outbound_ignores_ordinary_udp_flow():
+    row = conn(
+        1,
+        proto="udp",
+        conn_state="S0",
+        duration=300,
+        orig_bytes=10 * 1024 * 1024,
+        resp_bytes=0,
+        orig_pkts=10000,
+        resp_pkts=0,
+    )
+
+    rules = {
+        a.rule_id
+        for a in detect_network(
+            normalize_network_records([row], "task_test")
+        )
+    }
+    assert "NET-VOLUMETRIC-UDP-OUTBOUND" not in rules
 
 
 def test_indexed_correlation_matches_exhaustive_evidence_pairs(monkeypatch):
