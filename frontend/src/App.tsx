@@ -19,6 +19,7 @@ import { client } from "./api/client";
 import { selectTask } from "./task-selection";
 import { EventsView } from "./components/EventsView";
 import { AlertsView } from "./components/AlertsView";
+import ChainPreview from "./components/ChainPreview";
 import { AttributionPanel, EvidenceIndex, EventChip } from "./components/AttributionPanel";
 import { parseEvidenceSummary } from "./components/data-panel-format";
 import {
@@ -52,30 +53,39 @@ type Section = "overview" | "events" | "alerts" | "graph" | "trace";
 const emptyState = <T,>(): LoadState<T> => ({ data: null, loading: true, error: null });
 
 function useEndpoint<T>(loader: () => Promise<T>, dependencies: string[], enabled = true): LoadState<T> & { reload: () => void } {
-  const [state, setState] = useState<LoadState<T>>(emptyState);
   const [revision, setRevision] = useState(0);
+  // The request key carries the loader inputs, the manual reload revision and the
+  // enabled flag, so a late response for an old task can never overwrite a new one.
+  const requestKey = JSON.stringify([...dependencies, revision, enabled]);
+  const [state, setState] = useState<LoadState<T> & { requestKey: string }>(() => ({ ...emptyState<T>(), requestKey }));
   const reload = useCallback(() => setRevision((value) => value + 1), []);
 
   useEffect(() => {
     let active = true;
+    // task/graph/trace must not fire a request while the task id is still empty.
     if (!enabled) {
-      setState({ data: null, loading: false, error: null });
+      setState({ data: null, loading: false, error: null, requestKey });
       return;
     }
-    setState({ data: null, loading: true, error: null });
+    setState({ data: null, loading: true, error: null, requestKey });
     loader()
-      .then((data) => active && setState({ data, loading: false, error: null }))
+      .then((data) => {
+        if (active) setState({ data, loading: false, error: null, requestKey });
+      })
       .catch((error: unknown) => {
-        if (active) setState({ data: null, loading: false, error: error instanceof Error ? error.message : "请求失败" });
+        if (active) {
+          setState({ data: null, loading: false, error: error instanceof Error ? error.message : "请求失败", requestKey });
+        }
       });
     return () => {
       active = false;
     };
-    // Loader is intentionally supplied by each endpoint and dependencies identify its inputs.
+    // requestKey already contains the loader inputs, the reload revision and enabled.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...dependencies, String(revision), enabled]);
+  }, [requestKey]);
 
-  return { ...state, reload };
+  // Never expose a previous task's data before the effect for the new key runs.
+  return { ...(state.requestKey === requestKey ? state : emptyState<T>()), reload };
 }
 
 function percent(value: number) {
@@ -250,14 +260,10 @@ function Overview({ task, trace, events, alerts, graph, onNavigate }: {
     </section>
     <section className="panel chain-preview">
       <PanelHeading icon={GitBranch} title="攻击链路" action="展开攻击图" onAction={() => onNavigate("graph")} />
-      {trace.loading ? <LoadingState /> : trace.error ? <ErrorState message={trace.error} retry={trace.reload} />
-        : stages.length > 0
-          ? <div className="chain-flow">{stages.slice(0, 6).map((stage, index) => <div className="chain-node" key={stage.order}>
-            <NodeGlyph type="other" />
-            <span>{tacticLabel(stage.tactic)}{stage.technique_id ? ` · ${stage.technique_id}` : ""}</span>
-            {index < Math.min(stages.length, 6) - 1 && <ChevronRight size={14} />}
-          </div>)}</div>
-          : <EmptyState title="尚未形成攻击阶段" detail="溯源结果中没有带 ATT&CK 映射的告警阶段；可能任务没有命中检测规则，或未配置官方 ATT&CK 数据。" />}
+      {graph.loading ? <LoadingState /> : graph.error ? <ErrorState message={graph.error} retry={graph.reload} />
+        : graph.data && graph.data.nodes.length > 0
+          ? <ChainPreview nodes={graph.data.nodes} />
+          : <EmptyState title="暂无攻击图实体" detail="当前任务没有产生攻击图节点。" />}
     </section>
   </div>;
 }

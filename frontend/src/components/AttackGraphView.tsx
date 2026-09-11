@@ -7,6 +7,7 @@ import { Expand, Focus, GitBranch, HelpCircle, Minus, Plus, RotateCcw, Search, X
 import type { Alert, AttackGraph, GraphEdge, GraphNode } from "../types/contracts";
 import { createGraphElements, edgeElementId, fitGraph, graphStyles, nodeColors, nodeElementId, runGraphLayout } from "./graphModel";
 import type { GraphLayout, GraphSelection } from "./graphModel";
+import { formatNodeDisplay } from "./node-display";
 import { nodeTypeLabel, compactTime, relationLabel } from "../labels";
 import "./graph.css";
 
@@ -285,10 +286,15 @@ function matchEdges(edges: GraphEdge[], nodesById: Map<string, GraphNode>, query
 }
 
 function NodeDetails({ node, edges, onSelectEdge }: { node: GraphNode; edges: GraphEdge[]; onSelectEdge: (id: string) => void }) {
+  // formatNodeDisplay separates an address from a service port, so an IP entity
+  // and a C2 service are never shown with the same label.
+  const display = formatNodeDisplay(node);
   return <>
     <span className="attack-graph-detail-kicker">节点详情 · {nodeTypeLabel(node.type)}</span>
-    <h4>{node.label}</h4>
+    <h4>{display.title}</h4>
+    {display.summary && <p className="attack-graph-muted">{display.summary}</p>}
     <dl>
+      <Detail label="原始标签" value={node.label} />
       <Detail label="节点 ID" value={node.id} />
       <Detail label="节点类型" value={`${nodeTypeLabel(node.type)}（${node.type}）`} />
     </dl>
@@ -319,7 +325,7 @@ function EdgeDetails({ edge, nodesById, onSelectNode }: { edge: GraphEdge; nodes
       {(["source", "target"] as const).map((key) => <div key={key}>
         <span>{key === "source" ? "起点" : "终点"}</span>
         {nodesById.has(edge[key])
-          ? <button type="button" onClick={() => onSelectNode(edge[key])}>{nodesById.get(edge[key])?.label}</button>
+          ? <button type="button" onClick={() => onSelectNode(edge[key])}>{displayNodeLabel(edge[key], nodesById)}</button>
           : <strong>节点缺失</strong>}
         <code>{edge[key]}</code>
       </div>)}
@@ -328,6 +334,11 @@ function EdgeDetails({ edge, nodesById, onSelectNode }: { edge: GraphEdge; nodes
     <EvidenceIds title="告警证据" ids={edge.evidence_alert_ids} />
     <Attributes attributes={edge.attributes} />
   </>;
+}
+
+function displayNodeLabel(id: string, nodesById: Map<string, GraphNode>) {
+  const node = nodesById.get(id);
+  return node ? formatNodeDisplay(node).fullLabel : id;
 }
 
 function Detail({ label, value, hint }: { label: string; value: unknown; hint?: string }) {
